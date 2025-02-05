@@ -1,0 +1,206 @@
+
+void resolve_player_collision(CollisionType type, IntersectionResult result, float x, float y) {
+
+	/*	Explanation time:
+	       -basically just gets the coordinates of the collision point
+			and move the player to that point if any of their collision 
+			lines are intersecting with a specific blocks collision lines
+	*/
+
+	if (result.isIntersecting) {
+
+		if (type == COLLISION_BOTTOM) {
+			// if (miner.vy > 1) { if (round(random_float()*100) == 1) { create_particle(1, P_IMPACT, miner.x, result.cy, 200-random_float()*400, -300, 1, 1); } }
+			miner.y = result.cy - miner.height/2;
+			miner.vy = 0;
+			miner.falling=0;
+		}
+
+		if (type == COLLISION_TOP) {
+			miner.y = result.cy + miner.height/2;
+			miner.vy = 0;
+		}
+
+		if (type == COLLISION_RIGHT) {
+			miner.x = result.cx - miner.width/2;
+			miner.vx = 0;
+			if (key.d && miner.vy > 0) miner.vy*= 0.995;
+			if (key.w && key.a) { 
+				// create_particle(1, P_IMPACT, result.cx, miner.y, randfloat(0.0f, 2.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1); 
+				// create_particle(1, P_IMPACT, result.cx, miner.y, randfloat(0.0f, 2.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1); 
+				miner.vx = miner.speed*-1; 
+				miner.vy = miner.speed*-1.25;
+			}
+		}
+
+		if (type == COLLISION_LEFT) {
+			miner.x = result.cx + miner.width/2;
+			miner.vx = 0;
+			if (key.a && miner.vy > 0) miner.vy*= 0.995;
+			if (key.w && key.d) { 
+				// create_particle(1, P_IMPACT, result.cx, miner.y, random_float()*400, 200-random_float()*400, 1, 1); 
+				miner.vx = miner.speed; 
+				miner.vy = miner.speed*-1.25;
+			}
+
+			
+		}
+	}
+}
+
+void check_player_block(int x, int y) {
+
+	if (world[x][y]->solid == false || world[x][y] == NULL) return;
+	if (x < 0 || y < 0 || x >= WORLD_WIDTH || y >= WORLD_HEIGHT) return;
+
+	IntersectionResult result;
+
+	/* the miner hitbox consists of
+		- two lines pointing up (one on the left and one on the right) to detect if the player if touching any cieling blocks
+		- two lines pointing down (left and right) to check if the player is touching any floor blocks
+		- two lines pointing left (upper and lower) to check if the player is touching any left walls
+		- two lines pointing right (upper and lower) to check if the player is touching any right walls
+	*/
+
+	// top left player to bottom block / top right player to bottom blovk
+	Line ptl = {miner.x+miner.width/2-1, miner.y+miner.height/2, miner.x+miner.width/2-1, miner.y};
+	Line blkb = {x*64 - 32, y*64 - 32, x*64 +32, y*64 -32};
+	result = islinesintersecting(ptl, blkb);
+	if (result.isIntersecting) resolve_player_collision(COLLISION_BOTTOM, result, x, y);
+	Line ptr = {miner.x-miner.width/2+1, miner.y+miner.height/2, miner.x-miner.width/2+1, miner.y};
+	result = islinesintersecting(ptr, blkb);
+	if (result.isIntersecting) resolve_player_collision(COLLISION_BOTTOM, result, x, y);
+
+	// bottom left player to top block / bottom right player to top block
+	Line pbl = {miner.x+miner.width/2-1, miner.y-miner.height/2, miner.x+miner.width/2-1, miner.y};
+	Line blkt = {x*64 - 32, y*64 + 32, x*64 +32, y*64 +32};
+	result = islinesintersecting(pbl, blkt);
+	if (result.isIntersecting) resolve_player_collision(COLLISION_TOP, result, x, y);
+	Line pbr = {miner.x-miner.width/2+1, miner.y-miner.height/2, miner.x-miner.width/2+1, miner.y};
+	result = islinesintersecting(pbr, blkt);
+	if (result.isIntersecting) resolve_player_collision(COLLISION_TOP, result, x, y);
+
+	// left top player to right block / left bottom player to right block
+	Line plt = {miner.x-miner.width/2, miner.y+miner.height/2-1, miner.x, miner.y+miner.height/2-1};
+	Line blkr = {x*64 + 32, y*64 + 32, x*64 + 32, y*64 - 32};
+	result = islinesintersecting(plt, blkr);
+	if (result.isIntersecting) resolve_player_collision(COLLISION_LEFT, result, x, y);
+	Line plb = {miner.x-miner.width/2, miner.y-miner.height/2+1, miner.x, miner.y-miner.height/2+1};
+	result = islinesintersecting(plb, blkr);
+	if (result.isIntersecting) resolve_player_collision(COLLISION_LEFT, result, x, y);
+
+	if (result.isIntersecting && randfloat(0.0f, 10.0f) < 1 && key.a && abs(miner.vy) > 3000 ) create_particle(P_IMPACT, result.cx, miner.y, randfloat(0.0f, 2.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1);
+
+	// right top player to left block / right bottom player to left block
+	Line prt = {miner.x+miner.width/2, miner.y+miner.height/2-1, miner.x, miner.y+miner.height/2-1};
+	Line blkl = {x*64 - 32, y*64 + 32, x*64 -32, y*64 -32};
+	result = islinesintersecting(prt, blkl);
+	if (result.isIntersecting) resolve_player_collision(COLLISION_RIGHT, result, x, y);
+	Line prb = {miner.x+miner.width/2, miner.y-miner.height/2+1, miner.x, miner.y-miner.height/2+1};
+	result = islinesintersecting(prb, blkl);
+	if (result.isIntersecting) resolve_player_collision(COLLISION_RIGHT, result, x, y);
+
+	if (result.isIntersecting && randfloat(0.0f, 10.0f) < 1 && key.d && abs(miner.vy) > 3000 ) create_particle(P_IMPACT, result.cx, miner.y, randfloat(0.0f, 2.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1);
+
+}
+
+void check_player_collision() {
+
+	/* 	Only checks for collision with blocks that are: 
+		- in the same tile as the player
+		- above and below the player
+		-to the left and right of rthe player
+		-in all 4 diagonals to the player
+	*/
+
+	// block inside the player
+	check_player_block((int)(miner.x/64), (int)(miner.y/64));
+
+	// blocks above, below, and next to the player
+	check_player_block((int)(miner.x/64), (int)(miner.y/64)-1); // bloacks around the player
+	check_player_block((int)(miner.x/64), (int)(miner.y/64)+1);
+	check_player_block((int)(miner.x/64)-1, (int)(miner.y/64));
+	check_player_block((int)(miner.x/64)+1, (int)(miner.y/64));
+
+ 	// blocks diagonal to the player
+	check_player_block((int)(miner.x/64)-1, (int)(miner.y/64)-1);
+	check_player_block((int)(miner.x/64)+1, (int)(miner.y/64)-1);
+	check_player_block((int)(miner.x/64)+1, (int)(miner.y/64)+1);
+	check_player_block((int)(miner.x/64)-1, (int)(miner.y/64)+1);
+}
+
+void update_player(bool active) {
+    if (active) {
+        
+        // fullscreen mode / escape fullscreen
+        if (mouse.l) { SDL_HideCursor(); }
+        if (key.tab) { SDL_SetWindowFullscreen(window, 1); }
+        if (key.escape) { SDL_SetWindowFullscreen(window, 0); SDL_ShowCursor(); }
+
+        miner.falling+=1*dt;
+        miner.jumptimer-=1*dt;
+        miner.breaktimer-=1*dt;
+        // miner.vx = 0;adwa
+        // if (set.creative) { miner.vy=0; }
+        if (key.a) miner.vx -= 2000 * dt;
+        if (key.d) miner.vx += 2000 * dt;
+		if ( miner.vx > miner.speed ) miner.vx = miner.speed;
+		if ( miner.vx < -1*miner.speed ) miner.vx = -1*miner.speed;
+        // if (key.s) { miner.vy = miner.speed; } 
+        if (key.w && miner.falling <= 0.1 && miner.jumptimer <= 0) miner.vy = miner.speed*-1.25;
+		if ((key.a && key.d) || (!key.a && !key.d)) miner.vx = miner.vx*0.9;
+
+        if (key.w && miner.vy < 0) { // gravity
+			miner.vy += set.gravity*dt; 
+		} else { 
+			miner.vy += set.gravity*2*dt; 
+		}
+
+		miner.vx*=0.995;
+        int iterations = 15;
+        for (int i = 0; i < iterations; i++) {
+            miner.x += miner.vx*dt/iterations; 
+            miner.y += miner.vy*dt/iterations;
+            check_player_collision();
+        }
+
+        // respawn if fell out of world into the void
+        if ( miner.y/64 > WORLD_HEIGHT + 15) {
+            miner.x = WORLD_WIDTH*32;
+            miner.y = WORLD_HEIGHT*32;
+            miner.vx = 0;
+            miner.vy = 0;
+        }
+
+        if (mouse.mp || key.space) blockheld+=1;
+
+        if (mouse.r && world[mouse.worldx][mouse.worldy] != NULL && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 && world[mouse.worldx][mouse.worldy] == block[B_AIR] && !(round(miner.x/64) == mouse.worldx && round(miner.y/64) == mouse.worldy) 
+        && (world[mouse.worldx][mouse.worldy-1] != block[B_AIR] || world[mouse.worldx][mouse.worldy+1] != block[B_AIR] || world[mouse.worldx-1][mouse.worldy] != block[B_AIR] || world[mouse.worldx+1][mouse.worldy] != block[B_AIR] )
+        && !(world[mouse.worldx][mouse.worldy-1]->solid && world[mouse.worldx][mouse.worldy+1]->solid && world[mouse.worldx-1][mouse.worldy]->solid && world[mouse.worldx+1][mouse.worldy]->solid ) ) {
+            // world[mouse.worldx][mouse.worldy] = block[B_STONE];
+            world[mouse.worldx][mouse.worldy] = block[2+ blockheld % (NUM_BLOCKS-2)];
+        }
+
+        if (mouse.l && world[mouse.worldx][mouse.worldy] != NULL && miner.breaktimer <= 0 && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 && world[mouse.worldx][mouse.worldy]->breakable
+            && (!(world[mouse.worldx][mouse.worldy-1]->solid && world[mouse.worldx][mouse.worldy+1]->solid && world[mouse.worldx-1][mouse.worldy]->solid && world[mouse.worldx+1][mouse.worldy]->solid ) || (mouse.worldx == round(miner.x/64) && mouse.worldy == round(miner.y/64)))
+            ) {
+            world[mouse.worldx][mouse.worldy] = block[B_AIR];
+            // world[mouse.worldx][mouse.worldy]->health -= 1;
+            // if (world[mouse.worldx][mouse.worldy]->health == 0) {
+            // 	world[mouse.worldx][mouse.worldy] = block[B_AIR];
+            // }
+            // miner.breaktimer = 0.5;
+        }
+    }
+}
+
+void render_player(bool active) {
+    if (active) {
+        draw_rect(renderer, floatarr(4, miner.x - camera.x - miner.width/2, miner.y - camera.y - miner.height/2, miner.width, miner.height), 1, 255, true);
+
+        int color; if (world[mouse.worldx][mouse.worldy] != NULL && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 3 ) { color = 1; } else { color = 3; }
+        draw_rect(renderer, floatarr(4, mouse.worldx*64 - camera.x - 32, mouse.worldy*64 - camera.y - 32, 64.0f, 64.0f), color, 255, false);
+        SDL_RenderLine(renderer, miner.x - camera.x - miner.width/2 + miner.width/2, miner.y - camera.y - miner.height/2 + miner.height/2, mouse.x, mouse.y); // player sight line
+        SDL_RenderLine(renderer, mouse.x+5, mouse.y+5, mouse.x-5, mouse.y-5); SDL_RenderLine(renderer, mouse.x+5, mouse.y-5, mouse.x-5, mouse.y+5); // plyer sights X
+    }
+}
