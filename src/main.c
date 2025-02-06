@@ -171,6 +171,20 @@ void AppIterate() {
 
 void AppInit() {
 
+	// HINSTANCE hInstance = GetModuleHandle(NULL); // Get current instance of the application
+    // HICON hIcon = (HICON) LoadImageW(hInstance, L"assets/icon.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
+
+    // // Set the icon for the window (Windows-specific)
+    // if (hIcon) {
+    //     // After window creation, set the window icon using Windows API
+    //     HWND hwnd = GetConsoleWindow();  // If we don't have SDL3 support for window HWND, fallback to console window.
+
+    //     // Set the icon for the window using SetClassLongPtr (Windows-specific)
+    //     SetClassLongPtr(hwnd, GCLP_HICON, (LONG_PTR)hIcon); 
+    // } else {
+    //     SDL_Log("Failed to load icon.\n");
+    // }
+
     running = true;
 	srand(time(NULL));
 
@@ -198,7 +212,7 @@ void AppInit() {
 	    running = false;
 	}
 
-    // SDL_Surface *icon = IMG_Load("assets/test.jpg");  // Path to your icon.ico file
+    // SDL_Surface *icon = IMG_Load("assets/icon.ico");  // Path to your icon.ico file
     // if (!icon) {
     //     // printf("Error loading icon: %s\n", IMG_GetError());
     //     running = false;
