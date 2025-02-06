@@ -10,8 +10,12 @@ SDL_Texture* texture;
 SDL_Texture* block_textures;
 SDL_Texture* block_textures64;
 
+// SDL_Surface* icon;
+
 bool load_textures(SDL_Renderer* renderer) {
   texture = IMG_LoadTexture(renderer, "./assets/test.jpg");
+
+  // icon = IMG_LoadTexture(renderer, "./assets/test.jpg");
 
   block_textures = IMG_LoadTexture(renderer, "./assets/blocktextures.png");
   // block_textures64 = IMG_LoadTexture(renderer, "./assets/blocktextures64.png");

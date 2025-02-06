@@ -138,9 +138,11 @@ void render() {
   	SDL_RenderClear(renderer);
 
 	render_world(true);
-	render_particles(true);
 	render_player(true);
+	render_particles(true);
 	render_ui(true);
+
+		printf("%.1f\n", miner.vy);
 
   	SDL_RenderPresent(renderer);
 }
@@ -195,6 +197,13 @@ void AppInit() {
 	    printf("Error loading textures: %s", SDL_GetError());
 	    running = false;
 	}
+
+    // SDL_Surface *icon = IMG_Load("assets/test.jpg");  // Path to your icon.ico file
+    // if (!icon) {
+    //     // printf("Error loading icon: %s\n", IMG_GetError());
+    //     running = false;
+    // }
+	// SDL_SetWindowIcon(window, icon);
 
 	make_blocks();
 	if (!load_world("gamesaves/world.save")) {
