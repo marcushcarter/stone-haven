@@ -26,17 +26,11 @@ bool running;
 SDL_Event event;
 
 typedef struct {
-  const char* title;  //window name
-  float pixsizex;     //size of pixels in x axis
-  float pixsizey;     // size of pixels in y axis
-  int sw, sh;         //screen width, height (pixels)
-  int sw2, sh2;       //half of screen width, height
-  int originx;        // 1 for regular, -1 for flipped
-  int originy;        // 1 for regular, -1 for flipped
-  // int dsw, dsh;
+  int sw, sh;
+  int sw2, sh2;
 } WindowDetails;
 
-WindowDetails win = {"Burrow", 3, 3, 300, 200, 160, 100, 1, -1};
+WindowDetails win = {1024, 768, 512, 384};
 
 typedef struct {
   int target_fps;

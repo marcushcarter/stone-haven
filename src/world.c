@@ -142,7 +142,7 @@ void render_world(bool active) {
         for (int x = 0; x < WORLD_WIDTH; x++) {
             for (int y = 0; y < WORLD_HEIGHT; y++) {
                 if (world[x][y] == NULL) continue;
-                if ((y-1)*64 - camera.y > win.sh*win.pixsizey || (y+1)*64 - camera.y < 0 || (x+1)*64 - camera.x < 0 || (x-1)*64 - camera.x > win.sw*win.pixsizex ) continue;
+                if ((y-1)*64 - camera.y > win.sh || (y+1)*64 - camera.y < 0 || (x+1)*64 - camera.x < 0 || (x-1)*64 - camera.x > win.sw ) continue;
 
                 float brightness;
                 // shadow / brightness

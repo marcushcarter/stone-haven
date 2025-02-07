@@ -128,8 +128,8 @@ void update() {
 	// if (key.o) { create_particle(1, P_IMPACT, miner.x, miner.y-25, 200-random_float()*400, -300, 1, 1); }
 	// if (key.p) { create_particle(50, P_IMPACT, miner.x, miner.y-25, 200-random_float()*400, -300, 1, 1); }
 
-	camera.x += (camera.targetx - camera.x - win.sw2*win.pixsizex) * 10.0f * dt;
-	camera.y += (camera.targety - camera.y - win.sh2*win.pixsizey) * 10.0f * dt;
+	camera.x += (camera.targetx - camera.x - win.sw2) * 10.0f * dt;
+	camera.y += (camera.targety - camera.y - win.sh2) * 10.0f * dt;
 
 }
 
@@ -161,7 +161,6 @@ void AppQuit() {
 
 void AppIterate() {
 	SDL_GetWindowSize(window, &win.sw, &win.sh);
-	win.sw/=win.pixsizex; win.sh/=win.pixsizey;
 	win.sw2 = win.sw/2; win.sh2 = win.sh/2;
   	dt = get_delta_time();
 	update();
@@ -170,21 +169,7 @@ void AppIterate() {
 }
 
 void AppInit() {
-
-	// HINSTANCE hInstance = GetModuleHandle(NULL); // Get current instance of the application
-    // HICON hIcon = (HICON) LoadImageW(hInstance, L"assets/icon.ico", IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
-
-    // // Set the icon for the window (Windows-specific)
-    // if (hIcon) {
-    //     // After window creation, set the window icon using Windows API
-    //     HWND hwnd = GetConsoleWindow();  // If we don't have SDL3 support for window HWND, fallback to console window.
-
-    //     // Set the icon for the window using SetClassLongPtr (Windows-specific)
-    //     SetClassLongPtr(hwnd, GCLP_HICON, (LONG_PTR)hIcon); 
-    // } else {
-    //     SDL_Log("Failed to load icon.\n");
-    // }
-
+	
     running = true;
 	srand(time(NULL));
 
@@ -193,7 +178,7 @@ void AppInit() {
     	running = false;
   	}
 
-  	window = SDL_CreateWindow(win.title, win.sw*abs(win.pixsizex), win.sh*abs(win.pixsizey), SDL_WINDOW_RESIZABLE);
+  	window = SDL_CreateWindow("Stone Haven", win.sw, win.sh, SDL_WINDOW_RESIZABLE);
   	if (!window) {
     	printf("Error creating window: %s", SDL_GetError());
     	running = false;
