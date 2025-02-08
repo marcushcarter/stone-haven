@@ -142,8 +142,6 @@ void render() {
 	render_particles(true);
 	render_ui(true);
 
-		printf("%.1f\n", miner.vy);
-
   	SDL_RenderPresent(renderer);
 }
 

@@ -94,7 +94,7 @@ void check_player_block(int x, int y) {
 	result = islinesintersecting(plb, blkr);
 	if (result.isIntersecting) resolve_player_collision(COLLISION_LEFT, result, x, y);
 
-	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.a && abs(miner.vy) > 300 ) create_particle(P_IMPACT, result.cx, miner.y, randfloat(0.0f, -1.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1);
+	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.a && abs(miner.vy) > 300 ) create_particle(P_IMPACT, result.cx+1, miner.y, randfloat(0.0f, -1.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1);
 
 	// right top player to left block / right bottom player to left block
 	Line prt = {miner.x+miner.width/2, miner.y+miner.height/2-1, miner.x, miner.y+miner.height/2-1};
@@ -105,7 +105,7 @@ void check_player_block(int x, int y) {
 	result = islinesintersecting(prb, blkl);
 	if (result.isIntersecting) resolve_player_collision(COLLISION_RIGHT, result, x, y);
 
-	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.d && abs(miner.vy) > 300 ) create_particle(P_IMPACT, result.cx, miner.y, randfloat(0.0f, 1.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1);
+	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.d && abs(miner.vy) > 300 ) create_particle(P_IMPACT, result.cx-1, miner.y, randfloat(0.0f, 1.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1);
 
 }	
 
@@ -196,6 +196,8 @@ void update_player(bool active) {
             // }
             // miner.breaktimer = 0.5;
         }
+
+
     }
 }
 

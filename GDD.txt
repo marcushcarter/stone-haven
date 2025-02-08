@@ -1,0 +1,38 @@
+Menu/
+├─ New World/
+├─ Load World/
+│	├─ play
+│	├─ delete world
+│	└─ copy to archived world saves
+├─ Settings/
+│	├─ Fullscreen
+│	├─ Max Framerate
+│	├─ FOV
+│	├─ Toggle Particles
+│	├─ Brightness
+│	├─ Volume
+│	│   ├─ Master Volume
+│	│   ├─ Music Volume
+│	│   ├─ Sound Effects Volume
+│	│   └─ Environment Volume
+│	├─ Controls Device
+│	│   ├─ Controller
+│	│   └─ Keyboard 
+│	├─ keep inventory
+│	├─ tile drops
+│	├─ Stream Mode
+│	├─ Toggle HUD
+│	├─ Show Coordinates
+│	└─ Toggle Auto Save
+├─ Statistics/
+│	├─ blocks broken
+│	├─ time played
+│	├─ blocks placed
+│	├─ distance travelled
+│	├─ items collected
+│	└─ achievements/
+│		├─ break 1000000 blocks
+│		├─ place 1000000 blocks
+│		├─ play for a whole day
+│		└─ travel 1000 miles
+└─ Quit
