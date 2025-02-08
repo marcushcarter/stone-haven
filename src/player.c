@@ -67,11 +67,11 @@ void check_player_block(int x, int y) {
 	Line pbl = {miner.x+miner.width/2-1, miner.y+miner.height/2, miner.x+miner.width/2-1, miner.y};
 	Line blkt = {x*64 - 32, y*64 - 32, x*64 +32, y*64 -32};
 	result = islinesintersecting(pbl, blkt);
-	if (result.isIntersecting && miner.vy > 1000.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_IMPACT, miner.x, miner.y, randfloat(-2.0f, 2.0f)*100, randfloat(-1.0f, -3.0f)*100, 1, 1); } }
+	if (result.isIntersecting && miner.vy > 1000.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-2.0f, 2.0f)*100, randfloat(-1.0f, -3.0f)*100, 1, COLOR_WHITE); } }
 	if (result.isIntersecting) resolve_player_collision(COLLISION_BOTTOM, result, x, y);
 	Line pbr = {miner.x-miner.width/2+1, miner.y+miner.height/2, miner.x-miner.width/2+1, miner.y};
 	result = islinesintersecting(pbr, blkt);
-	if (result.isIntersecting && miner.vy > 1000.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_IMPACT, miner.x, miner.y, randfloat(-2.0f, 2.0f)*100, randfloat(-1.0f, -3.0f)*100, 1, 1); } }
+	if (result.isIntersecting && miner.vy > 1000.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-2.0f, 2.0f)*100, randfloat(-1.0f, -3.0f)*100, 1, COLOR_WHITE); } }
 	if (result.isIntersecting) resolve_player_collision(COLLISION_BOTTOM, result, x, y);
 
 	// top left player to bottom block / top right player to bottom block
@@ -94,7 +94,7 @@ void check_player_block(int x, int y) {
 	result = islinesintersecting(plb, blkr);
 	if (result.isIntersecting) resolve_player_collision(COLLISION_LEFT, result, x, y);
 
-	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.a && abs(miner.vy) > 300 ) create_particle(P_IMPACT, result.cx+1, miner.y, randfloat(0.0f, -1.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1);
+	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.a && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx+1, miner.y, randfloat(0.0f, -1.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, COLOR_WHITE);
 
 	// right top player to left block / right bottom player to left block
 	Line prt = {miner.x+miner.width/2, miner.y+miner.height/2-1, miner.x, miner.y+miner.height/2-1};
@@ -105,7 +105,7 @@ void check_player_block(int x, int y) {
 	result = islinesintersecting(prb, blkl);
 	if (result.isIntersecting) resolve_player_collision(COLLISION_RIGHT, result, x, y);
 
-	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.d && abs(miner.vy) > 300 ) create_particle(P_IMPACT, result.cx-1, miner.y, randfloat(0.0f, 1.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1);
+	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.d && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx-1, miner.y, randfloat(0.0f, 1.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, COLOR_WHITE);
 
 }	
 
@@ -203,6 +203,6 @@ void update_player(bool active) {
 
 void render_player(bool active) {
     if (active) {
-        draw_rect(renderer, floatarr(4, miner.x - camera.x - miner.width/2, miner.y - camera.y - miner.height/2, miner.width, miner.height), 1, 255, true);
+        draw_rect(renderer, floatarr(4, miner.x - camera.x - miner.width/2, miner.y - camera.y - miner.height/2, miner.width, miner.height), COLOR_WHITE, 255, true);
     }
 }

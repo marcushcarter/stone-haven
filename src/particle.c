@@ -1,9 +1,9 @@
 
 typedef enum {
-    P_IMPACT,
-    P_HURT,
-    P_LAVA,
-    P_FIRE,
+    P_GRAVITY,
+    P_EASE,
+    P_FLOAT,
+    P_FALL,
 } ParticleType;
 
 typedef struct {
@@ -11,7 +11,6 @@ typedef struct {
     float life;
     float x, y, vx, vy;
     int color;
-
 } Particle;
 
 Particle* particles[MAX_PARTICLES] = {NULL};
@@ -59,7 +58,7 @@ void update_particles(bool active) {
             if (particles[i] == NULL) continue;
 
             particles[i]->life -= 1*dt;
-            int iterations = 10;
+            int iterations = 15;
             bool particle_deleted = false;
             for (int j = 0; j < iterations; j++) {
 
@@ -69,15 +68,21 @@ void update_particles(bool active) {
                     break;
                 }
                 
-                if (particles[i]->type == P_IMPACT ) {
+                if (particles[i]->type == P_GRAVITY) {
                     // particles[i]->vx +=
                     particles[i]->vy += set.gravity * dt/iterations;
                     particles[i]->x += particles[i]->vx * dt/iterations;
                     particles[i]->y += particles[i]->vy * dt/iterations;
                 }
 
-            }
+                if (particles[i]->type == P_EASE) {
+                    particles[i]->vx *= 0.99;
+                    particles[i]->vy *= 0.99;
+                    particles[i]->x += particles[i]->vx * dt/iterations;
+                    particles[i]->y += particles[i]->vy * dt/iterations;
+                }
 
+            }
             if (particle_deleted) continue;
         }
     }

@@ -160,13 +160,13 @@ void render_world(bool active) {
                 // text_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 64.0f, 64.0f), floatarr(4, (float)(world[x][y]->type)*16.0f, 0.0f, 16.0f, 16.0f), block_textures, true); // render block 16px
                 
                 if (world[x][y]->solid) { // block outlines
-                    if (!world[x][y-1]->solid) draw_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 64.0f, 3.0f), 1, 255, true);
-                    if (!world[x][y+1]->solid) draw_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y + 32, 64.0f, -3.0f), 1, 255, true);
-                    if (!world[x-1][y]->solid) draw_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 3.0f, 64.0f), 1, 255, true);
-                    if (!world[x+1][y]->solid) draw_rect(renderer, floatarr(4, x*64 - camera.x + 32, y*64 - camera.y - 32, -3.0f, 64.0f), 1, 255, true);
+                    if (!world[x][y-1]->solid) draw_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 64.0f, 3.0f), COLOR_WHITE, 255, true);
+                    if (!world[x][y+1]->solid) draw_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y + 32, 64.0f, -3.0f), COLOR_WHITE, 255, true);
+                    if (!world[x-1][y]->solid) draw_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 3.0f, 64.0f), COLOR_WHITE, 255, true);
+                    if (!world[x+1][y]->solid) draw_rect(renderer, floatarr(4, x*64 - camera.x + 32, y*64 - camera.y - 32, -3.0f, 64.0f), COLOR_WHITE, 255, true);
                 }
                 
-                draw_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 64.0f, 64.0f), 0, world[x][y]->brightness, true); // block brightness overlay
+                draw_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 64.0f, 64.0f), COLOR_BLACK, world[x][y]->brightness, true); // block brightness overlay
             }
 	    }
     }
