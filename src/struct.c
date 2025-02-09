@@ -33,9 +33,29 @@ typedef struct {
 WindowDetails win = {1024, 768, 512, 384};
 
 typedef struct {
-  int target_fps;
+  int max_fps;
   int gravity;
 } GameSettings;
+
+// │	├─ Fullscreen
+// │	├─ Max Framerate
+// │	├─ FOV
+// │	├─ Toggle Particles
+// │	├─ Brightness
+// │	├─ Volume
+// │	│   ├─ Master Volume
+// │	│   ├─ Music Volume
+// │	│   ├─ Sound Effects Volume
+// │	│   └─ Environment Volume
+// │	├─ Controls Device
+// │	│   ├─ Controller
+// │	│   └─ Keyboard 
+// │	├─ keep inventory
+// │	├─ tile drops
+// │	├─ Stream Mode
+// │	├─ Toggle HUD
+// │	├─ Show Coordinates
+// │	└─ Toggle Auto Save
 
 GameSettings set = {120.0f, 1000.0f};
 

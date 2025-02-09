@@ -20,10 +20,10 @@ SDL_Texture* block_textures64;
 bool load_textures(SDL_Renderer* renderer) {
 
 	block_textures = IMG_LoadTexture(renderer, "./assets/blocktextures.png");
-	// block_textures64 = IMG_LoadTexture(renderer, "./assets/blocktextures64.png");
-	block_textures64 = IMG_LoadTexture(renderer, "./assets/blocktextures64proto.png");
+	block_textures64 = IMG_LoadTexture(renderer, "./assets/blocktextures64.png");
   
 	SDL_SetTextureScaleMode(block_textures, SDL_SCALEMODE_NEAREST);
+	SDL_SetTextureScaleMode(block_textures64, SDL_SCALEMODE_NEAREST);
 
 	// item_texture[I_AIR] = IMG_LoadTexture(renderer, "assets/test.jpg");
 	// item_texture[I_WORLDBORDER] = IMG_LoadTexture(renderer, "./assets/blocktextures/dirt.jpg");

@@ -67,11 +67,11 @@ void check_player_block(int x, int y) {
 	Line pbl = {miner.x+miner.width/2-1, miner.y+miner.height/2, miner.x+miner.width/2-1, miner.y};
 	Line blkt = {x*64 - 32, y*64 - 32, x*64 +32, y*64 -32};
 	result = islinesintersecting(pbl, blkt);
-	if (result.isIntersecting && miner.vy > 1000.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-2.0f, 2.0f)*100, randfloat(-1.0f, -3.0f)*100, 1, COLOR_WHITE); } }
+	if (result.isIntersecting && miner.vy > 1000.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-200, 200), randfloat(-100, -300), 1, COLOR_WHITE); } }
 	if (result.isIntersecting) resolve_player_collision(COLLISION_BOTTOM, result, x, y);
 	Line pbr = {miner.x-miner.width/2+1, miner.y+miner.height/2, miner.x-miner.width/2+1, miner.y};
 	result = islinesintersecting(pbr, blkt);
-	if (result.isIntersecting && miner.vy > 1000.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-2.0f, 2.0f)*100, randfloat(-1.0f, -3.0f)*100, 1, COLOR_WHITE); } }
+	if (result.isIntersecting && miner.vy > 1000.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-200, 200), randfloat(-100, -300), 1, COLOR_WHITE); } }
 	if (result.isIntersecting) resolve_player_collision(COLLISION_BOTTOM, result, x, y);
 
 	// top left player to bottom block / top right player to bottom block
@@ -94,7 +94,7 @@ void check_player_block(int x, int y) {
 	result = islinesintersecting(plb, blkr);
 	if (result.isIntersecting) resolve_player_collision(COLLISION_LEFT, result, x, y);
 
-	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.a && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx+1, miner.y, randfloat(0.0f, -1.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, COLOR_WHITE);
+	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.a && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx+1, miner.y, randfloat(-100, 0), randfloat(-100, 100), 1, COLOR_WHITE);
 
 	// right top player to left block / right bottom player to left block
 	Line prt = {miner.x+miner.width/2, miner.y+miner.height/2-1, miner.x, miner.y+miner.height/2-1};
@@ -105,7 +105,7 @@ void check_player_block(int x, int y) {
 	result = islinesintersecting(prb, blkl);
 	if (result.isIntersecting) resolve_player_collision(COLLISION_RIGHT, result, x, y);
 
-	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.d && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx-1, miner.y, randfloat(0.0f, 1.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, COLOR_WHITE);
+	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.d && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx-1, miner.y, randfloat(-100, 0), randfloat(-100, 100), 1, COLOR_WHITE);
 
 }	
 
@@ -132,6 +132,11 @@ void check_player_collision() {
 	check_player_block((int)(miner.x/64)+1, (int)(miner.y/64)-1);
 	check_player_block((int)(miner.x/64)+1, (int)(miner.y/64)+1);
 	check_player_block((int)(miner.x/64)-1, (int)(miner.y/64)+1);
+}
+
+void break_block(int worldx, int worldy) {
+    world[worldx][worldy] = block[B_AIR];
+    for (int i = 0; i < randint(2, 5); i++) create_particle(P_GRAVITY, worldx*64+randfloat(-32, 32), worldy*64+randfloat(-32, 32), randfloat(-100, 100), randfloat(-100, 100), 1.0f, COLOR_WHITE);
 }
 
 void update_player(bool active) {
@@ -189,7 +194,7 @@ void update_player(bool active) {
         if (mouse.l && world[mouse.worldx][mouse.worldy] != NULL && miner.breaktimer <= 0 && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 && world[mouse.worldx][mouse.worldy]->breakable
             && (!(world[mouse.worldx][mouse.worldy-1]->solid && world[mouse.worldx][mouse.worldy+1]->solid && world[mouse.worldx-1][mouse.worldy]->solid && world[mouse.worldx+1][mouse.worldy]->solid ) || (mouse.worldx == round(miner.x/64) && mouse.worldy == round(miner.y/64)))
             ) {
-            world[mouse.worldx][mouse.worldy] = block[B_AIR];
+			break_block(mouse.worldx, mouse.worldy);
             // world[mouse.worldx][mouse.worldy]->health -= 1;
             // if (world[mouse.worldx][mouse.worldy]->health == 0) {
             // 	world[mouse.worldx][mouse.worldy] = block[B_AIR];

@@ -28,7 +28,7 @@ float get_delta_time() {
 
 void control_fps() {
 	clock_t frame_start_time = clock();
-	while ((float)(clock() - frame_start_time) / CLOCKS_PER_SEC < (1.0 / set.target_fps)) {}    
+	while ((float)(clock() - frame_start_time) / CLOCKS_PER_SEC < (1.0 / set.max_fps)) {}    
 }
 
 float distance2d(float x1, float y1, float x2, float y2) {
