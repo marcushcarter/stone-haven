@@ -8,9 +8,9 @@ bool save_world(const char *filename) {
 
     // Save player data
     fprintf(file, "%s\n", miner.name);  // Save player's name
-    fprintf(file, "%f %f %f %f %f %f %f %f %f %f %f %f\n",
+    fprintf(file, "%f %f %f %f %f %f %f %f %f %f %f\n",
             miner.x, miner.y, miner.vx, miner.vy, miner.speed,
-            miner.health, miner.width, miner.height, miner.illumination,
+            miner.health, miner.width, miner.height,
             miner.falling, miner.jumptimer, miner.breaktimer);
 
     // Save world data (blocks)
@@ -30,7 +30,6 @@ bool save_world(const char *filename) {
     return true;
 }
 
-
 bool load_world(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
@@ -40,9 +39,9 @@ bool load_world(const char *filename) {
 
     // Load player data
     fscanf(file, "%s", miner.name);  // Read player's name
-    fscanf(file, "%f %f %f %f %f %f %f %f %f %f %f %f\n",
+    fscanf(file, "%f %f %f %f %f %f %f %f %f %f %f\n",
             &miner.x, &miner.y, &miner.vx, &miner.vy, &miner.speed,
-            &miner.health, &miner.width, &miner.height, &miner.illumination,
+            &miner.health, &miner.width, &miner.height,
             &miner.falling, &miner.jumptimer, &miner.breaktimer);
 
     // Load world data (blocks)

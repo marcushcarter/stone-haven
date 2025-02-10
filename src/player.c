@@ -1,4 +1,52 @@
 
+
+typedef enum {
+    COLLISION_BOTTOM,
+    COLLISION_TOP,
+    COLLISION_LEFT,
+    COLLISION_RIGHT,
+} CollisionType;
+
+typedef struct {
+    float x1, y1, x2, y2;
+} Line; Line l1, l2;
+
+typedef struct {
+    bool isIntersecting; 	// yes or no, are the lines intersecting?
+    float uA, uB;  			// Intersection parameters along each line
+    float cx, cy;  			// Intersection coordinates
+} IntersectionResult;
+
+IntersectionResult islinesintersecting(Line l1, Line l2) { // source: https://www.jeffreythompson.org/collision-detection/line-line.php
+    IntersectionResult result;
+    result.isIntersecting = false;
+
+    // Calculate the denominator (determinant)
+    float denom = ((l2.y2 - l2.y1) * (l1.x2 - l1.x1)) - ((l2.x2 - l2.x1) * (l1.y2 - l1.y1));
+
+    // If the denominator is close to zero, lines are parallel or coincident
+    if (fabs(denom) < 1e-6) return result;
+
+    // Calculate uA and uB
+    float uA = (((l2.x2 - l2.x1) * (l1.y1 - l2.y1)) - ((l2.y2 - l2.y1) * (l1.x1 - l2.x1))) / denom;
+    float uB = (((l1.x2 - l1.x1) * (l1.y1 - l2.y1)) - ((l1.y2 - l1.y1) * (l1.x1 - l2.x1))) / denom;
+
+    // Calculate intersection coordinates
+    float cx = l1.x1 + (uA * (l1.x2 - l1.x1));
+    float cy = l1.y1 + (uA * (l1.y2 - l1.y1));
+
+    // Check if the intersection is within both line segments
+    if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+        result.isIntersecting = true;
+        result.uA = uA;
+        result.uB = uB;
+        result.cx = cx;
+        result.cy = cy;
+    }
+
+    return result;
+}
+
 void resolve_player_collision(CollisionType type, IntersectionResult result, float x, float y) {
 
 	/*	Explanation time:
@@ -137,72 +185,69 @@ void check_player_collision() {
 void break_block(int worldx, int worldy) {
     world[worldx][worldy] = block[B_AIR];
     for (int i = 0; i < randint(2, 5); i++) create_particle(P_GRAVITY, worldx*64+randfloat(-32, 32), worldy*64+randfloat(-32, 32), randfloat(-100, 100), randfloat(-100, 100), 1.0f, COLOR_WHITE);
+	// create_item(x, y, xvel, yvel, type, )
+	if (!set.creative) miner.breaktimer = 0.5;
 }
 
 void update_player(bool active) {
     if (active) {
+
+		if (set.controller == CD_KEYBOARD) {
         
-        // fullscreen mode / escape fullscreen
-        if (mouse.l) { SDL_HideCursor(); }
-        if (key.tab) { SDL_SetWindowFullscreen(window, 1); }
-        if (key.escape) { SDL_SetWindowFullscreen(window, 0); SDL_ShowCursor(); }
+			// fullscreen mode / escape fullscreen
+			if (mouse.l) { SDL_HideCursor(); }
+			if (key.tab) { SDL_SetWindowFullscreen(window, 1); }
+			if (key.escape) { SDL_SetWindowFullscreen(window, 0); SDL_ShowCursor(); }
 
-        miner.falling+=1*dt;
-        miner.jumptimer-=1*dt;
-        miner.breaktimer-=1*dt;
-        // miner.vx = 0;adwa
-        // if (set.creative) { miner.vy=0; }
-        if (key.a) miner.vx -= 2000 * dt;
-        if (key.d) miner.vx += 2000 * dt;
-		if ( miner.vx > miner.speed ) miner.vx = miner.speed;
-		if ( miner.vx < -1*miner.speed ) miner.vx = -1*miner.speed;
-        // if (key.s) { miner.vy = miner.speed; } 
-        if (key.w && miner.falling <= 0.1 && miner.jumptimer <= 0) miner.vy = miner.speed*-1.25;
-		if ((key.a && key.d) || (!key.a && !key.d)) miner.vx = miner.vx*0.9;
+			miner.falling+=1*dt;
+			miner.jumptimer-=1*dt;
+			miner.breaktimer-=1*dt;
+			// miner.vx = 0;adwa
+			// if (set.creative) { miner.vy=0; }
+			if (key.a) miner.vx -= 2000 * dt;
+			if (key.d) miner.vx += 2000 * dt;
+			if ( miner.vx > miner.speed ) miner.vx = miner.speed;
+			if ( miner.vx < -1*miner.speed ) miner.vx = -1*miner.speed;
+			// if (key.s) { miner.vy = miner.speed; } 
+			if (key.w && miner.falling <= 0.1 && miner.jumptimer <= 0) miner.vy = miner.speed*-1.25;
+			if ((key.a && key.d) || (!key.a && !key.d)) miner.vx = miner.vx*0.9;
 
-        if (key.w && miner.vy < 0) { // gravity
-			miner.vy += set.gravity*dt; 
-		} else { 
-			miner.vy += set.gravity*2*dt; 
+			if (key.w && miner.vy < 0) { // gravity
+				miner.vy += set.gravity*dt; 
+			} else { 
+				miner.vy += set.gravity*2*dt; 
+			}
+
+			miner.vx*=0.995;
+			int iterations = 15;
+			for (int i = 0; i < iterations; i++) {
+				miner.x += miner.vx*dt/iterations; 
+				miner.y += miner.vy*dt/iterations;
+				check_player_collision();
+			}
+
+			// respawn if fell out of world into the void
+			if ( miner.y/64 > WORLD_HEIGHT + 15) {
+				miner.x = WORLD_WIDTH*32;
+				miner.y = WORLD_HEIGHT*32;
+				miner.vx = 0;
+				miner.vy = 0;
+			}
+
+			if (mouse.mp || key.space) blockheld+=1;
+
+			if (mouse.r && world[mouse.worldx][mouse.worldy] != NULL && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 && world[mouse.worldx][mouse.worldy] == block[B_AIR] && !(round(miner.x/64) == mouse.worldx && round(miner.y/64) == mouse.worldy) 
+			&& (world[mouse.worldx][mouse.worldy-1] != block[B_AIR] || world[mouse.worldx][mouse.worldy+1] != block[B_AIR] || world[mouse.worldx-1][mouse.worldy] != block[B_AIR] || world[mouse.worldx+1][mouse.worldy] != block[B_AIR] )
+			&& !(world[mouse.worldx][mouse.worldy-1]->solid && world[mouse.worldx][mouse.worldy+1]->solid && world[mouse.worldx-1][mouse.worldy]->solid && world[mouse.worldx+1][mouse.worldy]->solid ) ) {
+				world[mouse.worldx][mouse.worldy] = block[2+ blockheld % (NUM_BLOCKS-2)];
+			}
+
+			if (mouse.l && world[mouse.worldx][mouse.worldy] != NULL && miner.breaktimer <= 0 && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 && world[mouse.worldx][mouse.worldy]->breakable 
+			&& (!(world[mouse.worldx][mouse.worldy-1]->solid && world[mouse.worldx][mouse.worldy+1]->solid && world[mouse.worldx-1][mouse.worldy]->solid && world[mouse.worldx+1][mouse.worldy]->solid ) || (mouse.worldx == round(miner.x/64) && mouse.worldy == round(miner.y/64))) ) {
+				break_block(mouse.worldx, mouse.worldy);
+			}
+
 		}
-
-		miner.vx*=0.995;
-        int iterations = 15;
-        for (int i = 0; i < iterations; i++) {
-            miner.x += miner.vx*dt/iterations; 
-            miner.y += miner.vy*dt/iterations;
-            check_player_collision();
-        }
-
-        // respawn if fell out of world into the void
-        if ( miner.y/64 > WORLD_HEIGHT + 15) {
-            miner.x = WORLD_WIDTH*32;
-            miner.y = WORLD_HEIGHT*32;
-            miner.vx = 0;
-            miner.vy = 0;
-        }
-
-        if (mouse.mp || key.space) blockheld+=1;
-
-        if (mouse.r && world[mouse.worldx][mouse.worldy] != NULL && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 && world[mouse.worldx][mouse.worldy] == block[B_AIR] && !(round(miner.x/64) == mouse.worldx && round(miner.y/64) == mouse.worldy) 
-        && (world[mouse.worldx][mouse.worldy-1] != block[B_AIR] || world[mouse.worldx][mouse.worldy+1] != block[B_AIR] || world[mouse.worldx-1][mouse.worldy] != block[B_AIR] || world[mouse.worldx+1][mouse.worldy] != block[B_AIR] )
-        && !(world[mouse.worldx][mouse.worldy-1]->solid && world[mouse.worldx][mouse.worldy+1]->solid && world[mouse.worldx-1][mouse.worldy]->solid && world[mouse.worldx+1][mouse.worldy]->solid ) ) {
-            // world[mouse.worldx][mouse.worldy] = block[B_STONE];
-            world[mouse.worldx][mouse.worldy] = block[2+ blockheld % (NUM_BLOCKS-2)];
-        }
-
-        if (mouse.l && world[mouse.worldx][mouse.worldy] != NULL && miner.breaktimer <= 0 && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 && world[mouse.worldx][mouse.worldy]->breakable
-            && (!(world[mouse.worldx][mouse.worldy-1]->solid && world[mouse.worldx][mouse.worldy+1]->solid && world[mouse.worldx-1][mouse.worldy]->solid && world[mouse.worldx+1][mouse.worldy]->solid ) || (mouse.worldx == round(miner.x/64) && mouse.worldy == round(miner.y/64)))
-            ) {
-			break_block(mouse.worldx, mouse.worldy);
-            // world[mouse.worldx][mouse.worldy]->health -= 1;
-            // if (world[mouse.worldx][mouse.worldy]->health == 0) {
-            // 	world[mouse.worldx][mouse.worldy] = block[B_AIR];
-            // }
-            // miner.breaktimer = 0.5;
-        }
-
-
     }
 }
 

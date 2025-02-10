@@ -32,47 +32,44 @@ typedef struct {
 
 WindowDetails win = {1024, 768, 512, 384};
 
+typedef enum {
+	CD_KEYBOARD,
+	CD_CONTROLLER,
+} ControlDevice;
+
 typedef struct {
-  int max_fps;
-  int gravity;
+  	int max_fps; //120.0f
+
+  	bool fullscreen; //false
+  	bool particles; //true
+  	float brightness; //5.0f
+  	ControlDevice controller; // keyboard or controller
+
+  	bool creative;
+  	bool hide_hud; //false
+  	bool auto_save; // true
+
+  	int master_vol; //100
+  	int music_vol; //100
+  	int sfx_vol; //100
+  	int world_vol; //100
+
+	int gravity; //1000.0f
 } GameSettings;
 
-// │	├─ Fullscreen
-// │	├─ Max Framerate
-// │	├─ FOV
-// │	├─ Toggle Particles
-// │	├─ Brightness
-// │	├─ Volume
-// │	│   ├─ Master Volume
-// │	│   ├─ Music Volume
-// │	│   ├─ Sound Effects Volume
-// │	│   └─ Environment Volume
-// │	├─ Controls Device
-// │	│   ├─ Controller
-// │	│   └─ Keyboard 
-// │	├─ keep inventory
-// │	├─ tile drops
-// │	├─ Stream Mode
-// │	├─ Toggle HUD
-// │	├─ Show Coordinates
-// │	└─ Toggle Auto Save
-
-GameSettings set = {120.0f, 1000.0f};
+GameSettings set = {
+	120,
+	false, true, 5, CD_KEYBOARD,
+	true, false, true,
+	100, 100, 100, 100,
+	1000,
+};
 
 typedef struct {
 	float x, y;
 	float targetx, targety;
 	bool freecam;
 } Camera; Camera camera;
-
-
-// typedef struct { 
-//   float lightdistance;
-//   int num_entities;
-// } Values; 
-
-// Values v = {5.0f, 0};
-
 
 typedef struct {
     char name[100];
@@ -83,7 +80,6 @@ typedef struct {
     float health;
 
     float width, height;
-    float illumination;
 
     float falling;
     float jumptimer;
@@ -95,7 +91,7 @@ Player miner = {
                 "Player",
                 0.0f, 0.0f, 0.0f, 0.0f, 400.0f, 100.0f,
 				// 0.0f, 0.0f, 0.0f, 0.0f, 500.0f, 100.0f,
-                50.0f, 50.0f, 5.0f,
+                50.0f, 50.0f,
                 0.0f, 0.0f, 0.0f
                 
 };

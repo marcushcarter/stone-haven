@@ -115,9 +115,25 @@ void editor_controls(bool active) {
 	}
 }
 
+// static Uint32 last_save_time = 0;
+
 void update() {
 
+	// if (set.fullscreen) {
+	// 	// SDL_SetWindowFullscreen(window, 1);
+	// } else {
+	// 	SDL_SetWindowFullscreen(window, 0);
+	// }
+
 	if (dt > 0.3) return; // if time in between frames is too much no motion will happen;
+
+	// auto save
+	static Uint32 last_save_time;
+	Uint32 current_time = SDL_GetTicks() / 1000;  // Current time in seconds
+	if (current_time - last_save_time >= 60*10 && set.auto_save) {
+		save_world("gamesaves/world.save");
+		last_save_time = current_time;  // Update the last save time
+	}
 
 	update_keystates(true);
   	editor_controls(true);
@@ -148,7 +164,7 @@ void render() {
 // ----------------------------------------------------------------------------------------------------
 
 void AppQuit() {
-	// save_world("gamesaves/world.save");
+	save_world("gamesaves/world.save");
 	destroy_particles();
     SDL_DestroyRenderer(renderer);
 	renderer = NULL;

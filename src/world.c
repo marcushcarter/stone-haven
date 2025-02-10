@@ -147,8 +147,8 @@ void render_world(bool active) {
                 float brightness;
                 // shadow / brightness
                 float dx = (x * 64) - miner.x; float dy = (y * 64) - miner.y;
-                brightness = 220.0f - ((sqrt(dx * dx + dy * dy) / 64) / miner.illumination) * 220.0f;
-                if ((sqrt(dx * dx + dy * dy) / 64) > miner.illumination) brightness = 0;
+                brightness = 220.0f - ((sqrt(dx * dx + dy * dy) / 64) / set.brightness) * 220.0f;
+                if ((sqrt(dx * dx + dy * dy) / 64) > set.brightness) brightness = 0;
                 if (brightness < 0) { brightness = 0; } else if (brightness > 220.0f) { brightness = 220.0f; }
                 // blocks behind blocks
                 if (world[x][y+1]->solid == false || world[x-1][y]->solid == false || world[x][y-1]->solid == false || world[x+1][y]->solid == false ) { world[x][y]->brightness = 220.0f-abs(brightness); } else { world[x][y]->brightness = 255; }

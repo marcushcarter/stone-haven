@@ -51,7 +51,7 @@ void create_particle(ParticleType type, float x, float y, float vx, float vy, fl
 
 void update_particles(bool active) {
     // create_particle(0, miner.x, miner.y, 0.0f, 0.0f, 1.0f, 1);
-    if (active) {
+    if (active && set.particles) {
 
         for (int i = 0; i < MAX_PARTICLES; i++) {
             // if ((particles[i]->y-1)*64 - camera.y > win.sh || (particles[i]->y+1)*64 - camera.y < 0 || (particles[i]->x+1)*64 - camera.x < 0 || (particles[i]->x-1)*64 - camera.x > win.sw ) continue;
@@ -89,7 +89,7 @@ void update_particles(bool active) {
 }
 
 void render_particles(bool active) {
-    if (active) {
+    if (active && set.particles) {
         for (int i = 0; i < MAX_PARTICLES; i++) {
             if (particles[i] == NULL) continue;
             draw_rect(renderer, floatarr(4, particles[i]->x - camera.x, particles[i]->y - camera.y, 10.0f, 10.0f), particles[i]->color, 255, true);
