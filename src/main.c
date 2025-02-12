@@ -213,6 +213,7 @@ void update_keystates(bool active) {
 #include "player.c"
 #include "loadsave.c"
 #include "ui.c"
+#include "worldgen.c"
 
 // ----------------------------------------------------------------------------------------------------
 

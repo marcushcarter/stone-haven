@@ -10,7 +10,6 @@ void resolve_player_collision(CollisionType type, IntersectionResult result, flo
 	if (result.isIntersecting) {
 
 		if (type == COLLISION_BOTTOM) {
-			// if (miner.vy > 1) { if (round(random_float()*100) == 1) { create_particle(1, P_IMPACT, miner.x, result.cy, 200-random_float()*400, -300, 1, 1); } }
 			miner.y = result.cy - miner.height/2;
 			miner.vy = 0;
 			miner.falling=0;
@@ -26,9 +25,7 @@ void resolve_player_collision(CollisionType type, IntersectionResult result, flo
 			miner.x = result.cx - miner.width/2;
 			miner.vx = 0;
 			if (key.d && miner.vy > 0) miner.vy*= 0.995;
-			if (key.w && key.a) { 
-				// create_particle(1, P_IMPACT, result.cx, miner.y, randfloat(0.0f, 2.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1); 
-				// create_particle(1, P_IMPACT, result.cx, miner.y, randfloat(0.0f, 2.0f)*-100, randfloat(-1.0f, 1.0f)*100, 1, 1); 
+			if (key.w && key.a) {
 				miner.vx = miner.speed*-1; 
 				miner.vy = miner.speed*-1.25;
 			}
@@ -38,8 +35,7 @@ void resolve_player_collision(CollisionType type, IntersectionResult result, flo
 			miner.x = result.cx + miner.width/2;
 			miner.vx = 0;
 			if (key.a && miner.vy > 0) miner.vy*= 0.995;
-			if (key.w && key.d) { 
-				// create_particle(1, P_IMPACT, result.cx, miner.y, random_float()*400, 200-random_float()*400, 1, 1); 
+			if (key.w && key.d) {
 				miner.vx = miner.speed; 
 				miner.vy = miner.speed*-1.25;
 			}
@@ -171,6 +167,9 @@ void update_player(bool active) {
 			}
 
 			miner.vx*=0.995;
+			if (miner.vy > 2500) 
+			// miner.vy = 2500;
+			miner.vy *= 0.99;
 			int iterations = 15;
 			for (int i = 0; i < iterations; i++) {
 				miner.x += miner.vx*dt/iterations; 
@@ -205,6 +204,15 @@ void update_player(bool active) {
 
 void render_player(bool active) {
     if (active) {
-        draw_rect(renderer, floatarr(4, miner.x - camera.x - miner.width/2, miner.y - camera.y - miner.height/2, miner.width, miner.height), COLOR_WHITE, 255, true);
+		
+		float rw = miner.width;
+		float rh = miner.height;
+		if (miner.vy > 1000) {
+			rw = miner.width-abs((miner.vy-1000)/100);
+			rh = miner.height+abs((miner.vy-1000)/100);
+		}
+
+        // draw_rect(renderer, floatarr(4, miner.x - camera.x - miner.width/2, miner.y - camera.y - miner.height/2, miner.width, miner.height), COLOR_WHITE, 255, true);
+		draw_rect(renderer, floatarr(4, miner.x - camera.x - rw/2, miner.y - camera.y - rh/2, rw, rh), COLOR_WHITE, 255, true);
     }
 }

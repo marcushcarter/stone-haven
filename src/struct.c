@@ -38,6 +38,31 @@ typedef enum {
 } ControlDevice;
 
 typedef struct {
+    char name[100];
+
+    float x, y;
+    float vx, vy;
+    float speed;
+    float health;
+
+    float width, height;
+
+    float falling;
+    float jumptimer;
+    float breaktimer;
+} Player;
+
+Player miner = {    
+                
+    "Player",
+    0.0f, 0.0f, 0.0f, 0.0f, 400.0f, 100.0f,
+    // 0.0f, 0.0f, 0.0f, 0.0f, 500.0f, 100.0f,
+    50.0f, 50.0f,
+    0.0f, 0.0f, 0.0f
+    
+};
+
+typedef struct {
   	int max_fps; //120.0f
 
   	bool fullscreen; //false
@@ -72,31 +97,6 @@ typedef struct {
 	bool freecam;
 } Camera; Camera camera;
 
-typedef struct {
-    char name[100];
-
-    float x, y;
-    float vx, vy;
-    float speed;
-    float health;
-
-    float width, height;
-
-    float falling;
-    float jumptimer;
-    float breaktimer;
-} Player;
-
-Player miner = {    
-                
-                "Player",
-                0.0f, 0.0f, 0.0f, 0.0f, 400.0f, 100.0f,
-				// 0.0f, 0.0f, 0.0f, 0.0f, 500.0f, 100.0f,
-                50.0f, 50.0f,
-                0.0f, 0.0f, 0.0f
-                
-};
-
 typedef enum {
     COLLISION_BOTTOM,
     COLLISION_TOP,
@@ -117,4 +117,3 @@ typedef struct {
 #define WORLD_WIDTH 1000
 #define WORLD_HEIGHT 1000
 #define MAX_PARTICLES 10000
-#define MAX_ITEMDROPS 1000

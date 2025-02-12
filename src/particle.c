@@ -16,37 +16,30 @@ typedef struct {
 Particle* particles[MAX_PARTICLES] = {NULL};
 
 void create_particle(ParticleType type, float x, float y, float vx, float vy, float life, int color) {
-        // Find an empty spot in the particles array
-        bool particle_created = false;
-        for (int i = 0; i < MAX_PARTICLES; i++) {
+
+    for (int i = 0; i < MAX_PARTICLES; i++) {
+        if (particles[i] == NULL) {
+
+            particles[i] = (Particle*)malloc(sizeof(Particle));
             if (particles[i] == NULL) {
-                particles[i] = (Particle*)malloc(sizeof(Particle));
-                if (particles[i] == NULL) {
-                    printf("Failed to allocate memory for particle\n");
-                    return;
-                }
-
-                // Initialize the particle
-                particles[i]->type = type;
-                particles[i]->x = x;
-                particles[i]->y = y;
-                particles[i]->vx = vx;
-                particles[i]->vy = vy;
-                particles[i]->life = life;
-                particles[i]->color = color;
-
-                particle_created = true;
-                // printf("Creating particle at %f, %f\n", x, y);
-                break; // Break out of the loop once a particle is created
+                printf("Failed to allocate memory for particle\n");
+                return;
             }
-        }
-        
-        // If no empty spot was found, stop trying to create more particles
-        if (!particle_created) {
-            printf("No available space to create more particles\n");
+
+            // Initialize the particle
+            particles[i]->type = type;
+            particles[i]->x = x;
+            particles[i]->y = y;
+            particles[i]->vx = vx;
+            particles[i]->vy = vy;
+            particles[i]->life = life;
+            particles[i]->color = color;
+
             return;
         }
-    
+    }
+    printf("No available space to create more particles\n");
+    return;
 }
 
 void update_particles(bool active) {
@@ -62,7 +55,8 @@ void update_particles(bool active) {
             bool particle_deleted = false;
             for (int j = 0; j < iterations; j++) {
 
-                if (particles[i]->life <= 0 || world[(int)round(particles[i]->x/64)][(int)round(particles[i]->y/64)]->solid) {
+                // if (particles[i]->life <= 0 || world[(int)round(particles[i]->x/64)][(int)round(particles[i]->y/64)]->solid) {
+                if (particles[i]->life <= 0) {
                     free(particles[i]);
                     particles[i] = NULL;
                     break;
@@ -93,7 +87,13 @@ void render_particles(bool active) {
         for (int i = 0; i < MAX_PARTICLES; i++) {
             if (particles[i] == NULL) continue;
             if ((particles[i]->y-64) - camera.y > win.sh || (particles[i]->y+64) - camera.y < 0 || (particles[i]->x+64) - camera.x < 0 || (particles[i]->x-64) - camera.x > win.sw ) continue;
-            draw_rect(renderer, floatarr(4, particles[i]->x - camera.x, particles[i]->y - camera.y, 10.0f, 10.0f), particles[i]->color, 255, true);
+
+            float transparency = 255.0f;
+            if (particles[i]->life <= 0.25) {
+                transparency = max(0.0f, 255 * (particles[i]->life / 0.25));
+            }
+
+            draw_rect(renderer, floatarr(4, particles[i]->x - camera.x - 5, particles[i]->y - camera.y - 5, 10.0f, 10.0f), particles[i]->color, transparency, true);
         }
     }
 }
