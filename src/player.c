@@ -131,10 +131,19 @@ void check_player_collision() {
 }
 
 void break_block(int worldx, int worldy) {
+	add_to_inventory(world[worldx][worldy]);
     world[worldx][worldy] = block[B_AIR];
     for (int i = 0; i < randint(2, 5); i++) create_particle(P_GRAVITY, worldx*64+randfloat(-32, 32), worldy*64+randfloat(-32, 32), randfloat(-100, 100), randfloat(-100, 100), 1.0f, COLOR_WHITE);
 	// create_item(x, y, xvel, yvel, type, )
 	if (!set.creative) miner.breaktimer = 0.5;
+	
+}
+
+void place_block(int worldx, int worldy) {
+	if (inventory[inventory_slot].block != NULL) {
+		world[worldx][worldy] = inventory[inventory_slot].block;
+	}
+	remove_from_inventory(inventory[inventory_slot].block);
 }
 
 void update_player(bool active) {
@@ -147,11 +156,11 @@ void update_player(bool active) {
 			if (key.tab) { SDL_SetWindowFullscreen(window, 1); }
 			if (key.escape) { SDL_SetWindowFullscreen(window, 0); SDL_ShowCursor(); }
 
+			// if (key.space) 
+
 			miner.falling+=1*dt;
 			miner.jumptimer-=1*dt;
 			miner.breaktimer-=1*dt;
-			// miner.vx = 0;adwa
-			// if (set.creative) { miner.vy=0; }
 			if (key.a) miner.vx -= 2000 * dt;
 			if (key.d) miner.vx += 2000 * dt;
 			if ( miner.vx > miner.speed ) miner.vx = miner.speed;
@@ -185,12 +194,18 @@ void update_player(bool active) {
 				miner.vy = 0;
 			}
 
-			if (mouse.mp || key.space) blockheld+=1;
+			// if (mouse.mp || key.space) inventory_slot+=1;
+			if (key.upa) inventory_slot+=1;
+			if (key.downa) inventory_slot-=1;
+			// inventory_slot = inventory_slot % MAX_INVENTORY_SIZE;
+			if (inventory_slot > MAX_INVENTORY_SIZE-1) inventory_slot = MAX_INVENTORY_SIZE-1;
+			if (inventory_slot < 0) inventory_slot = 0;
+
 
 			if (mouse.r && world[mouse.worldx][mouse.worldy] != NULL && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 && world[mouse.worldx][mouse.worldy] == block[B_AIR] && !(round(miner.x/64) == mouse.worldx && round(miner.y/64) == mouse.worldy) 
 			&& (world[mouse.worldx][mouse.worldy-1] != block[B_AIR] || world[mouse.worldx][mouse.worldy+1] != block[B_AIR] || world[mouse.worldx-1][mouse.worldy] != block[B_AIR] || world[mouse.worldx+1][mouse.worldy] != block[B_AIR] )
 			&& !(world[mouse.worldx][mouse.worldy-1]->solid && world[mouse.worldx][mouse.worldy+1]->solid && world[mouse.worldx-1][mouse.worldy]->solid && world[mouse.worldx+1][mouse.worldy]->solid ) ) {
-				world[mouse.worldx][mouse.worldy] = block[2+ blockheld % (NUM_BLOCKS-2)];
+				place_block(mouse.worldx, mouse.worldy);
 			}
 
 			if (mouse.l && world[mouse.worldx][mouse.worldy] != NULL && miner.breaktimer <= 0 && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 && world[mouse.worldx][mouse.worldy]->breakable 

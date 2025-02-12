@@ -210,6 +210,7 @@ void update_keystates(bool active) {
 #include "automata.c"
 #include "world.c"
 #include "particle.c"
+#include "inventory.c"
 #include "player.c"
 #include "loadsave.c"
 #include "ui.c"
@@ -250,6 +251,10 @@ void editor_controls(bool active) {
 }
 
 void update() {
+
+	// if (inventory[0].block != NULL) {
+	// 	printf("%d x%d\n", inventory[0].block->type, inventory[0].quantity);
+	// }
 
 	if (dt > 0.3) return; // if time in between frames is too much no motion will happen;
 

@@ -1,3 +1,14 @@
+
+typedef enum {
+    STRUCT1,
+} StructureType;
+
+bool generate_structure(StructureType type, int worldx, int worldy) {
+    if (type == STRUCT1) {
+        printf("Structure %d generated at x:%d y:%d\n", type, worldx, worldy);
+    }
+}
+
 bool generate_world() {
 
     int **grid = (int **)malloc(WORLD_HEIGHT * sizeof(int *));
@@ -14,7 +25,7 @@ bool generate_world() {
         4.) generates pockets of other stones based on the biomes they are in
         5.) generates the ores in the world (from common to rarest) (also based on biomes)
         6.) generates the cave systems from another autamaton grid
-        7.) generates the fiishing touches in the world (non solid objects)
+        7.) generates the finishing touches in the world (non solid objects)
 
         8.) generates all the structures in the world
 

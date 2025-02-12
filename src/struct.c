@@ -62,6 +62,8 @@ Player miner = {
     
 };
 
+int inventory_slot = 0;
+
 typedef struct {
   	int max_fps; //120.0f
 
@@ -116,4 +118,15 @@ typedef struct {
 
 #define WORLD_WIDTH 1000
 #define WORLD_HEIGHT 1000
+
+// up to 4,000,000 blocks with it being playably laggy (or x)
+// up to 3,000,000 blocks with it being slightly laggy (or x)
+// up to 2,500,000 blocks with it being not laggy at all (or 2000x1250)
+
+// high fps 2,000,000 blocks
+// medium fps 2,500,000 blocks
+// slightly laggy 3,000,000 blocks
+// playably laggy 4,000,000 blocks
+
 #define MAX_PARTICLES 10000
+#define MAX_INVENTORY_SIZE 2

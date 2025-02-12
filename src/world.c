@@ -1,14 +1,4 @@
 
-// up to 4,000,000 blocks with it being playably laggy (or x)
-// up to 3,000,000 blocks with it being slightly laggy (or x)
-// up to 2,500,000 blocks with it being not laggy at all (or 2000x1250)
-
-// high fps 2,000,000 blocks
-// medium fps 2,500,000 blocks
-// slightly laggy 3,000,000 blocks
-// playably laggy 4,000,000 blocks
-//
-
 typedef enum {
     B_AIR,
     B_WORLDBORDER,
@@ -50,8 +40,6 @@ typedef enum {
     B_GLOWMUSHROOM,
     B_CHEST,
     B_FLOWER,
-
-    NUM_BLOCKS,
 } BlockType;
 
 typedef struct Block {
@@ -75,8 +63,6 @@ Block* make_block(BlockType type, bool solid, bool breakable) {
 
     return new_block;
 }
-
-// Item* itemdrops[MAX_ITEM_DROPS] = {NULL};
 
 Block* block[1000];
 SDL_Texture* block_texture[1000];
@@ -145,7 +131,7 @@ void render_world(bool active) {
                 if (world[x][y+1]->solid == false || world[x-1][y]->solid == false || world[x][y-1]->solid == false || world[x+1][y]->solid == false ) { world[x][y]->brightness = 220.0f-abs(brightness); } else { world[x][y]->brightness = 255; }
 
                 if (world[x][y] == block[B_AIR] || world[x][y]->brightness == 255 || (!world[x][y]->solid && world[x][y]->brightness == 220.0f)) continue;
-                // if (world[x][y]->brightness == 255) { continue; }
+                if (world[x][y]->brightness == 255) { continue; }
                 
                 text_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 64.0f, 64.0f), floatarr(4, (float)(world[x][y]->type)*64.0f, 0.0f, 64.0f, 64.0f), block_textures64, true); // render block 64px
                 // text_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 64.0f, 64.0f), floatarr(4, (float)(world[x][y]->type)*16.0f, 0.0f, 16.0f, 16.0f), block_textures, true); // render block 16px
