@@ -45,6 +45,7 @@ typedef struct {
     float falling;
     float jumptimer;
     float breaktimer;
+    float healtimer;
 
     int inventory_slot;
 } Player;
@@ -55,7 +56,7 @@ Player miner = {
     0.0f, 0.0f, 0.0f, 0.0f, 400.0f, 100.0f,
     // 0.0f, 0.0f, 0.0f, 0.0f, 500.0f, 100.0f,
     50.0f, 50.0f,
-    0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 0.0f,
     0
     
 };

@@ -44,3 +44,12 @@ void remove_from_inventory(Block* block) {
         }
     }
 }
+
+void clear_inventory() {
+    // Iterate over the inventory array and clear each item
+    for (int i = 0; i < MAX_INVENTORY_SIZE; i++) {
+        inventory[i].block = NULL;  // Set the block pointer to NULL
+        inventory[i].quantity = 0;  // Set the quantity to 0
+    }
+}
+

@@ -12,6 +12,10 @@ void resolve_player_collision(CollisionType type, IntersectionResult result, flo
 	if (result.isIntersecting) {
 
 		if (type == COLLISION_BOTTOM) {
+			if (miner.vy > 20*64) {  //add blocks that break your fall to this condition
+				miner.health -= miner.vy/32; 
+				miner.healtimer=3;
+			}
 			miner.y = result.cy - miner.height/2;
 			miner.vy = 0;
 			miner.falling=0;
@@ -71,11 +75,11 @@ void check_player_block(int x, int y) {
 	// bottom left player to top block / bottom right player to top blovk
 	Line pbl = {miner.x+miner.width/2-1, miner.y+miner.height/2, miner.x+miner.width/2-1, miner.y};
 	result = islinesintersecting(pbl, blkt);
-	if (result.isIntersecting && miner.vy > 1000.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-200, 200), randfloat(-100, -300), 1, COLOR_WHITE); } }
+	if (result.isIntersecting) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-200, 200), randfloat(-100, -300), 1, COLOR_WHITE); } }
 	if (result.isIntersecting) resolve_player_collision(COLLISION_BOTTOM, result, x, y);
 	Line pbr = {miner.x-miner.width/2+1, miner.y+miner.height/2, miner.x-miner.width/2+1, miner.y};
 	result = islinesintersecting(pbr, blkt);
-	if (result.isIntersecting && miner.vy > 1000.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-200, 200), randfloat(-100, -300), 1, COLOR_WHITE); } }
+	if (result.isIntersecting && miner.vy/64 > 20.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-200, 200), randfloat(-100, -300), 1, COLOR_WHITE); miner.health-=miner.vy/64; } }
 	if (result.isIntersecting) resolve_player_collision(COLLISION_BOTTOM, result, x, y);
 
 	// top left player to bottom block / top right player to bottom block
@@ -148,6 +152,9 @@ void place_block(int worldx, int worldy) {
 }
 
 void update_player(bool active) {
+
+	// printf("%d\n", (int)(miner.vy/64));
+
     if (active) {
 
 		if (set.gamemode == GM_FREECAM) {
@@ -163,6 +170,7 @@ void update_player(bool active) {
 
 		miner.falling+=1*dt;
 		miner.jumptimer-=1*dt;
+		miner.healtimer-=1*dt;
 
 		if (set.gamemode == GM_SURVIVAL) {
 			if (key.a) miner.vx -= 2000 * dt;
@@ -189,15 +197,18 @@ void update_player(bool active) {
 		if (miner.vy > 5000) miner.vy += (5000-miner.vy)/2;
 		int iterations = 15;
 		for (int i = 0; i < iterations; i++) {
-			// if (set.gamemode != GM_FREECAM) {
-				miner.x += miner.vx*dt/iterations; 
-				miner.y += miner.vy*dt/iterations;
-			// }
+			miner.x += miner.vx*dt/iterations; 
+			miner.y += miner.vy*dt/iterations;
 			check_player_collision();
 		}
 
-		// respawn if player falls out of the world perimiters
-		if ( miner.y/64 > WORLD_HEIGHT + 15) {
+		if ( miner.y/64 > WORLD_HEIGHT + 15) { miner.health -= 20*dt; miner.healtimer=3; }
+		if (miner.healtimer <= 0) { miner.health+=20*dt; }
+		if (miner.health > 100) miner.health = 100;
+
+		if ( miner.health <= 0) {
+			clear_inventory();
+			miner.health = 100;
 			miner.x = WORLD_WIDTH*32;
 			miner.y = WORLD_HEIGHT*32;
 			miner.vx = 0;
