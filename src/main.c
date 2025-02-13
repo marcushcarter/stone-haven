@@ -226,8 +226,8 @@ void editor_controls(bool active) {
 		// if (key.downa) { camera.targety+=500*dt; }
 
 		if (key.space) {
-			for (int i = 0; i < 1000; i++) {
-				create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-1000, 1000), randfloat(-1000, 1000), 5, COLOR_WHITE);
+			for (int i = 0; i < 10; i++) {
+				create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-1000, 1000), randfloat(-1000, 1000), 1, COLOR_WHITE);
 			}
 		}
 

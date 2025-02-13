@@ -3,7 +3,7 @@ void resolve_player_collision(CollisionType type, IntersectionResult result, flo
 
 	/*	Explanation time:
 	       -basically just gets the coordinates of the collision point
-			and move the player to that point if any of their collision 
+			and moves the player to that point if any of their collision 
 			lines are intersecting with a specific blocks collision lines
 	*/
 
@@ -81,8 +81,6 @@ void check_player_block(int x, int y) {
 	result = islinesintersecting(ptr, blkb);
 	if (result.isIntersecting) resolve_player_collision(COLLISION_TOP, result, x, y);
 
-	// if (result.isIntersecting && abs(miner.vy) > 300 ) { for (int i = 0; i < 5; i++ ) { create_particle(P_IMPACT, result.cx, miner.y, randfloat(-2.0f, 2.0f)*-100, randfloat(0.0f, 2.0f)*100, 1, 1); } }
-
 	// left top player to right block / left bottom player to right block
 	Line plt = {miner.x-miner.width/2, miner.y+miner.height/2-1, miner.x, miner.y+miner.height/2-1};
 	Line blkr = {x*64 + 32, y*64 + 32, x*64 + 32, y*64 - 32};
@@ -92,7 +90,7 @@ void check_player_block(int x, int y) {
 	result = islinesintersecting(plb, blkr);
 	if (result.isIntersecting) resolve_player_collision(COLLISION_LEFT, result, x, y);
 
-	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.a && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx+1, miner.y, randfloat(-100, 0), randfloat(-100, 100), 1, COLOR_WHITE);
+	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.a && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx+1, miner.y, randfloat(-200, 0), randfloat(-100, 100), 1, COLOR_WHITE);
 
 	// right top player to left block / right bottom player to left block
 	Line prt = {miner.x+miner.width/2, miner.y+miner.height/2-1, miner.x, miner.y+miner.height/2-1};
@@ -103,7 +101,7 @@ void check_player_block(int x, int y) {
 	result = islinesintersecting(prb, blkl);
 	if (result.isIntersecting) resolve_player_collision(COLLISION_RIGHT, result, x, y);
 
-	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.d && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx-1, miner.y, randfloat(-100, 0), randfloat(-100, 100), 1, COLOR_WHITE);
+	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.d && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx-1, miner.y, randfloat(0, 200), randfloat(-100, 100), 1, COLOR_WHITE);
 
 }	
 
@@ -112,15 +110,15 @@ void check_player_collision() {
 	/* 	Only checks for collision with blocks that are: 
 		- in the same tile as the player
 		- above and below the player
-		-to the left and right of rthe player
-		-in all 4 diagonals to the player
+		- to the left and right of rthe player
+		- in all 4 diagonals to the player
 	*/
 
 	// block inside the player
 	check_player_block((int)(miner.x/64), (int)(miner.y/64));
 
 	// blocks above, below, and next to the player
-	check_player_block((int)(miner.x/64), (int)(miner.y/64)-1); // bloacks around the player
+	check_player_block((int)(miner.x/64), (int)(miner.y/64)-1); // blocks around the player
 	check_player_block((int)(miner.x/64), (int)(miner.y/64)+1);
 	check_player_block((int)(miner.x/64)-1, (int)(miner.y/64));
 	check_player_block((int)(miner.x/64)+1, (int)(miner.y/64));

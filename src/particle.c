@@ -41,6 +41,102 @@ void create_particle(ParticleType type, float x, float y, float vx, float vy, fl
     return;
 }
 
+void resolve_particle_collision(int i, CollisionType type, IntersectionResult result, float x, float y) {
+
+	/*	Explanation time:
+	       -basically just gets the coordinates of the collision point
+			and moves the particle to that point if any of their collision 
+			lines are intersecting with a specific blocks collision lines
+	*/
+
+	if (result.isIntersecting) {
+
+		if (type == COLLISION_BOTTOM) {
+			particles[i]->y = result.cy - 5;
+            particles[i]->vx *= 0.995;
+			particles[i]->vy *= -0.25;
+
+		}
+
+		if (type == COLLISION_TOP) {
+			particles[i]->y = result.cy + 5;
+            particles[i]->vx *= 0.995;
+			particles[i]->vy *= -0.25;
+		}
+
+		if (type == COLLISION_RIGHT) {
+			particles[i]->x = result.cx - 5;
+            particles[i]->vx *= -0.25;
+		}
+
+		if (type == COLLISION_LEFT) {
+			particles[i]->x = result.cx + 5;
+            particles[i]->vx *= -0.25;
+		}
+	}
+}
+
+void check_particle_block(int i, int x, int y) {
+
+	if (world[x][y]->solid == false || world[x][y] == NULL) return;
+	if (x < 0 || y < 0 || x >= WORLD_WIDTH || y >= WORLD_HEIGHT) return;
+
+	IntersectionResult result;
+
+	/* the miner hitbox consists of
+		- two lines pointing up (one on the left and one on the right) to detect if the player if touching any cieling blocks
+		- two lines pointing down (left and right) to check if the player is touching any floor blocks
+		- two lines pointing left (upper and lower) to check if the player is touching any left walls
+		- two lines pointing right (upper and lower) to check if the player is touching any right walls
+	*/
+
+    Line pb = {particles[i]->x, particles[i]->y, particles[i]->x, particles[i]->y+5};
+    Line blkt = {x*64 - 32, y*64 - 32, x*64 +32, y*64 -32};
+	result = islinesintersecting(pb, blkt);
+    if (result.isIntersecting) resolve_particle_collision(i, COLLISION_BOTTOM, result, x, y);
+
+    Line pt = {particles[i]->x, particles[i]->y-5, particles[i]->x, particles[i]->y};
+	Line blkb = {x*64 - 32, y*64 + 32, x*64 +32, y*64 +32};
+	result = islinesintersecting(pt, blkb);
+    if (result.isIntersecting) resolve_particle_collision(i, COLLISION_TOP, result, x, y);
+
+    Line pl = {particles[i]->x-5, particles[i]->y, particles[i]->x, particles[i]->y};
+	Line blkr = {x*64 + 32, y*64 + 32, x*64 + 32, y*64 - 32};
+	result = islinesintersecting(pl, blkr);
+    if (result.isIntersecting) resolve_particle_collision(i, COLLISION_LEFT, result, x, y);
+
+    Line pr = {particles[i]->x, particles[i]->y, particles[i]->x+5, particles[i]->y};
+	Line blkl = {x*64 - 32, y*64 + 32, x*64 -32, y*64 -32};
+	result = islinesintersecting(pr, blkl);
+    if (result.isIntersecting) resolve_particle_collision(i, COLLISION_RIGHT, result, x, y);
+
+}	
+
+void check_particle_collision(int i) {
+
+	/* 	Only checks for collision with blocks that are: 
+		- in the same tile as the particle
+		- above and below the particle
+		- to the left and right of the particle
+		- in all 4 diagonals to the particle
+	*/
+
+	// block inside the particle
+	check_particle_block(i, (int)(particles[i]->x/64), (int)(particles[i]->y/64));
+
+	// blocks above, below, and next to the particle
+	check_particle_block(i, (int)(particles[i]->x/64), (int)(particles[i]->y/64)-1); // blocks around the particle
+	check_particle_block(i, (int)(particles[i]->x/64), (int)(particles[i]->y/64)+1);
+	check_particle_block(i, (int)(particles[i]->x/64)-1, (int)(particles[i]->y/64));
+	check_particle_block(i, (int)(particles[i]->x/64)+1, (int)(particles[i]->y/64));
+
+ 	// blocks diagonal to the particle
+	check_particle_block(i, (int)(particles[i]->x/64)-1, (int)(particles[i]->y/64)-1);
+	check_particle_block(i, (int)(particles[i]->x/64)+1, (int)(particles[i]->y/64)-1);
+	check_particle_block(i, (int)(particles[i]->x/64)+1, (int)(particles[i]->y/64)+1);
+	check_particle_block(i, (int)(particles[i]->x/64)-1, (int)(particles[i]->y/64)+1);
+}
+
 void update_particles(bool active) {
 
     if (active && set.particles) {
@@ -53,7 +149,8 @@ void update_particles(bool active) {
             int iterations = 15;
             for (int j = 0; j < iterations; j++) {
 
-                if (particles[i]->life <= 0 || world[(int)round(particles[i]->x/64)][(int)round(particles[i]->y/64)]->solid) {
+                // if (particles[i]->life <= 0 || world[(int)round(particles[i]->x/64)][(int)round(particles[i]->y/64)]->solid) {
+                    if (particles[i]->life <= 0) {
                     free(particles[i]);
                     particles[i] = NULL;
                     break;
@@ -71,6 +168,8 @@ void update_particles(bool active) {
                     particles[i]->x += particles[i]->vx * dt/iterations;
                     particles[i]->y += particles[i]->vy * dt/iterations;
                 }
+
+                check_particle_collision(i);
 
             }
         }
