@@ -227,9 +227,12 @@ void editor_controls(bool active) {
 
 		if (key.space) {
 			for (int i = 0; i < 1000; i++) {
-				create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-1000, 1000), randfloat(-1000, 1000), 5.0f, COLOR_WHITE);
+				create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-1000, 1000), randfloat(-1000, 1000), 5, COLOR_WHITE);
 			}
 		}
+
+		if (key.n3) set.creative = true;
+		if (key.n4) set.creative = false;
 
 		if (key.n1) camera.freecam=true;
 		if (key.n2) camera.freecam=false;
@@ -240,10 +243,10 @@ void editor_controls(bool active) {
 	}
 
   	if (camera.freecam) {
-		if (key.righta) camera.targetx+=1000*dt;
-		if (key.lefta) camera.targetx-=1000*dt;
-		if (key.upa) camera.targety-=1000*dt;
-		if (key.downa) camera.targety+=1000*dt;
+		if (key.d) camera.targetx+=1000*dt;
+		if (key.a) camera.targetx-=1000*dt;
+		if (key.w) camera.targety-=1000*dt;
+		if (key.s) camera.targety+=1000*dt;
 	} else {
 		camera.targetx = miner.x;
 		camera.targety = miner.y;
@@ -252,13 +255,11 @@ void editor_controls(bool active) {
 
 void update() {
 
-	// if (inventory[0].block != NULL) {
-	// 	printf("%d x%d\n", inventory[0].block->type, inventory[0].quantity);
-	// }
+	if (dt > 0.3) return;
 
-	if (dt > 0.3) return; // if time in between frames is too much no motion will happen;
+	if (key.tab) { SDL_SetWindowFullscreen(window, 1); }
+	if (key.escape) { SDL_SetWindowFullscreen(window, 0); }
 
-	// auto save
 	static Uint32 last_save_time;
 	if (SDL_GetTicks() / 1000 - last_save_time >= 60*10 && set.auto_save) {
 		save_world("gamesaves/world.save");
@@ -267,9 +268,11 @@ void update() {
 
 	update_keystates(true);
   	editor_controls(true);
-	update_player(true);
-	update_blocks(true);
-	update_particles(true);
+	if (!camera.freecam) {
+		update_player(true);
+		update_blocks(true);
+		update_particles(true);
+	}
 
 	camera.x += (camera.targetx - camera.x - win.sw2) * 10.0f * dt;
 	camera.y += (camera.targety - camera.y - win.sh2) * 10.0f * dt;

@@ -26,7 +26,6 @@ void create_particle(ParticleType type, float x, float y, float vx, float vy, fl
                 return;
             }
 
-            // Initialize the particle
             particles[i]->type = type;
             particles[i]->x = x;
             particles[i]->y = y;
@@ -52,18 +51,15 @@ void update_particles(bool active) {
 
             particles[i]->life -= 1*dt;
             int iterations = 15;
-            bool particle_deleted = false;
             for (int j = 0; j < iterations; j++) {
 
-                // if (particles[i]->life <= 0 || world[(int)round(particles[i]->x/64)][(int)round(particles[i]->y/64)]->solid) {
-                if (particles[i]->life <= 0) {
+                if (particles[i]->life <= 0 || world[(int)round(particles[i]->x/64)][(int)round(particles[i]->y/64)]->solid) {
                     free(particles[i]);
                     particles[i] = NULL;
                     break;
                 }
                 
                 if (particles[i]->type == P_GRAVITY) {
-                    // particles[i]->vx +=
                     particles[i]->vy += set.gravity * dt/iterations;
                     particles[i]->x += particles[i]->vx * dt/iterations;
                     particles[i]->y += particles[i]->vy * dt/iterations;
@@ -77,7 +73,6 @@ void update_particles(bool active) {
                 }
 
             }
-            if (particle_deleted) continue;
         }
     }
 }
@@ -93,7 +88,18 @@ void render_particles(bool active) {
                 transparency = max(0.0f, 255 * (particles[i]->life / 0.25));
             }
 
+            float brightness;
+            float dx = particles[i]->x - miner.x; float dy = particles[i]->y - miner.y;
+            brightness = 220.0f - ((sqrt(dx * dx + dy * dy) / 64) / set.brightness) * 220.0f;
+            if ((sqrt(dx * dx + dy * dy) / 64) > set.brightness) brightness = 0;
+            if (brightness < 0) { brightness = 0; } else if (brightness > 220.0f) { brightness = 220.0f; }
+            brightness = 250.0f-abs(brightness);
+
+            transparency -= brightness;
+            if (transparency > 220) { transparency = 220; } else if (transparency < 0) { transparency = 0; }
+            
             draw_rect(renderer, floatarr(4, particles[i]->x - camera.x - 5, particles[i]->y - camera.y - 5, 10.0f, 10.0f), particles[i]->color, transparency, true);
+        
         }
     }
 }

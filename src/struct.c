@@ -70,12 +70,12 @@ typedef struct {
   	bool fullscreen; //false
   	bool particles; //true
   	float brightness; //5.0f
-  	ControlDevice controller; // keyboard or controller
 
   	bool creative;
   	bool hide_hud; //false
   	bool auto_save; // true
 	float update_distance;
+    float break_speed;
 
   	int master_vol; //100
   	int music_vol; //100
@@ -87,8 +87,8 @@ typedef struct {
 
 GameSettings set = {
 	120,
-	false, true, 5, CD_KEYBOARD,
-	true, false, true, 100,
+	false, true, 5,
+	false, false, true, 100, 0.5,
 	100, 100, 100, 100,
 	1000,
 };
@@ -117,16 +117,17 @@ typedef struct {
 } IntersectionResult;
 
 #define WORLD_WIDTH 1000
-#define WORLD_HEIGHT 1000
+#define WORLD_HEIGHT 1000 /*
 
-// up to 4,000,000 blocks with it being playably laggy (or x)
-// up to 3,000,000 blocks with it being slightly laggy (or x)
-// up to 2,500,000 blocks with it being not laggy at all (or 2000x1250)
+    World sizes:
 
-// high fps 2,000,000 blocks
-// medium fps 2,500,000 blocks
-// slightly laggy 3,000,000 blocks
-// playably laggy 4,000,000 blocks
+    2,000,000 total blocks -> high fps
+    2,500,000 total blocks -> medium fps
+    3,000,000 total blocks -> slightly laggy
+    3,500,000 total blocks -> playable
+    4,000,000 total blocks -> good luck
+
+*/
 
 #define MAX_PARTICLES 10000
 #define MAX_INVENTORY_SIZE 2
