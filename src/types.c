@@ -117,8 +117,8 @@ typedef struct {
     float cx, cy;
 } IntersectionResult;
 
-#define WORLD_WIDTH 1000
-#define WORLD_HEIGHT 1000 
+#define WORLD_WIDTH 100
+#define WORLD_HEIGHT 100 
 
 /*  World sizes:
     2,000,000 total blocks -> high fps

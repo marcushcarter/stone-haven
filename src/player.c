@@ -220,10 +220,12 @@ void update_player(bool active) {
 		if (mouse.l && world[mouse.worldx][mouse.worldy] != block[BLOCK_AIR]) { miner.breaktimer+=1*dt; } else { miner.breaktimer = 0; }
 		if (miner.breaktimer > set.break_speed) miner.breaktimer = set.break_speed;
 
-		if (set.gamemode == GM_CREATIVE && world[mouse.worldx][mouse.worldy] != block[BLOCK_AIR]) miner.breaktimer=999;
-		if (miner.breaktimer >= set.break_speed && mouse.l && world[mouse.worldx][mouse.worldy] != NULL && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4
-		&& (!(world[mouse.worldx][mouse.worldy-1]->solid && world[mouse.worldx][mouse.worldy+1]->solid && world[mouse.worldx-1][mouse.worldy]->solid && world[mouse.worldx+1][mouse.worldy]->solid ) || (mouse.worldx == round(miner.x/64) && mouse.worldy == round(miner.y/64))) ) {
-			break_block(mouse.worldx, mouse.worldy);
+		if (!(mouse.worldx < 1 || mouse.worldx > WORLD_WIDTH-2 || mouse.worldy < 1 || mouse.worldy > WORLD_HEIGHT-2)) {
+			if (set.gamemode == GM_CREATIVE && world[mouse.worldx][mouse.worldy] != block[BLOCK_AIR]) miner.breaktimer=999;
+			if (miner.breaktimer >= set.break_speed && mouse.l && world[mouse.worldx][mouse.worldy] != NULL && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4
+			&& (!(world[mouse.worldx][mouse.worldy-1]->solid && world[mouse.worldx][mouse.worldy+1]->solid && world[mouse.worldx-1][mouse.worldy]->solid && world[mouse.worldx+1][mouse.worldy]->solid ) || (mouse.worldx == round(miner.x/64) && mouse.worldy == round(miner.y/64))) ) {
+				break_block(mouse.worldx, mouse.worldy);
+			}
 		}
 
     }

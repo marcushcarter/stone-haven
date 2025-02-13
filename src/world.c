@@ -64,8 +64,10 @@ void render_world(bool active) {
     if (active) {
         for (int x = 0; x < WORLD_WIDTH; x++) {
             for (int y = 0; y < WORLD_HEIGHT; y++) {
+                if ((x < 1) || (x > WORLD_WIDTH-2) || (y < 1) || (y > WORLD_HEIGHT-2)) continue;
                 if (world[x][y] == NULL) continue;
                 if ((y-1)*64 - camera.y > win.sh || (y+1)*64 - camera.y < 0 || (x+1)*64 - camera.x < 0 || (x-1)*64 - camera.x > win.sw ) continue;
+                // if ((y+2)*64 - camera.y > win.sh || (y-2)*64 - camera.y < 0 || (x-2)*64 - camera.x < 0 || (x+2)*64 - camera.x > win.sw ) continue;
 
                 float brightness;
                 // shadow / brightness

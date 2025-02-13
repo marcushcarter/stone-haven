@@ -62,8 +62,8 @@ bool generate_world() {
 
     // spawn box and worldborder
     for (int x = 0; x < 3; x++){ for (int y = 0; y < 3; y++){ world[(int)(x+WORLD_WIDTH/2-5/2)][(int) (y+WORLD_HEIGHT/2-3/2)] = block[BLOCK_AIR]; } }
-    for (int x = 0; x < WORLD_WIDTH; x++) { world[x][0] = block[BLOCK_WORLD_BORDER]; world[x][WORLD_HEIGHT - 1] = block[BLOCK_WORLD_BORDER]; }
-    for (int y = 0; y < WORLD_HEIGHT; y++) { world[0][y] = block[BLOCK_WORLD_BORDER]; world[WORLD_WIDTH - 1][y] = block[BLOCK_WORLD_BORDER]; }
+    for (int x = 0; x < WORLD_WIDTH; x++) { world[x][1] = block[BLOCK_WORLD_BORDER]; world[x][WORLD_HEIGHT - 2] = block[BLOCK_WORLD_BORDER]; }
+    for (int y = 0; y < WORLD_HEIGHT; y++) { world[1][y] = block[BLOCK_WORLD_BORDER]; world[WORLD_WIDTH - 2][y] = block[BLOCK_WORLD_BORDER]; }
 
     miner.x = (WORLD_WIDTH-2)*32;
     miner.y = (WORLD_HEIGHT+2)*32;
