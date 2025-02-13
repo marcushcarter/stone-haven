@@ -32,11 +32,6 @@ typedef struct {
 
 WindowDetails win = {1024, 768, 512, 384};
 
-typedef enum {
-	CD_KEYBOARD,
-	CD_CONTROLLER,
-} ControlDevice;
-
 typedef struct {
     char name[100];
 
@@ -50,6 +45,8 @@ typedef struct {
     float falling;
     float jumptimer;
     float breaktimer;
+
+    int inventory_slot;
 } Player;
 
 Player miner = {    
@@ -58,11 +55,16 @@ Player miner = {
     0.0f, 0.0f, 0.0f, 0.0f, 400.0f, 100.0f,
     // 0.0f, 0.0f, 0.0f, 0.0f, 500.0f, 100.0f,
     50.0f, 50.0f,
-    0.0f, 0.0f, 0.0f
+    0.0f, 0.0f, 0.0f,
+    0
     
 };
 
-int inventory_slot = 0;
+typedef enum {
+    GM_SURVIVAL,
+    GM_CREATIVE,
+    GM_FREECAM,
+} Gamemode;
 
 typedef struct {
   	int max_fps; //120.0f
@@ -71,7 +73,7 @@ typedef struct {
   	bool particles; //true
   	float brightness; //5.0f
 
-  	bool creative;
+    Gamemode gamemode;
   	bool hide_hud; //false
   	bool auto_save; // true
 	float update_distance;
@@ -88,7 +90,7 @@ typedef struct {
 GameSettings set = {
 	120,
 	false, true, 5,
-	false, false, true, 100, 0.5,
+    GM_SURVIVAL, false, true, 100, 0.5,
 	100, 100, 100, 100,
 	1000,
 };
@@ -96,7 +98,6 @@ GameSettings set = {
 typedef struct {
 	float x, y;
 	float targetx, targety;
-	bool freecam;
 } Camera; Camera camera;
 
 typedef enum {
@@ -111,23 +112,24 @@ typedef struct {
 } Line; Line l1, l2;
 
 typedef struct {
-    bool isIntersecting; 	// yes or no, are the lines intersecting?
-    float uA, uB;  			// Intersection parameters along each line
-    float cx, cy;  			// Intersection coordinates
+    bool isIntersecting;
+    float uA, uB;
+    float cx, cy;
 } IntersectionResult;
 
 #define WORLD_WIDTH 1000
-#define WORLD_HEIGHT 1000 /*
+#define WORLD_HEIGHT 1000 
 
-    World sizes:
-
+/*  World sizes:
     2,000,000 total blocks -> high fps
     2,500,000 total blocks -> medium fps
     3,000,000 total blocks -> slightly laggy
     3,500,000 total blocks -> playable
     4,000,000 total blocks -> good luck
-
 */
 
 #define MAX_PARTICLES 10000
 #define MAX_INVENTORY_SIZE 2
+
+clock_t previous_time = 0;
+float dt;

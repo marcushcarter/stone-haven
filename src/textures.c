@@ -16,26 +16,35 @@ Uint8 colors[100][3] = {
 SDL_Texture* texture;
 SDL_Texture* block_textures;
 SDL_Texture* block_textures64;
-SDL_Texture* item_textures;
-SDL_Texture* item_textures64;
 
 bool load_textures(SDL_Renderer* renderer) {
 
-	block_textures = IMG_LoadTexture(renderer, "./assets/blocktextures.png");
 	block_textures64 = IMG_LoadTexture(renderer, "./assets/blocktextures64.png");
-
-	item_textures = IMG_LoadTexture(renderer, "./assets/blocktextures.png");
-	item_textures64 = IMG_LoadTexture(renderer, "./assets/blocktextures64.png");
-  
-	SDL_SetTextureScaleMode(block_textures, SDL_SCALEMODE_NEAREST);
 	SDL_SetTextureScaleMode(block_textures64, SDL_SCALEMODE_NEAREST);
 
-	SDL_SetTextureScaleMode(item_textures, SDL_SCALEMODE_NEAREST);
-	SDL_SetTextureScaleMode(item_textures64, SDL_SCALEMODE_NEAREST);
-
-	// item_texture[I_AIR] = IMG_LoadTexture(renderer, "assets/test.jpg");
-	// item_texture[I_WORLDBORDER] = IMG_LoadTexture(renderer, "./assets/blocktextures/dirt.jpg");
-	// item_texture[I_STONE] = IMG_LoadTexture(renderer, "./assets/blocktextures/stone.png");
-
 	return true;
+}
+
+void text_rect(SDL_Renderer* renderer, float position[4], float frame[4], SDL_Texture* texture, bool isframe) {
+	if (isframe) {
+	  SDL_FRect rposition = {position[0], position[1], position[2], position[3]};
+	  SDL_FRect rframe = {frame[0], frame[1], frame[2], frame[3]};
+	  SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_LINEAR);
+	  SDL_RenderTexture(renderer, texture, &rframe, &rposition);
+	} else {
+	  SDL_FRect rposition = {position[0], position[1], position[2], position[3]};
+	  // SDL_FRect rframe = {frame[0], frame[1], frame[2], frame[3]};
+	  SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_LINEAR);
+	  SDL_RenderTexture(renderer, texture, NULL, &rposition);
+	}
+}
+
+void draw_rect(SDL_Renderer* renderer, float position[4], int color, int transparency, bool fill) {
+	SDL_SetRenderDrawColor(renderer, colors[color][0], colors[color][1], colors[color][2], transparency);
+	SDL_FRect rect = {position[0], position[1], position[2], position[3]};
+  if (fill) {
+		SDL_RenderFillRect(renderer, &rect);
+  } else {
+	  SDL_RenderRect(renderer, &rect);
+  }
 }

@@ -16,7 +16,6 @@ typedef struct {
 Particle* particles[MAX_PARTICLES] = {NULL};
 
 void create_particle(ParticleType type, float x, float y, float vx, float vy, float life, int color) {
-
     for (int i = 0; i < MAX_PARTICLES; i++) {
         if (particles[i] == NULL) {
 
@@ -78,35 +77,36 @@ void resolve_particle_collision(int i, CollisionType type, IntersectionResult re
 
 void check_particle_block(int i, int x, int y) {
 
+	/*  A partcile's hitbox consists of:
+		    - A line pointing up to detect if the particle is touching any cieling blocks
+		    - A line pointing down to check if the particle is touching any floor blocks
+		    - A line pointing left to check if the particle is touching any left walls
+		    - A line pointing right to check if the particle is touching any right walls
+	*/
+
 	if (world[x][y]->solid == false || world[x][y] == NULL) return;
 	if (x < 0 || y < 0 || x >= WORLD_WIDTH || y >= WORLD_HEIGHT) return;
 
 	IntersectionResult result;
-
-	/* the miner hitbox consists of
-		- two lines pointing up (one on the left and one on the right) to detect if the player if touching any cieling blocks
-		- two lines pointing down (left and right) to check if the player is touching any floor blocks
-		- two lines pointing left (upper and lower) to check if the player is touching any left walls
-		- two lines pointing right (upper and lower) to check if the player is touching any right walls
-	*/
+    
+    Line blkt = {x*64 - 32, y*64 - 32, x*64 +32, y*64 -32};
+	Line blkb = {x*64 - 32, y*64 + 32, x*64 +32, y*64 +32};
+	Line blkr = {x*64 + 32, y*64 + 32, x*64 + 32, y*64 - 32};
+	Line blkl = {x*64 - 32, y*64 + 32, x*64 -32, y*64 -32};
 
     Line pb = {particles[i]->x, particles[i]->y, particles[i]->x, particles[i]->y+5};
-    Line blkt = {x*64 - 32, y*64 - 32, x*64 +32, y*64 -32};
 	result = islinesintersecting(pb, blkt);
     if (result.isIntersecting) resolve_particle_collision(i, COLLISION_BOTTOM, result, x, y);
 
     Line pt = {particles[i]->x, particles[i]->y-5, particles[i]->x, particles[i]->y};
-	Line blkb = {x*64 - 32, y*64 + 32, x*64 +32, y*64 +32};
 	result = islinesintersecting(pt, blkb);
     if (result.isIntersecting) resolve_particle_collision(i, COLLISION_TOP, result, x, y);
 
     Line pl = {particles[i]->x-5, particles[i]->y, particles[i]->x, particles[i]->y};
-	Line blkr = {x*64 + 32, y*64 + 32, x*64 + 32, y*64 - 32};
 	result = islinesintersecting(pl, blkr);
     if (result.isIntersecting) resolve_particle_collision(i, COLLISION_LEFT, result, x, y);
 
     Line pr = {particles[i]->x, particles[i]->y, particles[i]->x+5, particles[i]->y};
-	Line blkl = {x*64 - 32, y*64 + 32, x*64 -32, y*64 -32};
 	result = islinesintersecting(pr, blkl);
     if (result.isIntersecting) resolve_particle_collision(i, COLLISION_RIGHT, result, x, y);
 
@@ -115,10 +115,10 @@ void check_particle_block(int i, int x, int y) {
 void check_particle_collision(int i) {
 
 	/* 	Only checks for collision with blocks that are: 
-		- in the same tile as the particle
-		- above and below the particle
-		- to the left and right of the particle
-		- in all 4 diagonals to the particle
+		    - in the same tile as the particle
+		    - above and below the particle
+		    - to the left and right of the particle
+		    - in all 4 diagonals to the particle
 	*/
 
 	// block inside the particle
@@ -139,7 +139,7 @@ void check_particle_collision(int i) {
 
 void update_particles(bool active) {
 
-    if (active && set.particles) {
+    if (active && set.particles && set.gamemode != GM_FREECAM) {
 
         for (int i = 0; i < MAX_PARTICLES; i++) {
             if (particles[i] == NULL) continue;
@@ -149,8 +149,7 @@ void update_particles(bool active) {
             int iterations = 15;
             for (int j = 0; j < iterations; j++) {
 
-                // if (particles[i]->life <= 0 || world[(int)round(particles[i]->x/64)][(int)round(particles[i]->y/64)]->solid) {
-                    if (particles[i]->life <= 0) {
+                if (particles[i]->life <= 0) {
                     free(particles[i]);
                     particles[i] = NULL;
                     break;

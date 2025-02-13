@@ -1,4 +1,6 @@
 
+#include "noise.c"
+
 typedef enum {
     STRUCT1,
 } StructureType;
@@ -36,7 +38,7 @@ bool generate_world() {
     // set all blocks to air
     for (int x = 0; x < WORLD_WIDTH; x++){
         for (int y = 0; y < WORLD_HEIGHT; y++){
-            world[x][y] = block[B_STONE];
+            world[x][y] = block[BLOCK_STONE];
         }
     }
 
@@ -44,7 +46,7 @@ bool generate_world() {
     for (int x = 0; x < WORLD_WIDTH; x++){
         for (int y = 0; y < WORLD_HEIGHT; y++){
             if (grid[y][x] == 0) {
-                world[x][y] = block[B_GLOWSTONE];
+                world[x][y] = block[BLOCK_BLACKSTONE];
             }
         }
     }
@@ -53,17 +55,15 @@ bool generate_world() {
     for (int x = 0; x < WORLD_WIDTH; x++){
         for (int y = 0; y < WORLD_HEIGHT; y++){
             if (grid[y][x] == 1) {
-                world[x][y] = block[B_AIR];
+                world[x][y] = block[BLOCK_AIR];
             }
         }
     }
 
-    //
-
     // spawn box and worldborder
-    for (int x = 0; x < 3; x++){ for (int y = 0; y < 3; y++){ world[(int)(x+WORLD_WIDTH/2-5/2)][(int) (y+WORLD_HEIGHT/2-3/2)] = block[B_AIR]; } }
-    for (int x = 0; x < WORLD_WIDTH; x++) { world[x][0] = block[B_WORLDBORDER]; world[x][WORLD_HEIGHT - 1] = block[B_WORLDBORDER]; }
-    for (int y = 0; y < WORLD_HEIGHT; y++) { world[0][y] = block[B_WORLDBORDER]; world[WORLD_WIDTH - 1][y] = block[B_WORLDBORDER]; }
+    for (int x = 0; x < 3; x++){ for (int y = 0; y < 3; y++){ world[(int)(x+WORLD_WIDTH/2-5/2)][(int) (y+WORLD_HEIGHT/2-3/2)] = block[BLOCK_AIR]; } }
+    for (int x = 0; x < WORLD_WIDTH; x++) { world[x][0] = block[BLOCK_WORLD_BORDER]; world[x][WORLD_HEIGHT - 1] = block[BLOCK_WORLD_BORDER]; }
+    for (int y = 0; y < WORLD_HEIGHT; y++) { world[0][y] = block[BLOCK_WORLD_BORDER]; world[WORLD_WIDTH - 1][y] = block[BLOCK_WORLD_BORDER]; }
 
     miner.x = (WORLD_WIDTH-2)*32;
     miner.y = (WORLD_HEIGHT+2)*32;

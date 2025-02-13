@@ -19,7 +19,7 @@ bool save_world(const char *filename) {
             if (world[x][y] != NULL) {
                 fprintf(file, "%d ", world[x][y]->type);  // Write block type
             } else {
-                fprintf(file, "%d ", B_AIR);  // Write air (empty space) if no block
+                fprintf(file, "%d ", BLOCK_AIR);  // Write air (empty space) if no block
             }
         }
         fprintf(file, "\n");
@@ -55,7 +55,7 @@ bool load_world(const char *filename) {
                 world[x][y] = block[blockTypeInt];
             } else {
                 // If blockTypeInt is invalid, use a default block (e.g., B_AIR)
-                world[x][y] = block[B_AIR];
+                world[x][y] = block[BLOCK_AIR];
             }
         }
     }

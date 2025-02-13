@@ -5,7 +5,7 @@ typedef struct InventoryItem {
 } InventoryItem;
 
 // The inventory will store up to MAX_INVENTORY_SIZE items.
-InventoryItem inventory[MAX_INVENTORY_SIZE] = {0};
+InventoryItem inventory[MAX_INVENTORY_SIZE] = {};
 
 void add_to_inventory(Block* block) {
 

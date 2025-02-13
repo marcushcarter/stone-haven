@@ -1,50 +1,27 @@
 
 typedef enum {
-    B_AIR,
-    B_WORLDBORDER,
+    BLOCK_AIR,
+    BLOCK_WORLD_BORDER,
 
-    B_STONE,
-    B_SILVERORE,
-    B_EMERALDORE,
-    B_SAPHIREORE,
-    B_DECORATIVESTONE,
+    BLOCK_STONE,
+    BLOCK_BLACKSTONE,
+    BLOCK_GRASS,
+    BLOCK_BOOKSHELF,
 
-    B_GLOWSTONE,
-    B_DAIMONDORE,
-    B_DECORATIVEGLOWSTONE,
-    
-    B_BLACKSTONE,
-    B_GOLDORE,
-    B_RUBYORE,
-    B_DECORATIVEBLACKSTONE,
-    B_DECORATIVEGOLDBLACKSTONE,
-    
-    B_LIMESTONE,
-    B_MARBLE,
-
-    B_DECORATIVEEMERALD,
-    B_DECORATIVESAPHIRE,
-    B_DECORATIVEDAIMOND,
-    B_DECORATIVEGOLD,
-    B_DECORATIVERUBY,
-
-    B_DIRT,
-    B_GRASS,
-
-    B_WORKBENCH,
-    B_BOOKSHELF,
-    B_CABINET,
-    B_BOX,
-    B_DISPLAYCASE,
-    B_ICE,
-    B_GLOWMUSHROOM,
-    B_CHEST,
-    B_FLOWER,
+    BLOCK_COUNT,
 } BlockType;
+
+const char* BlockNames[] = {
+    "AIR",
+    "WORLD BORDER",
+    "STONE",
+    "BLACKSTONE",
+    "GRASS",
+    "BOOKSHELF",
+};
 
 typedef struct Block {
     BlockType type;       // Type of block (e.g., STONE, GRASS)
-    char name[100];
     bool solid;           // Is the block solid (whether you can walk through it)
     bool breakable;       // Can the block be broken by the player?
     float brightness;     // brightness of the block based on distance from the camera
@@ -70,49 +47,18 @@ Block* world[WORLD_WIDTH][WORLD_HEIGHT];
 
 bool make_blocks() {
 
-    block[B_AIR] = make_block(B_AIR, false, false);
-    block[B_WORLDBORDER] = make_block(B_WORLDBORDER, true, false);
+    block[BLOCK_AIR] = make_block(BLOCK_AIR, false, false);
+    block[BLOCK_WORLD_BORDER] = make_block(BLOCK_WORLD_BORDER, true, false);
     
-    block[B_STONE] = make_block(B_STONE, true, true);
-    block[B_SILVERORE] = make_block(B_SILVERORE, true, true);
-    block[B_EMERALDORE] = make_block(B_EMERALDORE, true, true);
-    block[B_SAPHIREORE] = make_block(B_SAPHIREORE, true, true);
-    block[B_DECORATIVESTONE] = make_block(B_DECORATIVESTONE, true, true);
-
-    block[B_GLOWSTONE] = make_block(B_GLOWSTONE, true, true);
-    block[B_DAIMONDORE] = make_block(B_DAIMONDORE, true, true);
-    block[B_DECORATIVEGLOWSTONE] = make_block(B_DECORATIVEGLOWSTONE, true, true);
-
-    block[B_BLACKSTONE] = make_block(B_BLACKSTONE, true, true);
-    block[B_GOLDORE] = make_block(B_GOLDORE, true, true);
-    block[B_RUBYORE] = make_block(B_RUBYORE, true, true);
-    block[B_DECORATIVEBLACKSTONE] = make_block(B_DECORATIVEBLACKSTONE, true, true);
-    block[B_DECORATIVEGOLDBLACKSTONE] = make_block(B_DECORATIVEGOLDBLACKSTONE, true, true);
-    
-    block[B_LIMESTONE] = make_block(B_LIMESTONE, true, true);
-    block[B_MARBLE] = make_block(B_MARBLE, true, true);
-
-    block[B_DECORATIVEEMERALD] = make_block(B_DECORATIVEEMERALD, true, true);
-    block[B_DECORATIVESAPHIRE] = make_block(B_DECORATIVESAPHIRE, true, true);
-    block[B_DECORATIVEDAIMOND] = make_block(B_DECORATIVEDAIMOND, true, true);
-    block[B_DECORATIVEGOLD] = make_block(B_DECORATIVEGOLD, true, true);
-    block[B_DECORATIVERUBY] = make_block(B_DECORATIVERUBY, true, true);
-
-    block[B_DIRT] = make_block(B_DIRT, true, true);
-    block[B_GRASS] = make_block(B_GRASS, false, true);
-
-    block[B_WORKBENCH] = make_block(B_WORKBENCH, false, true);
-    block[B_BOOKSHELF] = make_block(B_BOOKSHELF, false, true);
-    block[B_CABINET] = make_block(B_CABINET, false, true);
-    block[B_BOX] = make_block(B_BOX, true, true);
-    block[B_DISPLAYCASE] = make_block(B_DISPLAYCASE, false, true);
-    block[B_ICE] = make_block(B_ICE, true, true);
-    block[B_GLOWMUSHROOM] = make_block(B_GLOWMUSHROOM, false, true);
-    block[B_CHEST] = make_block(B_CHEST, false, true);
-    block[B_FLOWER] = make_block(B_FLOWER, false, true);
+    block[BLOCK_STONE] = make_block(BLOCK_STONE, true, true);
+    block[BLOCK_BLACKSTONE] = make_block(BLOCK_BLACKSTONE, true, true);
+    block[BLOCK_GRASS] = make_block(BLOCK_GRASS, false, true);
+    block[BLOCK_BOOKSHELF] = make_block(BLOCK_BOOKSHELF, false, true);
     
     return true;
 }
+
+#include "worldgen.c"
 
 void render_world(bool active) {
     if (active) {
@@ -130,7 +76,7 @@ void render_world(bool active) {
                 // blocks behind blocks
                 if (world[x][y+1]->solid == false || world[x-1][y]->solid == false || world[x][y-1]->solid == false || world[x+1][y]->solid == false ) { world[x][y]->brightness = 220.0f-abs(brightness); } else { world[x][y]->brightness = 255; }
 
-                if (world[x][y] == block[B_AIR] || world[x][y]->brightness == 255 || (!world[x][y]->solid && world[x][y]->brightness == 220.0f)) continue;
+                if (world[x][y] == block[BLOCK_AIR] || world[x][y]->brightness == 255 || (!world[x][y]->solid && world[x][y]->brightness == 220.0f)) continue;
                 if (world[x][y]->brightness == 255) { continue; }
                 
                 text_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 64.0f, 64.0f), floatarr(4, (float)(world[x][y]->type)*64.0f, 0.0f, 64.0f, 64.0f), block_textures64, true); // render block 64px
@@ -150,7 +96,7 @@ void render_world(bool active) {
 }
 
 void update_blocks(bool active) {
-	if (active) {
+	if (active && set.gamemode != GM_FREECAM) {
 		for (int x = 0; x < WORLD_WIDTH; x++) {
 			for (int y = 0; y < WORLD_HEIGHT; y++) {
 				if (world[x][y] == NULL) continue;
