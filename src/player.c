@@ -147,13 +147,11 @@ void break_block(int worldx, int worldy) {
 void place_block(int worldx, int worldy) {
 	if ( inventory[miner.inventory_slot].block != NULL && (!(round(miner.x/64) == mouse.worldx && round(miner.y/64) == mouse.worldy) || !inventory[miner.inventory_slot].block->solid)) {
 		world[worldx][worldy] = inventory[miner.inventory_slot].block;
-		remove_from_inventory(inventory[miner.inventory_slot].block);
+		if (set.gamemode != GM_CREATIVE) remove_from_inventory(inventory[miner.inventory_slot].block);
 	}
 }
 
 void update_player(bool active) {
-
-	// printf("%d\n", (int)(miner.vy/64));
 
     if (active) {
 
