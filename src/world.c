@@ -4,20 +4,98 @@ typedef enum {
     BLOCK_WORLD_BORDER,
 
     BLOCK_STONE,
-    BLOCK_BLACKSTONE,
-    BLOCK_GRASS,
+    BLOCK_STONE_BRICKS,
+    BLOCK_DECORATIVE_STONE,
+    BLOCK_SMOOTH_STONE,
+    BLOCK_DARK_STONE,
+    BLOCK_DARK_STONE_BRICKS,
+    BLOCK_SMOOTH_DARK_STONE,
+    BLOCK_BLACK_STONE,
+    BLOCK_BLACK_STONE_BRICKS,
+    BLOCK_GILDED_BLACK_STONE_BRICKS,
+    BLOCK_DIRT,
+    BLOCK_SILVER_ORE,
+    BLOCK_EMERALD_ORE,
+    BLOCK_DIAMOND_ORE,
+    BLOCK_GOLD_ORE,
+    BLOCK_BOUNCE_PAD,
+    BLOCK_SNOW,
+    BLOCK_ICE,
+    BLOCK_BONE,
+    BLOCK_EMERALD_BLOCK,
+    BLOCK_SAPPHIRE_BLOCK,
+    BLOCK_DIAMOND_BLOCK,
+    BLOCK_GOLD_BLOCK,
+    BLOCK_RUBY_BLOCK,
+    BLOCK_DISPLAY_CASE,
     BLOCK_BOOKSHELF,
+    BLOCK_LADDER,
+    BLOCK_SHELF,
+    BLOCK_WOODEN_CRATE,
+    BLOCK_WOOD,
+    BLOCK_CHEST,
+    BLOCK_SCAFOLDING,
+    BLOCK_LANTERN,
+    BLOCK_CHAIN,
+    BLOCK_PYLON,
+    BLOCK_MUSHROOM,
+    BLOCK_IRIS_FLOWER,
+    BLOCK_ROSE,
+    BLOCK_GRASS,
+    BLOCK_SKULL,
+    BLOCK_BRICKS,
+    BLOCK_BLUE_BRICKS,
+    BLOCK_VASE,
 
     BLOCK_COUNT,
 } BlockType;
 
 const char* BlockNames[] = {
     "AIR",
-    "WORLD BORDER",
+    "BORDER BLOCK",
     "STONE",
-    "BLACKSTONE",
-    "GRASS",
+    "STONE BRICKS",
+    "DECORATIVE STONE",
+    "SMOOTH STONE",
+    "DARK STONE",
+    "DARK STONE BRICKS",
+    "SMOOTH DARK STONE",
+    "BLACK STONE",
+    "BLACK STONE BRICKS",
+    "GILDED BLACK STONE BRICKS",
+    "DIRT",
+    "SILVER ORE",
+    "EMERALD ORE",
+    "DIAMOND ORE",
+    "GOLD ORE",
+    "BOUNCE PAD",
+    "SNOW",
+    "ICE",
+    "BONE",
+    "EMERALD BLOCK",
+    "SAPPHIRE BLOCK",
+    "DIAMOND BLOCK",
+    "GOLD BLOCK",
+    "RUBY BLOCK",
+    "DISPLAY CASE",
     "BOOKSHELF",
+    "LADDER",
+    "SHELF",
+    "WOODEN CRATE",
+    "WOOD",
+    "CHEST",
+    "SCAFFOLDING",
+    "LANTERN",
+    "CHAIN",
+    "PYLON",
+    "MUSHROOM",
+    "IRIS FLOWER",
+    "ROSE",
+    "GRASS",
+    "SKULL",
+    "BRICKS",
+    "BLUE BRICKS",
+    "VASE",
 };
 
 typedef struct Block {
@@ -51,9 +129,55 @@ bool make_blocks() {
     block[BLOCK_WORLD_BORDER] = make_block(BLOCK_WORLD_BORDER, true, false);
     
     block[BLOCK_STONE] = make_block(BLOCK_STONE, true, true);
-    block[BLOCK_BLACKSTONE] = make_block(BLOCK_BLACKSTONE, true, true);
-    block[BLOCK_GRASS] = make_block(BLOCK_GRASS, false, true);
+    block[BLOCK_STONE_BRICKS] = make_block(BLOCK_STONE_BRICKS, true, true);
+    block[BLOCK_DECORATIVE_STONE] = make_block(BLOCK_DECORATIVE_STONE, true, true);
+    block[BLOCK_SMOOTH_STONE] = make_block(BLOCK_SMOOTH_STONE, true, true);
+
+    block[BLOCK_DARK_STONE] = make_block(BLOCK_DARK_STONE, true, true);
+    block[BLOCK_DARK_STONE_BRICKS] = make_block(BLOCK_DARK_STONE_BRICKS, true, true);
+    block[BLOCK_SMOOTH_DARK_STONE] = make_block(BLOCK_SMOOTH_DARK_STONE, true, true);
+
+    block[BLOCK_BLACK_STONE] = make_block(BLOCK_BLACK_STONE, true, true);
+    block[BLOCK_BLACK_STONE_BRICKS] = make_block(BLOCK_BLACK_STONE_BRICKS, true, true);
+    block[BLOCK_GILDED_BLACK_STONE_BRICKS] = make_block(BLOCK_GILDED_BLACK_STONE_BRICKS, true, true);
+
+    block[BLOCK_DIRT] = make_block(BLOCK_DIRT, true, true);
+    block[BLOCK_SILVER_ORE] = make_block(BLOCK_SILVER_ORE, true, true);
+    block[BLOCK_EMERALD_ORE] = make_block(BLOCK_EMERALD_ORE, true, true);
+    block[BLOCK_DIAMOND_ORE] = make_block(BLOCK_DIAMOND_ORE, true, true);
+    block[BLOCK_GOLD_ORE] = make_block(BLOCK_GOLD_ORE, true, true);
+
+    block[BLOCK_BOUNCE_PAD] = make_block(BLOCK_BOUNCE_PAD, true, true);
+    block[BLOCK_SNOW] = make_block(BLOCK_SNOW, true, true);
+    block[BLOCK_ICE] = make_block(BLOCK_ICE, true, true);
+    block[BLOCK_BONE] = make_block(BLOCK_BONE, true, true);
+    block[BLOCK_BRICKS] = make_block(BLOCK_BRICKS, true, true);
+    block[BLOCK_BLUE_BRICKS] = make_block(BLOCK_BLUE_BRICKS, true, true);
+
+    block[BLOCK_EMERALD_BLOCK] = make_block(BLOCK_EMERALD_BLOCK, true, true);
+    block[BLOCK_SAPPHIRE_BLOCK] = make_block(BLOCK_SAPPHIRE_BLOCK, true, true);
+    block[BLOCK_DIAMOND_BLOCK] = make_block(BLOCK_DIAMOND_BLOCK, true, true);
+    block[BLOCK_GOLD_BLOCK] = make_block(BLOCK_GOLD_BLOCK, true, true);
+    block[BLOCK_RUBY_BLOCK] = make_block(BLOCK_RUBY_BLOCK, true, true);
+
+    block[BLOCK_DISPLAY_CASE] = make_block(BLOCK_DISPLAY_CASE, false, true);
     block[BLOCK_BOOKSHELF] = make_block(BLOCK_BOOKSHELF, false, true);
+    block[BLOCK_LADDER] = make_block(BLOCK_LADDER, false, true);
+    block[BLOCK_SHELF] = make_block(BLOCK_SHELF, false, true);
+    block[BLOCK_WOODEN_CRATE] = make_block(BLOCK_WOODEN_CRATE, true, true);
+    block[BLOCK_WOOD] = make_block(BLOCK_WOOD, true, true);
+    block[BLOCK_CHEST] = make_block(BLOCK_CHEST, false, true);
+    block[BLOCK_SCAFOLDING] = make_block(BLOCK_SCAFOLDING, false, true);
+    block[BLOCK_LANTERN] = make_block(BLOCK_LANTERN, false, true);
+    block[BLOCK_CHAIN] = make_block(BLOCK_CHAIN, false, true);
+    block[BLOCK_PYLON] = make_block(BLOCK_PYLON, false, true);
+    block[BLOCK_VASE] = make_block(BLOCK_VASE, false, true);
+
+    block[BLOCK_MUSHROOM] = make_block(BLOCK_MUSHROOM, false, true);
+    block[BLOCK_IRIS_FLOWER] = make_block(BLOCK_IRIS_FLOWER, false, true);
+    block[BLOCK_ROSE] = make_block(BLOCK_ROSE, false, true);
+    block[BLOCK_GRASS] = make_block(BLOCK_GRASS, false, true);
+    block[BLOCK_SKULL] = make_block(BLOCK_SKULL, false, true);
     
     return true;
 }

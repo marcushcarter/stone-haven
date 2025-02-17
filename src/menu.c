@@ -17,5 +17,17 @@ void render_ui (bool active) {
         for (int i = 0; i < MAX_INVENTORY_SIZE; i++) if (!set.hide_hud && inventory[i].block != NULL) text_rect(renderer, floatarr(4, 64.0f*i, 0.0f, 64.0f, 64.0f), floatarr(4, (inventory[i].block->type)*64.0f, 0.0f, 64.0f, 64.0f), block_textures64, true);
         draw_rect(renderer, floatarr(4, 64.0f*miner.inventory_slot, 0.0f, 64.0f, 64.0f), 1, 255, false);
 
+
+        // float a = 10.0;
+        // float b = 0.1;
+        // float c = miner.x/10 + SDL_GetTicks()/100;
+        // float d = 0;
+        // for (int x = 0; x < win.sw; x++) {
+        //     float y = a*sin(b*x+c)+d;
+        //     draw_line(renderer, x, y+win.sh2, x, win.sh, COLOR_WHITE, 20);
+        //     SDL_RenderPoint(renderer, x, y+win.sh2);
+            
+        // }
+
     }
 }

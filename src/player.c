@@ -1,7 +1,7 @@
 
 #include "inventory.c"
 
-void resolve_player_collision(CollisionType type, IntersectionResult result, float x, float y) {
+void resolve_player_collision(CollisionType type, IntersectionResult result, int x, int y) {
 
 	/*	Explanation time:
 	       -basically just gets the coordinates of the collision point
@@ -11,15 +11,41 @@ void resolve_player_collision(CollisionType type, IntersectionResult result, flo
 
 	if (result.isIntersecting) {
 
+		if (world[x][y] == block[BLOCK_SCAFOLDING]) {
+			if (key.s) miner.scaffoldtimer = 0.1;
+			if (!key.s && miner.vy > -300 && miner.scaffoldtimer <= 0 && y*64 > miner.y) {
+				miner.y = result.cy - miner.height/2;
+				miner.vy = -1;
+				miner.falling=0;
+			}
+			return;
+		}
+
+		if (world[x][y] == block[BLOCK_LADDER]) {
+			if (key.w) {
+				miner.vy = -300;
+				miner.falling=0;
+			}
+			return;
+		}
+
 		if (type == COLLISION_BOTTOM) {
+			if (miner.vy/64 > 20.0f && world[x][y]->solid) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-200, 200), randfloat(-100, -300), 1, COLOR_WHITE); miner.health-=miner.vy/64; } }
+			
 			if (miner.vy > 20*64) {  //add blocks that break your fall to this condition
 				miner.health -= miner.vy/32; 
 				miner.healtimer=3;
 			}
-			miner.y = result.cy - miner.height/2;
-			miner.vy = 0;
-			miner.falling=0;
-
+			
+			if (world[x][y] == block[BLOCK_BOUNCE_PAD]) {
+				miner.vy *= -0.3;
+				miner.y = result.cy - miner.height/2;
+				miner.falling=0;
+			} else {
+				miner.vy = 0;
+				miner.y = result.cy - miner.height/2;
+				miner.falling=0;
+			}
 		}
 
 		if (type == COLLISION_TOP) {
@@ -30,25 +56,29 @@ void resolve_player_collision(CollisionType type, IntersectionResult result, flo
 		if (type == COLLISION_RIGHT) {
 			miner.x = result.cx - miner.width/2;
 			miner.vx = 0;
-			if (key.d && miner.vy > 0) miner.vy*= 0.993;
+			if (key.d && miner.vy > 0) miner.vy*= 0.9975;
 			if (key.w && miner.jumptimer <= 0 && key.a) {
 				miner.vx = miner.speed*-1; 
 				miner.vy = miner.speed*-1.15;
 				miner.jumptimer = 0.15;
 				miner.x-=1;
 			}
+			if (randint(0, 10000) < miner.vy-315 && key.d && abs(miner.vy) > 300 && world[x][y]->solid) create_particle(P_GRAVITY, result.cx-1, miner.y, randfloat(-100, 0), randfloat(-100, 100), 1, COLOR_WHITE);
+
 		}
 
 		if (type == COLLISION_LEFT) {
 			miner.x = result.cx + miner.width/2;
 			miner.vx = 0;
-			if (key.a && miner.vy > 0) miner.vy*= 0.993;
+			if (key.a && miner.vy > 0) miner.vy*= 0.9975;
 			if (key.w && miner.jumptimer <= 0 && key.d) {
 				miner.vx = miner.speed; 
 				miner.vy = miner.speed*-1.15;
 				miner.jumptimer = 0.15;
 				miner.x+=1;
 			}
+			if (randint(0, 10000) < miner.vy-315 && key.a && abs(miner.vy) > 300 && world[x][y]->solid) create_particle(P_GRAVITY, result.cx+1, miner.y, randfloat(-100, 0), randfloat(-100, 100), 1, COLOR_WHITE);
+
 		}
 	}
 }
@@ -62,7 +92,7 @@ void check_player_block(int x, int y) {
 		- two lines pointing right (upper and lower) to check if the player is touching any right walls
 	*/
 
-	if (world[x][y]->solid == false || world[x][y] == NULL) return;
+	if ((world[x][y]->solid == false && (world[x][y] != block[BLOCK_LADDER] && world[x][y] != block[BLOCK_SCAFOLDING])) || world[x][y] == NULL) return;
 	if (x < 0 || y < 0 || x >= WORLD_WIDTH || y >= WORLD_HEIGHT) return;
 
 	IntersectionResult result;
@@ -75,39 +105,34 @@ void check_player_block(int x, int y) {
 	// bottom left player to top block / bottom right player to top blovk
 	Line pbl = {miner.x+miner.width/2-1, miner.y+miner.height/2, miner.x+miner.width/2-1, miner.y};
 	result = islinesintersecting(pbl, blkt);
-	if (result.isIntersecting) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-200, 200), randfloat(-100, -300), 1, COLOR_WHITE); } }
-	if (result.isIntersecting) resolve_player_collision(COLLISION_BOTTOM, result, x, y);
+	resolve_player_collision(COLLISION_BOTTOM, result, x, y);
 	Line pbr = {miner.x-miner.width/2+1, miner.y+miner.height/2, miner.x-miner.width/2+1, miner.y};
 	result = islinesintersecting(pbr, blkt);
-	if (result.isIntersecting && miner.vy/64 > 20.0f ) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-200, 200), randfloat(-100, -300), 1, COLOR_WHITE); miner.health-=miner.vy/64; } }
-	if (result.isIntersecting) resolve_player_collision(COLLISION_BOTTOM, result, x, y);
+	resolve_player_collision(COLLISION_BOTTOM, result, x, y);
 
 	// top left player to bottom block / top right player to bottom block
 	Line ptl = {miner.x+miner.width/2-1, miner.y-miner.height/2, miner.x+miner.width/2-1, miner.y};
 	result = islinesintersecting(ptl, blkb);
-	if (result.isIntersecting) resolve_player_collision(COLLISION_TOP, result, x, y);
+	resolve_player_collision(COLLISION_TOP, result, x, y);
 	Line ptr = {miner.x-miner.width/2+1, miner.y-miner.height/2, miner.x-miner.width/2+1, miner.y};
 	result = islinesintersecting(ptr, blkb);
-	if (result.isIntersecting) resolve_player_collision(COLLISION_TOP, result, x, y);
+	resolve_player_collision(COLLISION_TOP, result, x, y);
 
 	// left top player to right block / left bottom player to right block
 	Line plt = {miner.x-miner.width/2, miner.y+miner.height/2-1, miner.x, miner.y+miner.height/2-1};
 	result = islinesintersecting(plt, blkr);
-	if (result.isIntersecting) resolve_player_collision(COLLISION_LEFT, result, x, y);
+	resolve_player_collision(COLLISION_LEFT, result, x, y);
 	Line plb = {miner.x-miner.width/2, miner.y-miner.height/2+1, miner.x, miner.y-miner.height/2+1};
 	result = islinesintersecting(plb, blkr);
-	if (result.isIntersecting) resolve_player_collision(COLLISION_LEFT, result, x, y);
-	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.a && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx+1, miner.y, randfloat(-100, 0), randfloat(-100, 100), 1, COLOR_WHITE);
+	resolve_player_collision(COLLISION_LEFT, result, x, y);
 
 	// right top player to left block / right bottom player to left block
 	Line prt = {miner.x+miner.width/2, miner.y+miner.height/2-1, miner.x, miner.y+miner.height/2-1};
 	result = islinesintersecting(prt, blkl);
-	if (result.isIntersecting) resolve_player_collision(COLLISION_RIGHT, result, x, y);
+	resolve_player_collision(COLLISION_RIGHT, result, x, y);
 	Line prb = {miner.x+miner.width/2, miner.y-miner.height/2+1, miner.x, miner.y-miner.height/2+1};
 	result = islinesintersecting(prb, blkl);
-	if (result.isIntersecting) resolve_player_collision(COLLISION_RIGHT, result, x, y);
-	if (result.isIntersecting && randint(0, 10000) < miner.vy-315 && key.d && abs(miner.vy) > 300 ) create_particle(P_GRAVITY, result.cx-1, miner.y, randfloat(-100, 0), randfloat(-100, 100), 1, COLOR_WHITE);
-
+	resolve_player_collision(COLLISION_RIGHT, result, x, y);
 }
 
 void check_player_collision() {
@@ -169,6 +194,7 @@ void update_player(bool active) {
 		miner.falling+=1*dt;
 		miner.jumptimer-=1*dt;
 		miner.healtimer-=1*dt;
+		miner.scaffoldtimer-=1*dt;
 
 		if (set.gamemode == GM_SURVIVAL) {
 			if (key.a) miner.vx -= 2000 * dt;
@@ -200,7 +226,7 @@ void update_player(bool active) {
 			check_player_collision();
 		}
 
-		if ( miner.y/64 > WORLD_HEIGHT + 15) { miner.health -= 20*dt; miner.healtimer=3; }
+		if ( miner.y/64 > WORLD_HEIGHT + 15) { miner.health -= 50*dt; miner.healtimer=3; }
 		if (miner.healtimer <= 0) { miner.health+=20*dt; }
 		if (miner.health > 100) miner.health = 100;
 

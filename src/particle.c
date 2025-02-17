@@ -96,19 +96,19 @@ void check_particle_block(int i, int x, int y) {
 
     Line pb = {particles[i]->x, particles[i]->y, particles[i]->x, particles[i]->y+5};
 	result = islinesintersecting(pb, blkt);
-    if (result.isIntersecting) resolve_particle_collision(i, COLLISION_BOTTOM, result, x, y);
+    resolve_particle_collision(i, COLLISION_BOTTOM, result, x, y);
 
     Line pt = {particles[i]->x, particles[i]->y-5, particles[i]->x, particles[i]->y};
 	result = islinesintersecting(pt, blkb);
-    if (result.isIntersecting) resolve_particle_collision(i, COLLISION_TOP, result, x, y);
+    resolve_particle_collision(i, COLLISION_TOP, result, x, y);
 
     Line pl = {particles[i]->x-5, particles[i]->y, particles[i]->x, particles[i]->y};
 	result = islinesintersecting(pl, blkr);
-    if (result.isIntersecting) resolve_particle_collision(i, COLLISION_LEFT, result, x, y);
+    resolve_particle_collision(i, COLLISION_LEFT, result, x, y);
 
     Line pr = {particles[i]->x, particles[i]->y, particles[i]->x+5, particles[i]->y};
 	result = islinesintersecting(pr, blkl);
-    if (result.isIntersecting) resolve_particle_collision(i, COLLISION_RIGHT, result, x, y);
+    resolve_particle_collision(i, COLLISION_RIGHT, result, x, y);
 
 }	
 

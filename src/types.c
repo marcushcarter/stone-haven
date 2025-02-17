@@ -46,6 +46,7 @@ typedef struct {
     float jumptimer;
     float breaktimer;
     float healtimer;
+    float scaffoldtimer;
 
     int inventory_slot;
 } Player;
@@ -56,7 +57,7 @@ Player miner = {
     0.0f, 0.0f, 0.0f, 0.0f, 400.0f, 100.0f,
     // 0.0f, 0.0f, 0.0f, 0.0f, 500.0f, 100.0f,
     50.0f, 50.0f,
-    0.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
     0
     
 };
@@ -130,7 +131,7 @@ typedef struct {
 */
 
 #define MAX_PARTICLES 10000
-#define MAX_INVENTORY_SIZE 2
+#define MAX_INVENTORY_SIZE 10
 
 clock_t previous_time = 0;
 float dt;

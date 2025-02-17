@@ -35,30 +35,60 @@ bool generate_world() {
     
     */
 
-    // set all blocks to air
     for (int x = 0; x < WORLD_WIDTH; x++){
         for (int y = 0; y < WORLD_HEIGHT; y++){
             world[x][y] = block[BLOCK_STONE];
         }
     }
 
-    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 4);
     for (int x = 0; x < WORLD_WIDTH; x++){
         for (int y = 0; y < WORLD_HEIGHT; y++){
-            if (grid[y][x] == 0) {
-                world[x][y] = block[BLOCK_BLACKSTONE];
-            }
+            world[x][y] = block[randint(0, BLOCK_COUNT-3)];
         }
     }
 
-    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 6);
-    for (int x = 0; x < WORLD_WIDTH; x++){
-        for (int y = 0; y < WORLD_HEIGHT; y++){
-            if (grid[y][x] == 1) {
-                world[x][y] = block[BLOCK_AIR];
-            }
-        }
-    }
+    // for (int x = 0; x < WORLD_WIDTH; x++){
+    //     for (int y = 0; y < WORLD_HEIGHT; y++){
+    //         if (x % 2 == 1) world[x][y] = block[BLOCK_LADDER];
+    //         if (x % 2 == 0) world[x][y] = block[BLOCK_GRASS];
+    //     }
+    // }
+
+    // generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 4);
+    // for (int x = 0; x < WORLD_WIDTH; x++){
+    //     for (int y = 0; y < WORLD_HEIGHT; y++){
+    //         if (grid[y][x] == 0) {
+    //             world[x][y] = block[BLOCK_BOOKSHELF];
+    //         }
+    //     }
+    // }
+
+    // generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 4);
+    // for (int x = 0; x < WORLD_WIDTH; x++){
+    //     for (int y = 0; y < WORLD_HEIGHT; y++){
+    //         if (grid[y][x] == 0) {
+    //             world[x][y] = block[BLOCK_GRASS];
+    //         }
+    //     }
+    // }
+
+    // generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 4);
+    // for (int x = 0; x < WORLD_WIDTH; x++){
+    //     for (int y = 0; y < WORLD_HEIGHT; y++){
+    //         if (grid[y][x] == 0) {
+    //             world[x][y] = block[BLOCK_BLACK_STONE];
+    //         }
+    //     }
+    // }
+
+    // generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 6);
+    // for (int x = 0; x < WORLD_WIDTH; x++){
+    //     for (int y = 0; y < WORLD_HEIGHT; y++){
+    //         if (grid[y][x] == 1) {
+    //             world[x][y] = block[BLOCK_AIR];
+    //         }
+    //     }
+    // }
 
     // spawn box and worldborder
     for (int x = 0; x < 3; x++){ for (int y = 0; y < 3; y++){ world[(int)(x+WORLD_WIDTH/2-5/2)][(int) (y+WORLD_HEIGHT/2-3/2)] = block[BLOCK_AIR]; } }
