@@ -230,58 +230,58 @@ void render_world(bool active) {
 
 void update_blocks(bool active) {
 	if (active && set.gamemode != GM_FREECAM) {
-		for (int x = 0; x < WORLD_WIDTH; x++) {
-			for (int y = 0; y < WORLD_HEIGHT; y++) {
-				if (world[x][y] == NULL) continue;
-                if (distance2d(camera.x+(win.sw2), camera.y+(win.sh2), x, y) > set.update_distance*64) continue;
+	for (int x = 0; x < WORLD_WIDTH; x++) {
+	for (int y = 0; y < WORLD_HEIGHT; y++) {
+		if (world[x][y] == NULL) continue;
+        if (distance2d(camera.x+(win.sw2), camera.y+(win.sh2), x, y) > set.update_distance*64) continue;
 
-                if (
-                    (
-                        // a plant (grass or vase below)
-                        world[x][y+1] != block[BLOCK_DIRT] && world[x][y+1] != block[BLOCK_VASE] && (
-                            world[x][y] == block[BLOCK_MUSHROOM] || 
-                            world[x][y] == block[BLOCK_IRIS_FLOWER] || 
-                            world[x][y] == block[BLOCK_ROSE] || 
-                            world[x][y] == block[BLOCK_GRASS]
-                        )
-                    )
 
-                    || (
-                        // must have solid block below and above
-                        world[x][y-1] == block[BLOCK_AIR] && world[x][y+1] == block[BLOCK_AIR] && (
-                            world[x][y] == block[BLOCK_CHAIN] ||
-                            world[x][y] == block[BLOCK_VASE] 
-                        )
-                    )
+    
+        if ( // a plant block must have dirt or vase under it
+            world[x][y+1] != block[BLOCK_DIRT] && world[x][y+1] != block[BLOCK_VASE] && (
+                world[x][y] == block[BLOCK_MUSHROOM] || 
+                world[x][y] == block[BLOCK_IRIS_FLOWER] || 
+                world[x][y] == block[BLOCK_ROSE] || 
+                world[x][y] == block[BLOCK_GRASS]
+            )
+        ) { add_to_inventory(world[x][y]); world[x][y] = block[BLOCK_AIR]; }
 
-                    || (
-                        // must have a block below it
-                        world[x][y+1] == block[BLOCK_AIR] && (0==1)
-                    )
 
-                    || (
-                        //must have a block above it
-                        world[x][y-1] == block[BLOCK_AIR] && (
-                            world[x][y] == block[BLOCK_LANTERN]
-                        )
-                    )
 
-                )
+        if ( // must have solid block below and above
+            world[x][y-1] == block[BLOCK_AIR] && world[x][y+1] == block[BLOCK_AIR] && (
+                world[x][y] == block[BLOCK_CHAIN] ||
+                world[x][y] == block[BLOCK_VASE] 
+            )
+        ) { add_to_inventory(world[x][y]); world[x][y] = block[BLOCK_AIR]; }
 
-                { 
-                    add_to_inventory(world[x][y]);
-                    world[x][y] = block[BLOCK_AIR];
-                }
 
-                // particle to blocks
 
-                if (set.particles) {
-                    if (world[x][y] == block[BLOCK_LANTERN]) { if (randint(0, 250) == 0) create_particle(P_FLOAT, x*64, y*64, randfloat(-20, 20), randfloat(100, 100), 1.0f, COLOR_ORANGE); }
-                    // if (world[x][y] == block[BLOCK_LANTERN]) { if (randint(0, 100) == 0) create_particle(P_FALL, x*64, y*64, randfloat(-20, 20), randfloat(100, 100), 1.0f, COLOR_WHITE); }
-                }
+        if ( // must have a block below it
+            world[x][y+1] == block[BLOCK_AIR] && (
+                0==1
+            )
+        ) { add_to_inventory(world[x][y]); world[x][y] = block[BLOCK_AIR]; }
 
-			}
-		}
+
+        
+        if ( // must have a block above it
+            world[x][y-1] == block[BLOCK_AIR] && (
+                world[x][y] == block[BLOCK_LANTERN]
+            )
+        ) { add_to_inventory(world[x][y]); world[x][y] = block[BLOCK_AIR]; }
+
+
+
+        if (set.particles) { // particle to blocks
+            if (world[x][y] == block[BLOCK_LANTERN]) { if (randint(0, 250) == 0) create_particle(P_FLOAT, x*64, y*64, randfloat(-20, 20), randfloat(100, 100), 1.0f, COLOR_ORANGE); }
+            // if (world[x][y] == block[BLOCK_LANTERN]) { if (randint(0, 100) == 0) create_particle(P_FALL, x*64, y*64, randfloat(-20, 20), randfloat(100, 100), 1.0f, COLOR_WHITE); }
+        }
+
+        
+
+	}
+	}
 	}
 }
 
