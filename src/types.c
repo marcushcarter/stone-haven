@@ -63,6 +63,22 @@ Player miner = {
 };
 
 typedef enum {
+    P_GRAVITY,
+    P_EASE,
+    P_FLOAT,
+    P_FALL,
+} ParticleType;
+
+typedef struct {
+    ParticleType type;
+    float life;
+    float x, y, vx, vy;
+    int color;
+} Particle;
+
+// void create_particle(ParticleType type, float x, float y, float vx, float vy, float life, int color);
+
+typedef enum {
     GM_SURVIVAL,
     GM_CREATIVE,
     GM_FREECAM,

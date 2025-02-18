@@ -163,3 +163,5 @@ void update_keystates(bool active) {
 		key.f12 = key.keystate[SDL_SCANCODE_F12] ? 1 : 0;
 	}
 }
+
+void create_particle(ParticleType type, float x, float y, float vx, float vy, float life, int color);

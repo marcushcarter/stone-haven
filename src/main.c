@@ -14,6 +14,7 @@
 #include "textures.c"
 #include "common.c"
 #include "world.c"
+#include "inventory.c"
 #include "particle.c"
 #include "player.c"
 #include "menu.c"
@@ -52,11 +53,12 @@ void update() {
 
 	if (dt > 0.3) return;
 
+	
+	update_blocks(true);
 	update_keystates(true);
 	alternate_controls(true);
   	editor_controls(true);
 	update_player(true);
-	update_blocks(true);
 	update_particles(true);
 
 	camera.x += (camera.targetx - camera.x - win.sw2) * 10.0f * dt;
@@ -98,9 +100,24 @@ void AppIterate() {
 }
 
 void AppInit() {
-	
+
     running = true;
 	srand(time(NULL));
+
+	make_blocks();
+	if (!load_world("gamesaves/world.save")) {
+			miner.x = WORLD_WIDTH*32;
+			miner.y = WORLD_HEIGHT*32;
+			miner.vx = 0;
+			miner.vy = 0;
+		if (!generate_world()) {
+			printf("Error generating world: %s", SDL_GetError());
+			running = false;
+		}
+	}
+
+	camera.x += (miner.x - win.sw2);
+	camera.y += (miner.y - win.sh2);
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
     	printf("Error initializing SDL: %s", SDL_GetError());
@@ -132,21 +149,6 @@ void AppInit() {
     //     running = false;
     // }
 	// SDL_SetWindowIcon(window, icon);
-
-	make_blocks();
-	if (!load_world("gamesaves/world.save")) {
-			miner.x = WORLD_WIDTH*32;
-			miner.y = WORLD_HEIGHT*32;
-			miner.vx = 0;
-			miner.vy = 0;
-		if (!generate_world()) {
-			printf("Error generating world: %s", SDL_GetError());
-			running = false;
-		}
-	}
-
-	camera.x += (miner.x - win.sw2);
-	camera.y += (miner.y - win.sh2);
 
 }
 

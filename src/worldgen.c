@@ -1,6 +1,8 @@
 
 #include "noise.c"
 
+void destroy_particles();
+
 typedef enum {
     STRUCT1,
 } StructureType;
@@ -37,20 +39,27 @@ bool generate_world() {
 
     for (int x = 0; x < WORLD_WIDTH; x++){
         for (int y = 0; y < WORLD_HEIGHT; y++){
-            world[x][y] = block[BLOCK_STONE];
-        }
-    }
-
-    for (int x = 0; x < WORLD_WIDTH; x++){
-        for (int y = 0; y < WORLD_HEIGHT; y++){
-            world[x][y] = block[randint(0, BLOCK_COUNT-3)];
+            world[x][y] = block[BLOCK_DIRT];
         }
     }
 
     // for (int x = 0; x < WORLD_WIDTH; x++){
     //     for (int y = 0; y < WORLD_HEIGHT; y++){
-    //         if (x % 2 == 1) world[x][y] = block[BLOCK_LADDER];
-    //         if (x % 2 == 0) world[x][y] = block[BLOCK_GRASS];
+    //         world[x][y] = block[randint(0, BLOCK_COUNT-1)];
+    //     }
+    // }
+
+    // for (int x = 0; x < WORLD_WIDTH; x++){
+    //     for (int y = 0; y < WORLD_HEIGHT; y++){
+    //         if (world[x][y] == block[BLOCK_AIR]) world[x][y] = block[BLOCK_GRASS];
+    //     }
+    // }
+
+    // for (int x = 0; x < WORLD_WIDTH; x++){
+    //     for (int y = 0; y < WORLD_HEIGHT; y++){
+    //         if (y != WORLD_HEIGHT - 3) continue;
+    //         if (x % 10 < 5) world[x][y] = block[BLOCK_STONE];
+    //         if (x % 10 > 5) world[x][y] = block[BLOCK_SNOW];
     //     }
     // }
 
@@ -66,9 +75,11 @@ bool generate_world() {
     // generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 4);
     // for (int x = 0; x < WORLD_WIDTH; x++){
     //     for (int y = 0; y < WORLD_HEIGHT; y++){
-    //         if (grid[y][x] == 0) {
+    //         // if (grid[y][x] == 0) {
+    //         if (world[x][y] == block[BLOCK_AIR]) {
     //             world[x][y] = block[BLOCK_GRASS];
     //         }
+    //         // }
     //     }
     // }
 
@@ -81,24 +92,39 @@ bool generate_world() {
     //     }
     // }
 
-    // generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 6);
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 6);
+    for (int x = 0; x < WORLD_WIDTH; x++){
+        for (int y = 0; y < WORLD_HEIGHT; y++){
+            if (grid[y][x] == 1) {
+                world[x][y] = block[BLOCK_AIR];
+            }
+        }
+    }
+
     // for (int x = 0; x < WORLD_WIDTH; x++){
     //     for (int y = 0; y < WORLD_HEIGHT; y++){
-    //         if (grid[y][x] == 1) {
-    //             world[x][y] = block[BLOCK_AIR];
+    //         // if (grid[y][x] == 0) {
+    //         if (world[x][y] == block[BLOCK_AIR]) {
+    //             world[x][y] = block[BLOCK_GRASS];
     //         }
+    //         // }
     //     }
     // }
 
+
     // spawn box and worldborder
-    for (int x = 0; x < 3; x++){ for (int y = 0; y < 3; y++){ world[(int)(x+WORLD_WIDTH/2-5/2)][(int) (y+WORLD_HEIGHT/2-3/2)] = block[BLOCK_AIR]; } }
-    for (int x = 0; x < WORLD_WIDTH; x++) { world[x][1] = block[BLOCK_WORLD_BORDER]; world[x][WORLD_HEIGHT - 2] = block[BLOCK_WORLD_BORDER]; }
+    for (int x = 0; x < 3; x++){ for (int y = 0; y < 3; y++){ world[(int)(x+WORLD_WIDTH/2-5/2)][(int) (y+WORLD_HEIGHT/2-3/2)] = block[BLOCK_ROSE]; } }
+    for (int x = 0; x < WORLD_WIDTH; x++) { world[x][1] = block[BLOCK_SNOW]; world[x][WORLD_HEIGHT - 2] = block[BLOCK_WORLD_BORDER]; }
     for (int y = 0; y < WORLD_HEIGHT; y++) { world[1][y] = block[BLOCK_WORLD_BORDER]; world[WORLD_WIDTH - 2][y] = block[BLOCK_WORLD_BORDER]; }
 
     miner.x = (WORLD_WIDTH-2)*32;
     miner.y = (WORLD_HEIGHT+2)*32;
     miner.vx = 0;
     miner.vy = 0;
+
+    update_blocks(true);
+    destroy_particles();
+    clear_inventory();
 
     return true;
 }

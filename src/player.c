@@ -1,6 +1,4 @@
 
-#include "inventory.c"
-
 void resolve_player_collision(CollisionType type, IntersectionResult result, int x, int y) {
 
 	/*	Explanation time:
@@ -30,14 +28,18 @@ void resolve_player_collision(CollisionType type, IntersectionResult result, int
 		}
 
 		if (type == COLLISION_BOTTOM) {
-			if (miner.vy/64 > 20.0f && world[x][y]->solid) { for (int i = 0; i < round(miner.vy/500); i++ ) { create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-200, 200), randfloat(-100, -300), 1, COLOR_WHITE); miner.health-=miner.vy/64; } }
+			if (world[x][y]->solid) { 
+				for (int i = 0; i < round(miner.vy/500); i++ ) { 
+					create_particle(P_GRAVITY, miner.x, result.cy-5, randfloat(-200, 200), randfloat(0, -300), 1, COLOR_WHITE); 
+				}
+			}
 			
-			if (miner.vy > 20*64) {  //add blocks that break your fall to this condition
-				miner.health -= miner.vy/32; 
+			if (miner.vy/64 > 20 && world[x][y] != block[BLOCK_SNOW]) {  //add blocks that break your fall to this condition
+				miner.health -= (miner.vy-20)/32; 
 				miner.healtimer=3;
 			}
 			
-			if (world[x][y] == block[BLOCK_BOUNCE_PAD]) {
+			if (world[x][y] == block[BLOCK_SNOW]) {
 				miner.vy *= -0.3;
 				miner.y = result.cy - miner.height/2;
 				miner.falling=0;
@@ -247,7 +249,7 @@ void update_player(bool active) {
 
 
 		if (mouse.r && world[mouse.worldx][mouse.worldy] != NULL && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 && world[mouse.worldx][mouse.worldy] == block[BLOCK_AIR]
-		&& (world[mouse.worldx][mouse.worldy-1]->solid || world[mouse.worldx][mouse.worldy+1]->solid || world[mouse.worldx-1][mouse.worldy]->solid || world[mouse.worldx+1][mouse.worldy]->solid) 
+		&& (world[mouse.worldx][mouse.worldy-1] != block[BLOCK_AIR] || world[mouse.worldx][mouse.worldy+1] != block[BLOCK_AIR] || world[mouse.worldx-1][mouse.worldy] != block[BLOCK_AIR] || world[mouse.worldx+1][mouse.worldy] != block[BLOCK_AIR])  
 		) {
 			place_block(mouse.worldx, mouse.worldy);
 		}

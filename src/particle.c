@@ -1,18 +1,3 @@
-
-typedef enum {
-    P_GRAVITY,
-    P_EASE,
-    P_FLOAT,
-    P_FALL,
-} ParticleType;
-
-typedef struct {
-    ParticleType type;
-    float life;
-    float x, y, vx, vy;
-    int color;
-} Particle;
-
 Particle* particles[MAX_PARTICLES] = {NULL};
 
 void create_particle(ParticleType type, float x, float y, float vx, float vy, float life, int color) {
@@ -164,6 +149,18 @@ void update_particles(bool active) {
                 if (particles[i]->type == P_EASE) {
                     particles[i]->vx *= 0.99;
                     particles[i]->vy *= 0.99;
+                    particles[i]->x += particles[i]->vx * dt/iterations;
+                    particles[i]->y += particles[i]->vy * dt/iterations;
+                }
+
+                if (particles[i]->type == P_FLOAT) {
+                    particles[i]->vy = -50;
+                    particles[i]->x += particles[i]->vx * dt/iterations;
+                    particles[i]->y += particles[i]->vy * dt/iterations;
+                }
+
+                if (particles[i]->type == P_FALL) {
+                    particles[i]->vy = 50;
                     particles[i]->x += particles[i]->vx * dt/iterations;
                     particles[i]->y += particles[i]->vy * dt/iterations;
                 }

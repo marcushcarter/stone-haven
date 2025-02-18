@@ -4,6 +4,7 @@ typedef enum {
 	COLOR_WHITE,
 	COLOR_RED,
 	COLOR_GREY,
+	COLOR_ORANGE,
 } Colors;
 
 Uint8 colors[100][3] = {
@@ -11,6 +12,7 @@ Uint8 colors[100][3] = {
   	{255,255,255},  //1-White
   	{255,0,0},      //2-Red
   	{100,100,100},  //3-grey
+	{255, 85,  0},	//4-orange
 };
 
 SDL_Texture* texture;
