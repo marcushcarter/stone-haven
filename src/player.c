@@ -165,8 +165,12 @@ void check_player_collision() {
 void break_block(int worldx, int worldy) {
 	if (world[worldx][worldy]->breakable ) {
 		add_to_inventory(world[worldx][worldy]);
+		if (world[worldx][worldy]->solid) {
+			for (int i = 0; i < randint(2, 5); i++) create_particle(P_GRAVITY, worldx*64+randfloat(-32, 32), worldy*64+randfloat(-32, 32), randfloat(-100, 100), randfloat(-100, 100), 1.0f, COLOR_WHITE);
+		} else if (!world[worldx][worldy]->solid) {
+			for (int i = 0; i < randint(1, 3); i++) create_particle(P_GRAVITY, worldx*64, worldy*64, randfloat(-100, 100), randfloat(-100, 100), 1.0f, COLOR_WHITE);
+		}
 		world[worldx][worldy] = block[BLOCK_AIR];
-		for (int i = 0; i < randint(2, 5); i++) create_particle(P_GRAVITY, worldx*64+randfloat(-32, 32), worldy*64+randfloat(-32, 32), randfloat(-100, 100), randfloat(-100, 100), 1.0f, COLOR_WHITE);
 		miner.breaktimer = 0;
 	}
 }
@@ -242,8 +246,8 @@ void update_player(bool active) {
 		}
 
 		// inventory slot management
-		if (key.upa) miner.inventory_slot+=1;
-		if (key.downa) miner.inventory_slot-=1;
+		if (!key.upa_ && key.upa) miner.inventory_slot+=1;
+		if (!key.downa_ && key.downa) miner.inventory_slot-=1;
 		if (miner.inventory_slot > MAX_INVENTORY_SIZE-1) miner.inventory_slot = MAX_INVENTORY_SIZE-1;
 		if (miner.inventory_slot < 0) miner.inventory_slot = 0;
 

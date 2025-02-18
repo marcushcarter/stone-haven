@@ -107,8 +107,9 @@ typedef struct Block {
     float brightness;     // brightness of the block based on distance from the camera
 } Block;
 
+// void break_block(int worldx, int worldy);
 void add_to_inventory(Block* block);
-void remove_from_inventory(Block* block);
+// void remove_from_inventory(Block* block);
 void clear_inventory();
 
 Block* make_block(BlockType type, bool solid, bool breakable) {
@@ -234,47 +235,42 @@ void update_blocks(bool active) {
 				if (world[x][y] == NULL) continue;
                 if (distance2d(camera.x+(win.sw2), camera.y+(win.sh2), x, y) > set.update_distance*64) continue;
 
-                // must have solid block below and above
-                if (world[x][y-1] == block[BLOCK_AIR] && world[x][y+1] == block[BLOCK_AIR]) {
-                    if (
-                        world[x][y] == block[BLOCK_CHAIN] ||
-                        world[x][y] == block[BLOCK_VASE] 
-                    ) {
-                        add_to_inventory(world[x][y]);
-                        world[x][y] = block[BLOCK_AIR];
-                    }
-                }
+                if (
+                    (
+                        // a plant (grass or vase below)
+                        world[x][y+1] != block[BLOCK_DIRT] && world[x][y+1] != block[BLOCK_VASE] && (
+                            world[x][y] == block[BLOCK_MUSHROOM] || 
+                            world[x][y] == block[BLOCK_IRIS_FLOWER] || 
+                            world[x][y] == block[BLOCK_ROSE] || 
+                            world[x][y] == block[BLOCK_GRASS]
+                        )
+                    )
 
-                // must have solid block above
-                if (world[x][y-1] == block[BLOCK_AIR]) {
-                    if (
-                        world[x][y] == block[BLOCK_LANTERN]
-                    ) {
-                        add_to_inventory(world[x][y]);
-                        world[x][y] = block[BLOCK_AIR];
-                    }
-                }
+                    || (
+                        // must have solid block below and above
+                        world[x][y-1] == block[BLOCK_AIR] && world[x][y+1] == block[BLOCK_AIR] && (
+                            world[x][y] == block[BLOCK_CHAIN] ||
+                            world[x][y] == block[BLOCK_VASE] 
+                        )
+                    )
 
-                // must have solid block below
-                if (world[x][y+1] == block[BLOCK_AIR]) {
-                    // if (world[x][y] == block[BLOCK_PYLON]) {
-                    //     add_to_inventory(world[x][y]);
-                    //     world[x][y] = block[BLOCK_AIR];
-                    //     if (set.particles) { for (int i = 0; i < randint(1, 3); i++) create_particle(P_GRAVITY, x*64+randfloat(-5, 5), y*64+randfloat(-5, 5), randfloat(-100, 100), randfloat(-100, 100), 1.0f, COLOR_WHITE); }
-                    // }
-                }
+                    || (
+                        // must have a block below it
+                        world[x][y+1] == block[BLOCK_AIR] && (0==1)
+                    )
 
-                // a plant (grass or vase below)
-                if (world[x][y+1] != block[BLOCK_DIRT] && world[x][y+1] != block[BLOCK_VASE]) {
-                    if (
-                        world[x][y] == block[BLOCK_MUSHROOM] || 
-                        world[x][y] == block[BLOCK_IRIS_FLOWER] || 
-                        world[x][y] == block[BLOCK_ROSE] || 
-                        world[x][y] == block[BLOCK_GRASS]
-                    ) {
-                        add_to_inventory(world[x][y]);
-                        world[x][y] = block[BLOCK_AIR];
-                    }
+                    || (
+                        //must have a block above it
+                        world[x][y-1] == block[BLOCK_AIR] && (
+                            world[x][y] == block[BLOCK_LANTERN]
+                        )
+                    )
+
+                )
+
+                { 
+                    add_to_inventory(world[x][y]);
+                    world[x][y] = block[BLOCK_AIR];
                 }
 
                 // particle to blocks

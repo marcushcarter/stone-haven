@@ -8,6 +8,15 @@ typedef struct {
     unsigned char enter : 1, tab : 1, shift : 1, space : 1, escape : 1, ctrl : 1, alt : 1, backspace : 1; 
     unsigned char upa : 1, downa : 1, lefta : 1, righta : 1;
     unsigned char f1 : 1, f2 : 1, f3 : 1, f4 : 1, f5 : 1, f6 : 1, f7 : 1, f8 : 1, f9 : 1, f10 : 1, f11 : 1, f12 : 1;
+
+    unsigned char a_ : 1, b_ : 1, c_ : 1, d_ : 1, e_ : 1, f_ : 1, g_ : 1, h_ : 1, i_ : 1;
+    unsigned char j_ : 1, k_ : 1, l_ : 1, m_ : 1, n_ : 1, o_ : 1, p_ : 1, q_ : 1, r_ : 1;
+    unsigned char s_ : 1, t_ : 1, u_ : 1, v_ : 1, w_ : 1, x_ : 1, y_ : 1, z_ : 1;
+    unsigned char n1_ : 1, n2_ : 1, n3_ : 1, n4_ : 1, n5_ : 1, n6_ : 1, n7_ : 1, n8_ : 1, n9_ : 1, n0_ : 1;
+    unsigned char enter_ : 1, tab_ : 1, shift_ : 1, space_ : 1, escape_ : 1, ctrl_ : 1, alt_ : 1, backspace_ : 1;
+    unsigned char upa_ : 1, downa_ : 1, lefta_ : 1, righta_ : 1;
+    unsigned char f1_ : 1, f2_ : 1, f3_ : 1, f4_ : 1, f5_ : 1, f6_ : 1, f7_ : 1, f8_ : 1, f9_ : 1, f10_ : 1, f11_ : 1, f12_ : 1;
+
 } keyio; keyio key;
 
 typedef struct {
@@ -147,7 +156,7 @@ typedef struct {
 */
 
 #define MAX_PARTICLES 10000
-#define MAX_INVENTORY_SIZE 10
+#define MAX_INVENTORY_SIZE 15
 
 clock_t previous_time = 0;
 float dt;

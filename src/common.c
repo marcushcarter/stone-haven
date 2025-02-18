@@ -93,6 +93,72 @@ void update_keystates(bool active) {
 		if (!mouse.prev_r && mouse.r) { mouse.rp = 1; } else { mouse.rp = 0; }
 		if (!mouse.prev_m && mouse.m) { mouse.mp = 1; } else { mouse.mp = 0; }
 
+		// keystates last frame
+
+		key.a_ = key.a ? 1 : 0;
+		key.b_ = key.b ? 1 : 0;
+		key.c_ = key.c ? 1 : 0;
+		key.d_ = key.d ? 1 : 0;
+		key.e_ = key.e ? 1 : 0;
+		key.f_ = key.f ? 1 : 0;
+		key.g_ = key.g ? 1 : 0;
+		key.h_ = key.h ? 1 : 0;
+		key.i_ = key.i ? 1 : 0;
+		key.j_ = key.j ? 1 : 0;
+		key.k_ = key.k ? 1 : 0;
+		key.l_ = key.l ? 1 : 0;
+		key.m_ = key.m ? 1 : 0;
+		key.n_ = key.n ? 1 : 0;
+		key.o_ = key.o ? 1 : 0;
+		key.p_ = key.p ? 1 : 0;
+		key.q_ = key.q ? 1 : 0;
+		key.r_ = key.r ? 1 : 0;
+		key.s_ = key.s ? 1 : 0;
+		key.t_ = key.t ? 1 : 0;
+		key.u_ = key.u ? 1 : 0;
+		key.v_ = key.v ? 1 : 0;
+		key.w_ = key.w ? 1 : 0;
+		key.x_ = key.x ? 1 : 0;
+		key.y_ = key.y ? 1 : 0;
+		key.z_ = key.z ? 1 : 0;
+		key.n1_ = key.n1 ? 1 : 0;
+		key.n2_ = key.n2 ? 1 : 0;
+		key.n3_ = key.n3 ? 1 : 0;
+		key.n4_ = key.n4 ? 1 : 0;
+		key.n5_ = key.n5 ? 1 : 0;
+		key.n6_ = key.n6 ? 1 : 0;
+		key.n7_ = key.n7 ? 1 : 0;
+		key.n8_ = key.n8 ? 1 : 0;
+		key.n9_ = key.n9 ? 1 : 0;
+		key.n0_ = key.n0 ? 1 : 0;
+		key.enter_ = key.enter ? 1 : 0;
+		key.tab_ = key.tab ? 1 : 0;
+		key.shift_ = key.shift ? 1 : 0;
+		key.space_ = key.space ? 1 : 0;
+		key.escape_ = key.escape ? 1 : 0;
+		key.ctrl_ = key.ctrl ? 1 : 0;
+		key.alt_ = key.alt ? 1 : 0;
+		key.backspace_ = key.backspace ? 1 : 0;
+		key.upa_ = key.upa ? 1 : 0;
+		key.downa_ = key.downa ? 1 : 0;
+		key.lefta_ = key.lefta ? 1 : 0;
+		key.righta_ = key.righta ? 1 : 0;
+		key.f1_ = key.f1 ? 1 : 0;
+		key.f2_ = key.f2 ? 1 : 0;
+		key.f3_ = key.f3 ? 1 : 0;
+		key.f4_ = key.f4 ? 1 : 0;
+		key.f5_ = key.f5 ? 1 : 0;
+		key.f6_ = key.f6 ? 1 : 0;
+		key.f7_ = key.f7 ? 1 : 0;
+		key.f8_ = key.f8 ? 1 : 0;
+		key.f9_ = key.f9 ? 1 : 0;
+		key.f10_ = key.f10 ? 1 : 0;
+		key.f11_ = key.f11 ? 1 : 0;
+		key.f12_ = key.f12 ? 1 : 0;
+
+
+		// keystates this frame
+
 		key.keystate = (const Uint8*)SDL_GetKeyboardState(NULL);  // Retrieve current keyboard state
 
 		key.a = key.keystate[SDL_SCANCODE_A] ? 1 : 0;
@@ -161,6 +227,8 @@ void update_keystates(bool active) {
 		key.f10 = key.keystate[SDL_SCANCODE_F10] ? 1 : 0;
 		key.f11 = key.keystate[SDL_SCANCODE_F11] ? 1 : 0;
 		key.f12 = key.keystate[SDL_SCANCODE_F12] ? 1 : 0;
+
+
 	}
 }
 
