@@ -20,6 +20,11 @@ bool generate_world() {
         grid[i] = (int *)malloc(WORLD_WIDTH * sizeof(int));
     }
 
+    int **grid2 = (int **)malloc(WORLD_HEIGHT * sizeof(int *));
+    for (int i = 0; i < WORLD_HEIGHT; i++) {
+        grid2[i] = (int *)malloc(WORLD_WIDTH * sizeof(int));
+    }
+
     /* World Generation Process: 
         
         1.) sets all blocks to AIR to initialize all blocks from NULL
@@ -37,60 +42,92 @@ bool generate_world() {
     
     */
 
+    // STONE BLOCKS
+
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.5, 3);
     for (int x = 0; x < WORLD_WIDTH; x++){
         for (int y = 0; y < WORLD_HEIGHT; y++){
-            world[x][y] = block[BLOCK_DIRT];
+            world[x][y] = block[BLOCK_STONE];
+            if (grid[y][x] == 1) {
+                world[x][y] = block[BLOCK_SMOOTH_STONE];
+            }
         }
     }
 
-    // for (int x = 0; x < WORLD_WIDTH; x++){
-    //     for (int y = 0; y < WORLD_HEIGHT; y++){
-    //         world[x][y] = block[randint(0, BLOCK_COUNT-1)];
-    //     }
-    // }
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.45, 3);
+    generate_cave(grid2, WORLD_WIDTH, WORLD_HEIGHT, 0.5, 3);
+    for (int x = 0; x < WORLD_WIDTH; x++){
+        for (int y = 0; y < WORLD_HEIGHT; y++){
+            if (grid2[y][x] == 1) {
+                world[x][y] = block[BLOCK_DARK_STONE];
+                if (grid[y][x] == 1) {
+                    world[x][y] = block[BLOCK_SMOOTH_DARK_STONE];
+                }
+            }
+        }
+    }
 
-    // for (int x = 0; x < WORLD_WIDTH; x++){
-    //     for (int y = 0; y < WORLD_HEIGHT; y++){
-    //         if (world[x][y] == block[BLOCK_AIR]) world[x][y] = block[BLOCK_GRASS];
-    //     }
-    // }
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.4, 3);
+    for (int x = 0; x < WORLD_WIDTH; x++){
+        for (int y = 0; y < WORLD_HEIGHT; y++){
+            if (grid[y][x] == 1) {
+                world[x][y] = block[BLOCK_BLACK_STONE];
+            }
+        }
+    }
 
-    // for (int x = 0; x < WORLD_WIDTH; x++){
-    //     for (int y = 0; y < WORLD_HEIGHT; y++){
-    //         if (y != WORLD_HEIGHT - 3) continue;
-    //         if (x % 10 < 5) world[x][y] = block[BLOCK_STONE];
-    //         if (x % 10 > 5) world[x][y] = block[BLOCK_SNOW];
-    //     }
-    // }
+    // DIRT PATCHES
 
-    // generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 4);
-    // for (int x = 0; x < WORLD_WIDTH; x++){
-    //     for (int y = 0; y < WORLD_HEIGHT; y++){
-    //         if (grid[y][x] == 0) {
-    //             world[x][y] = block[BLOCK_BOOKSHELF];
-    //         }
-    //     }
-    // }
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.35, 15);
+    for (int x = 0; x < WORLD_WIDTH; x++){
+        for (int y = 0; y < WORLD_HEIGHT; y++){
+            if (grid[y][x] == 1) {
+                world[x][y] = block[BLOCK_DIRT];
+            }
+        }
+    }
 
-    // generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 4);
-    // for (int x = 0; x < WORLD_WIDTH; x++){
-    //     for (int y = 0; y < WORLD_HEIGHT; y++){
-    //         // if (grid[y][x] == 0) {
-    //         if (world[x][y] == block[BLOCK_AIR]) {
-    //             world[x][y] = block[BLOCK_GRASS];
-    //         }
-    //         // }
-    //     }
-    // }
+    // ORES
 
-    // generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 4);
-    // for (int x = 0; x < WORLD_WIDTH; x++){
-    //     for (int y = 0; y < WORLD_HEIGHT; y++){
-    //         if (grid[y][x] == 0) {
-    //             world[x][y] = block[BLOCK_BLACK_STONE];
-    //         }
-    //     }
-    // }
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.04, 0);
+    for (int x = 0; x < WORLD_WIDTH; x++){
+        for (int y = 0; y < WORLD_HEIGHT; y++){
+            if (grid[y][x] == 1 && world[x][y] == block[BLOCK_STONE]) {
+                    world[x][y] = block[BLOCK_EMERALD_ORE];
+            }
+        }
+    }
+
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.2, 1);
+    generate_cave(grid2, WORLD_WIDTH, WORLD_HEIGHT, 0.08, 0);
+    for (int x = 0; x < WORLD_WIDTH; x++){
+        for (int y = 0; y < WORLD_HEIGHT; y++){
+            if (grid[y][x] == 1 && world[x][y] == block[BLOCK_STONE]) {
+                world[x][y] = block[BLOCK_SILVER_ORE];
+            }
+            if (grid2[y][x] == 1 && world[x][y] == block[BLOCK_STONE]) {
+                world[x][y] = block[BLOCK_SILVER_ORE];
+            }
+        }
+    }
+
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.08, 0);
+    for (int x = 0; x < WORLD_WIDTH; x++){
+        for (int y = 0; y < WORLD_HEIGHT; y++){
+            if (grid[y][x] == 1 && world[x][y] == block[BLOCK_BLACK_STONE]) {
+                    world[x][y] = block[BLOCK_GOLD_ORE];
+            }
+        }
+    }
+
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.008, 0);
+    for (int x = 0; x < WORLD_WIDTH; x++){
+        for (int y = 0; y < WORLD_HEIGHT; y++){
+            if (grid[y][x] == 1 && world[x][y] == block[BLOCK_DARK_STONE]) {
+                    world[x][y] = block[BLOCK_DIAMOND_ORE];
+            }
+        }
+    }
 
     generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.43, 6);
     for (int x = 0; x < WORLD_WIDTH; x++){
@@ -101,13 +138,12 @@ bool generate_world() {
         }
     }
 
+
+
+
     // for (int x = 0; x < WORLD_WIDTH; x++){
     //     for (int y = 0; y < WORLD_HEIGHT; y++){
-    //         // if (grid[y][x] == 0) {
-    //         if (world[x][y] == block[BLOCK_AIR]) {
-    //             world[x][y] = block[BLOCK_GRASS];
-    //         }
-    //         // }
+    //         //
     //     }
     // }
 

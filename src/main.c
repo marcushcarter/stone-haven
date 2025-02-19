@@ -81,7 +81,7 @@ void render() {
 // ----------------------------------------------------------------------------------------------------
 
 void AppQuit() {
-	// save_world("gamesaves/world.save");
+	save_world("gamesaves/world.save");
 	destroy_particles();
     SDL_DestroyRenderer(renderer);
 	renderer = NULL;

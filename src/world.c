@@ -50,6 +50,7 @@ typedef enum {
     BLOCK_VASE,
 
     BLOCK_COUNT,
+    NO_BLOCK = -1,
 } BlockType;
 
 const char* BlockNames[] = {
@@ -213,7 +214,6 @@ void render_world(bool active) {
                 if (world[x][y]->brightness == 255) { continue; }
                 
                 text_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 64.0f, 64.0f), floatarr(4, (float)(world[x][y]->type)*64.0f, 0.0f, 64.0f, 64.0f), block_textures64, true); // render block 64px
-                // text_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 64.0f, 64.0f), floatarr(4, (float)(world[x][y]->type)*16.0f, 0.0f, 16.0f, 16.0f), block_textures, true); // render block 16px
                 
                 if (world[x][y]->solid) { // block outlines
                     if (!world[x][y-1]->solid) draw_rect(renderer, floatarr(4, x*64 - camera.x - 32, y*64 - camera.y - 32, 64.0f, 3.0f), COLOR_WHITE, 255, true);
@@ -278,7 +278,7 @@ void update_blocks(bool active) {
             // if (world[x][y] == block[BLOCK_LANTERN]) { if (randint(0, 100) == 0) create_particle(P_FALL, x*64, y*64, randfloat(-20, 20), randfloat(100, 100), 1.0f, COLOR_WHITE); }
         }
 
-        
+
 
 	}
 	}
