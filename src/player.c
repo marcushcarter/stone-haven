@@ -171,6 +171,7 @@ void break_block(int worldx, int worldy) {
 			for (int i = 0; i < randint(1, 3); i++) create_particle(P_GRAVITY, worldx*64, worldy*64, randfloat(-100, 100), randfloat(-100, 100), 1.0f, COLOR_WHITE);
 		}
 		world[worldx][worldy] = block[BLOCK_AIR];
+		statistics.blocks_broken++;
 		miner.breaktimer = 0;
 	}
 }
@@ -179,6 +180,7 @@ void place_block(int worldx, int worldy) {
 	if ( inventory[miner.inventory_slot].block != NULL && (!(round(miner.x/64) == mouse.worldx && round(miner.y/64) == mouse.worldy) || !inventory[miner.inventory_slot].block->solid)) {
 		world[worldx][worldy] = inventory[miner.inventory_slot].block;
 		if (set.gamemode != GM_CREATIVE) remove_from_inventory(inventory[miner.inventory_slot].block);
+		statistics.blocks_placed++;
 	}
 }
 
@@ -227,9 +229,11 @@ void update_player(bool active) {
 		if (miner.vy > 5000) miner.vy += (5000-miner.vy)/2;
 		int iterations = 15;
 		for (int i = 0; i < iterations; i++) {
+			float ox = miner.x; float oy = miner.y;
 			miner.x += miner.vx*dt/iterations; 
 			miner.y += miner.vy*dt/iterations;
 			check_player_collision();
+			statistics.distance_travelled += distance2d(ox, oy, miner.x, miner.y)/64;
 		}
 
 		if ( miner.y/64 > WORLD_HEIGHT + 15) { miner.health -= 50*dt; miner.healtimer=3; }

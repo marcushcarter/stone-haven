@@ -114,12 +114,17 @@ typedef struct {
 	float targetx, targety;
 } Camera; Camera camera;
 
-// typedef struct {
-//     int blocks_broken;
-//     int blocks_placed;
-//     float distance_travelled;
+typedef struct {
+    int blocks_broken;
+    int blocks_placed;
+    float distance_travelled;
+    float seconds_played;
+    int items_collected;
+} Statistics;
 
-// } Statis
+Statistics statistics = {
+    0, 0, 0.0f, 0.0f, 0,
+};
 
 // ------------------------------------------------------------------------------------------------------------
 

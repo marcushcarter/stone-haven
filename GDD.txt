@@ -36,3 +36,10 @@ Menu/
 │		├─ play for a whole day
 │		└─ travel 1000 miles
 └─ Quit
+
+Savefile contains:
+    - player values
+    - world setup
+    - player inventory
+    - Statistics
+    - settings configurations

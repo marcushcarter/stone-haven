@@ -59,17 +59,18 @@ void alternate_controls(bool active) {
 
 void update() {
 
-	if (dt > 0.3) return;
-
 	update_keystates(true);
 	
 	if (appstate == APP_PLAY) {
 		editor_controls(true);
-		if (!pause) { 
+		if (!pause) {
+			if (dt > 0.3) return;
+			statistics.seconds_played+=dt;
 			alternate_controls(true);
 			update_blocks(true);
 			update_player(true);
 			update_particles(true);
+			// printf("%d\n", statistics.items_collected);
 		}
 	} else {
 		update_menu(true);

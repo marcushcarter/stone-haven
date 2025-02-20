@@ -16,6 +16,7 @@ void add_to_inventory(Block* block) {
         if (inventory[i].block == block) {
             inventory[i].quantity++;
             found = true;
+            statistics.items_collected++;
             break;
         }
     }
@@ -26,6 +27,7 @@ void add_to_inventory(Block* block) {
             if (inventory[i].block == NULL) {
                 inventory[i].block = block;
                 inventory[i].quantity = 1;
+                statistics.items_collected++;
                 break;
             }
         }
