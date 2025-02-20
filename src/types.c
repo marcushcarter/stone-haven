@@ -41,6 +41,88 @@ typedef struct {
 
 WindowDetails win = {1024, 768, 512, 384};
 
+clock_t previous_time = 0;
+float dt;
+
+typedef enum {
+    COLLISION_BOTTOM,
+    COLLISION_TOP,
+    COLLISION_LEFT,
+    COLLISION_RIGHT,
+} CollisionType;
+
+typedef struct {
+    float x1, y1, x2, y2;
+} Line; Line l1, l2;
+
+typedef struct {
+    bool isIntersecting;
+    float uA, uB;
+    float cx, cy;
+} IntersectionResult;
+
+// ------------------------------------------------------------------------------------------------------------
+
+typedef enum {
+    APP_MENU,
+    APP_SETTINGS,
+    APP_STATISTICS,
+    APP_PLAY,
+} AppState;
+
+AppState appstate = APP_MENU;
+
+bool pause = false;
+
+typedef enum {
+    GM_SURVIVAL,
+    GM_CREATIVE,
+    GM_FREECAM,
+} Gamemode;
+
+typedef struct {
+  	int max_fps; //120.0f
+
+  	bool fullscreen; //false
+  	bool particles; //true
+  	float brightness; //5.0f
+
+    Gamemode gamemode;
+  	bool hide_hud; //false
+  	bool auto_save; // true
+	float update_distance;
+    float break_speed;
+
+  	int master_vol; //100
+  	int music_vol; //100
+  	int sfx_vol; //100
+  	int world_vol; //100
+
+	int gravity; //1000.0f
+} GameSettings;
+
+GameSettings set = {
+	120,
+	false, true, 5,
+    GM_SURVIVAL, false, true, 100, 0.5,
+	100, 100, 100, 100,
+	1000,
+};
+
+typedef struct {
+	float x, y;
+	float targetx, targety;
+} Camera; Camera camera;
+
+// typedef struct {
+//     int blocks_broken;
+//     int blocks_placed;
+//     float distance_travelled;
+
+// } Statis
+
+// ------------------------------------------------------------------------------------------------------------
+
 typedef struct {
     char name[100];
 
@@ -85,78 +167,8 @@ typedef struct {
     int color;
 } Particle;
 
-// void create_particle(ParticleType type, float x, float y, float vx, float vy, float life, int color);
-
-typedef enum {
-    GM_SURVIVAL,
-    GM_CREATIVE,
-    GM_FREECAM,
-} Gamemode;
-
-typedef struct {
-  	int max_fps; //120.0f
-
-  	bool fullscreen; //false
-  	bool particles; //true
-  	float brightness; //5.0f
-
-    Gamemode gamemode;
-  	bool hide_hud; //false
-  	bool auto_save; // true
-	float update_distance;
-    float break_speed;
-
-  	int master_vol; //100
-  	int music_vol; //100
-  	int sfx_vol; //100
-  	int world_vol; //100
-
-	int gravity; //1000.0f
-} GameSettings;
-
-GameSettings set = {
-	120,
-	false, true, 5,
-    GM_SURVIVAL, false, true, 100, 0.5,
-	100, 100, 100, 100,
-	1000,
-};
-
-typedef struct {
-	float x, y;
-	float targetx, targety;
-} Camera; Camera camera;
-
-typedef enum {
-    COLLISION_BOTTOM,
-    COLLISION_TOP,
-    COLLISION_LEFT,
-    COLLISION_RIGHT,
-} CollisionType;
-
-typedef struct {
-    float x1, y1, x2, y2;
-} Line; Line l1, l2;
-
-typedef struct {
-    bool isIntersecting;
-    float uA, uB;
-    float cx, cy;
-} IntersectionResult;
-
-#define WORLD_WIDTH 100
-#define WORLD_HEIGHT 100 
-
-/*  World sizes:
-    2,000,000 total blocks -> high fps
-    2,500,000 total blocks -> medium fps
-    3,000,000 total blocks -> slightly laggy
-    3,500,000 total blocks -> playable
-    4,000,000 total blocks -> good luck
-*/
+#define WORLD_WIDTH 50 //2000
+#define WORLD_HEIGHT 50 //2000
 
 #define MAX_PARTICLES 10000
 #define MAX_INVENTORY_SIZE 15
-
-clock_t previous_time = 0;
-float dt;

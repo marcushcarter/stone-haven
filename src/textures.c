@@ -15,13 +15,18 @@ Uint8 colors[100][3] = {
 	{255, 85,  0},	//4-orange
 };
 
-SDL_Texture* texture;
-SDL_Texture* block_textures;
+SDL_Texture* splashscreen;
+SDL_Texture* logo;
+SDL_Texture* backsplash;
+
 SDL_Texture* block_textures64;
 
 bool load_textures(SDL_Renderer* renderer) {
 
 	block_textures64 = IMG_LoadTexture(renderer, "./assets/blocktextures64.png");
+	logo = IMG_LoadTexture(renderer, "./assets/splashscreen.png");
+	splashscreen = IMG_LoadTexture(renderer, "./assets/splashscreen.png");
+	backsplash = IMG_LoadTexture(renderer, "./assets/splashscreen.png");
 	SDL_SetTextureScaleMode(block_textures64, SDL_SCALEMODE_NEAREST);
 
 	return true;

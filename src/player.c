@@ -253,7 +253,7 @@ void update_player(bool active) {
 
 
 		if (mouse.r && world[mouse.worldx][mouse.worldy] != NULL && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 && world[mouse.worldx][mouse.worldy] == block[BLOCK_AIR]
-		&& (world[mouse.worldx][mouse.worldy-1] != block[BLOCK_AIR] || world[mouse.worldx][mouse.worldy+1] != block[BLOCK_AIR] || world[mouse.worldx-1][mouse.worldy] != block[BLOCK_AIR] || world[mouse.worldx+1][mouse.worldy] != block[BLOCK_AIR])  
+		&& (world[mouse.worldx][mouse.worldy]->solid || (world[mouse.worldx][mouse.worldy-1] != block[BLOCK_AIR] || world[mouse.worldx][mouse.worldy+1] != block[BLOCK_AIR] || world[mouse.worldx-1][mouse.worldy] != block[BLOCK_AIR] || world[mouse.worldx+1][mouse.worldy] != block[BLOCK_AIR]))  
 		) {
 			place_block(mouse.worldx, mouse.worldy);
 		}

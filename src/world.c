@@ -203,7 +203,8 @@ void render_world(bool active) {
 
                 float brightness;
                 // shadow / brightness
-                float dx = (x * 64) - miner.x; float dy = (y * 64) - miner.y;
+                float dx = (x * 64) - camera.x - win.sw2; float dy = (y * 64) - camera.y - win.sh2;
+                // float dx = (x * 64) - miner.x; float dy = (y * 64) - miner.y;
                 brightness = 220.0f - ((sqrt(dx * dx + dy * dy) / 64) / set.brightness) * 220.0f;
                 if ((sqrt(dx * dx + dy * dy) / 64) > set.brightness) brightness = 0;
                 if (brightness < 0) { brightness = 0; } else if (brightness > 220.0f) { brightness = 220.0f; }

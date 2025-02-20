@@ -89,7 +89,7 @@ bool generate_world() {
 
     // ORES
 
-    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.04, 0);
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.016, 0);
     for (int x = 0; x < WORLD_WIDTH; x++){
         for (int y = 0; y < WORLD_HEIGHT; y++){
             if (grid[y][x] == 1 && world[x][y] == block[BLOCK_STONE]) {
@@ -98,20 +98,16 @@ bool generate_world() {
         }
     }
 
-    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.2, 1);
-    generate_cave(grid2, WORLD_WIDTH, WORLD_HEIGHT, 0.08, 0);
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.016, 0);
     for (int x = 0; x < WORLD_WIDTH; x++){
         for (int y = 0; y < WORLD_HEIGHT; y++){
             if (grid[y][x] == 1 && world[x][y] == block[BLOCK_STONE]) {
                 world[x][y] = block[BLOCK_SILVER_ORE];
             }
-            if (grid2[y][x] == 1 && world[x][y] == block[BLOCK_STONE]) {
-                world[x][y] = block[BLOCK_SILVER_ORE];
-            }
         }
     }
 
-    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.08, 0);
+    generate_cave(grid, WORLD_WIDTH, WORLD_HEIGHT, 0.04, 0);
     for (int x = 0; x < WORLD_WIDTH; x++){
         for (int y = 0; y < WORLD_HEIGHT; y++){
             if (grid[y][x] == 1 && world[x][y] == block[BLOCK_BLACK_STONE]) {
@@ -137,8 +133,6 @@ bool generate_world() {
             }
         }
     }
-
-
 
 
     // for (int x = 0; x < WORLD_WIDTH; x++){

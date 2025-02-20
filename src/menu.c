@@ -31,3 +31,19 @@ void render_ui (bool active) {
 
     }
 }
+
+void render_menu(bool active) {
+
+    if (appstate == APP_MENU) {
+        text_rect(renderer, floatarr(4, 0.0f, 0.0f, (float)win.sw, (float)win.sw), NULL, backsplash, false);
+        draw_rect(renderer, floatarr(4, 25+(mouse.x-win.sw2)/25, 75+(mouse.y-win.sh2)/25, (float)win.sh2*1.5, (float)win.sh2*1.5), COLOR_WHITE, 255, false);
+        text_rect(renderer, floatarr(4, 25+(mouse.x-win.sw2)/25, 75+(mouse.y-win.sh2)/25, (float)win.sh2*1.5, (float)win.sh2*1.5), NULL, splashscreen, false);
+        text_rect(renderer, floatarr(4, 10.0f, 10.0f, 50.0f, 50.0f), NULL, logo, false);
+    }
+    // draw_rect(renderer, floatarr(4, 1.0f, 1.0f, 100.0f, 30.0f), COLOR_WHITE, 255, false);
+    if (key.space) appstate = APP_PLAY;
+}
+
+void update_menu(bool active) {
+
+}
