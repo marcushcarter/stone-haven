@@ -1,4 +1,7 @@
 
+
+void create_particle(ParticleType type, float x, float y, float vx, float vy, float life, int color);
+
 IntersectionResult islinesintersecting(Line l1, Line l2) { // source: https://www.jeffreythompson.org/collision-detection/line-line.php
     IntersectionResult result;
     result.isIntersecting = false;
@@ -232,4 +235,11 @@ void update_keystates(bool active) {
 	}
 }
 
-void create_particle(ParticleType type, float x, float y, float vx, float vy, float life, int color);
+char* stringf(const char* format, ...) { //converts a data type to a string ("%d", x)
+    static char output[128];
+    va_list args;
+    va_start(args, format);
+    vsprintf(output, format, args);
+    va_end(args);
+    return output;
+}
