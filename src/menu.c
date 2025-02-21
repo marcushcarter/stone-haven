@@ -1,4 +1,6 @@
 
+void AppQuit();
+
 void render_ui (bool active) {
     if (active) {
 
@@ -35,15 +37,120 @@ void render_ui (bool active) {
 void render_menu(bool active) {
 
     if (appstate == APP_MENU) {
-        text_rect(renderer, floatarr(4, 0.0f, 0.0f, (float)win.sw, (float)win.sw), NULL, backsplash, false);
-        draw_rect(renderer, floatarr(4, 25+(mouse.x-win.sw2)/25, 75+(mouse.y-win.sh2)/25, (float)win.sh2*1.5, (float)win.sh2*1.5), COLOR_WHITE, 255, false);
+        text_rect(renderer, floatarr(4, 0.0f, 0.0f, (float)win.sw*2, (float)win.sw*2), NULL, backsplash, false);
+        // draw_rect(renderer, floatarr(4, 25+(mouse.x-win.sw2)/25, 75+(mouse.y-win.sh2)/25, (float)win.sh2*1.5, (float)win.sh2*1.5), COLOR_WHITE, 255, false);
         text_rect(renderer, floatarr(4, 25+(mouse.x-win.sw2)/25, 75+(mouse.y-win.sh2)/25, (float)win.sh2*1.5, (float)win.sh2*1.5), NULL, splashscreen, false);
-        text_rect(renderer, floatarr(4, 10.0f, 10.0f, 50.0f, 50.0f), NULL, logo, false);
+
+        // draw_rect(renderer, floatarr(4, 1000, 100, 250, 100), COLOR_WHITE, 255, true);
     }
-    // draw_rect(renderer, floatarr(4, 1.0f, 1.0f, 100.0f, 30.0f), COLOR_WHITE, 255, false);
-    if (key.space) appstate = APP_PLAY;
+
+    if (appstate == APP_STATISTICS) {;}
+
+    if (appstate == APP_SETTINGS) {;}
+
+    text_rect(renderer, floatarr(4, 10.0f, 10.0f, 50.0f, 50.0f), NULL, logo, false);
 }
 
 void update_menu(bool active) {
+    if (active) {
+
+        if (appstate == APP_MENU) {
+
+            if (key.n1) { // new world
+
+                bool file_exists;
+                FILE *file = fopen("gamesaves/world.save", "r");
+                if (file) {
+                    fclose(file);  // Close the file if it exists
+                    file_exists = true;      // File exists
+                } else {
+                    file_exists = false;      // File does not exist
+                }
+
+                if (file_exists) {
+
+                    SDL_MessageBoxButtonData buttons[] = {
+                        { SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 0, "Cancel" },
+                        { SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 1, "OK" }
+                    };
+                
+                    SDL_MessageBoxData messageboxdata = {
+                        SDL_MESSAGEBOX_WARNING,
+                        window,
+                        "Warning",
+                        "This will delete your current save file.\nAre you sure you want to proceed?",
+                        SDL_arraysize(buttons),
+                        buttons,
+                        NULL
+                    };
+
+                    int buttonID;
+                    if (file_exists) SDL_ShowMessageBox(&messageboxdata, &buttonID);
+
+                    if (buttonID == 0) return;
+
+                }
+
+                if (remove("gamesaves/world.save") == 0) {
+                    printf("File deleted successfully\n");
+                }
+                if (!generate_world()) {
+                    printf("Error generating world: %s", SDL_GetError());
+                    running = false;
+                }
+                appstate = APP_PLAY;
+
+            }
+
+            if (key.n2) { //load game
+
+                bool file_exists;
+                FILE *file = fopen("gamesaves/world.save", "r");
+                if (file) {
+                    fclose(file);  // Close the file if it exists
+                    file_exists = true;      // File exists
+                } else {
+                    file_exists = false;      // File does not exist
+                }
+
+                if (!file_exists) {
+                    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "", "No Savefile was found.", window);
+                    return;
+                }
+
+                if (!load_world("gamesaves/world.save")) {
+                    miner.x = WORLD_WIDTH*32;
+                    miner.y = WORLD_HEIGHT*32;
+                    miner.vx = 0;
+                    miner.vy = 0;
+                    // if (!generate_world()) {
+                    //     printf("Error generating world: %s", SDL_GetError());
+                    //     running = false;
+                    // }
+                }
+                appstate = APP_PLAY;
+            }
+
+            if (key.n3) appstate = APP_SETTINGS; // settings
+            if (key.n4) appstate = APP_STATISTICS; // statistics
+            if (key.n5) AppQuit(); // quit
+
+        }
+
+        if (appstate == APP_STATISTICS) {
+            if (key.n6) appstate = APP_MENU;
+        }
+    
+        
+        if (appstate == APP_SETTINGS) {
+            if (key.n6) appstate = APP_MENU;
+        }
+    
+    
+    
+    
+    
+    
+    }
 
 }

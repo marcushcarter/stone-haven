@@ -17,8 +17,8 @@
 #include "inventory.c"
 #include "particle.c"
 #include "player.c"
-#include "menu.c"
 #include "savefile.c"
+#include "menu.c"
 
 // ----------------------------------------------------------------------------------------------------
 
@@ -148,16 +148,6 @@ void AppInit() {
 	}
 
 	make_blocks();
-	if (!load_world("gamesaves/world.save")) {
-			miner.x = WORLD_WIDTH*32;
-			miner.y = WORLD_HEIGHT*32;
-			miner.vx = 0;
-			miner.vy = 0;
-		if (!generate_world()) {
-			printf("Error generating world: %s", SDL_GetError());
-			running = false;
-		}
-	}
 
 	camera.x += (miner.x - win.sw2);
 	camera.y += (miner.y - win.sh2);
