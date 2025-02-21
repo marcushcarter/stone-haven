@@ -21,6 +21,12 @@ SDL_Texture* backsplash;
 
 SDL_Texture* block_textures64;
 
+TTF_Font* font;
+SDL_Color textColor;
+SDL_Surface *textSurface;
+SDL_Texture *textTexture;
+// SDL_Surface* textSurface;
+
 bool load_textures(SDL_Renderer* renderer) {
 
 	block_textures64 = IMG_LoadTexture(renderer, "./assets/blocktextures64.png");
@@ -28,6 +34,12 @@ bool load_textures(SDL_Renderer* renderer) {
 	splashscreen = IMG_LoadTexture(renderer, "./assets/splashscreen.png");
 	backsplash = IMG_LoadTexture(renderer, "./assets/splashscreen.png");
 	SDL_SetTextureScaleMode(block_textures64, SDL_SCALEMODE_NEAREST);
+
+	font = TTF_OpenFont("assets/Times New Roman.ttf", 24);
+    if (font == NULL) {
+        // printf("Failed to load font! TTF_Error: %s\n", TTF_GetError());
+        return false;
+    }
 
 	return true;
 }
@@ -60,3 +72,19 @@ void draw_line(SDL_Renderer* renderer, float x1, float y1, float x2, float y2, i
 	SDL_SetRenderDrawColor(renderer, colors[color][0], colors[color][1], colors[color][2], transparency);
 	SDL_RenderLine(renderer, x1, y1, x2, y2);
 }
+
+void write_text(SDL_Renderer* renderer, char text[100], float x, float y, int color, int transparency) {
+	textColor.r = colors[color][0];
+	textColor.g = colors[color][1];
+	textColor.b = colors[color][2];
+	textColor.a = transparency;
+	textSurface = TTF_RenderText_Solid(font, text, strlen(text), textColor);
+	textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    int textWidth = textSurface->w;
+    int textHeight = textSurface->h;
+	SDL_FRect renderQuad = { x, y, textWidth, textHeight };
+    SDL_RenderTexture(renderer, textTexture, NULL, &renderQuad);
+    SDL_DestroySurface(textSurface);
+}
+
+

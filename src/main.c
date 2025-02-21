@@ -1,6 +1,7 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include <stdio.h>
 #include <time.h>
@@ -94,6 +95,8 @@ void render() {
 		render_menu(true);
 	}
 
+	write_text(renderer, "Hello, World!", 100, 100, COLOR_WHITE, 255);
+
   	SDL_RenderPresent(renderer);
 }
 
@@ -128,11 +131,21 @@ void AppInit() {
     	running = false;
   	}
 
+	  if (TTF_Init() == -1) {
+        // printf("SDL_ttf could not initialize! TTF_Error: %s\n", TTF_GetError());
+        running = false;
+    }
+
   	window = SDL_CreateWindow("Stone Haven", win.sw, win.sh, SDL_WINDOW_RESIZABLE);
   	if (!window) {
     	printf("Error creating window: %s", SDL_GetError());
     	running = false;
   	}
+
+	if (TTF_Init() == -1) {
+        printf("SDL_ttf could not initialize! TTF_Error: %s\n", TTF_GetError());
+        running = false;
+    }
 
   	renderer = SDL_CreateRenderer(window, NULL);
 	SDL_SetRenderScale(renderer, 1, 1);
