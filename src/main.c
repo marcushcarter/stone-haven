@@ -142,11 +142,6 @@ void AppInit() {
     	running = false;
   	}
 
-	if (TTF_Init() == -1) {
-        printf("SDL_ttf could not initialize! TTF_Error: %s\n", TTF_GetError());
-        running = false;
-    }
-
   	renderer = SDL_CreateRenderer(window, NULL);
 	SDL_SetRenderScale(renderer, 1, 1);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);

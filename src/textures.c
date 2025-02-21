@@ -58,7 +58,7 @@ void text_rect(SDL_Renderer* renderer, float position[4], float frame[4], SDL_Te
 	}
 }
 
-void draw_rect(SDL_Renderer* renderer, float position[4], int color, int transparency, bool fill) {
+void draw_rect(SDL_Renderer* renderer, float position[4], Colors color, int transparency, bool fill) {
 		SDL_SetRenderDrawColor(renderer, colors[color][0], colors[color][1], colors[color][2], transparency);
 		SDL_FRect rect = {position[0], position[1], position[2], position[3]};
   if (fill) {
@@ -68,12 +68,12 @@ void draw_rect(SDL_Renderer* renderer, float position[4], int color, int transpa
   }
 }
 
-void draw_line(SDL_Renderer* renderer, float x1, float y1, float x2, float y2, int color, int transparency) {
+void draw_line(SDL_Renderer* renderer, float x1, float y1, float x2, float y2, Colors color, int transparency) {
 	SDL_SetRenderDrawColor(renderer, colors[color][0], colors[color][1], colors[color][2], transparency);
 	SDL_RenderLine(renderer, x1, y1, x2, y2);
 }
 
-void write_text(SDL_Renderer* renderer, char text[100], float x, float y, int color, int transparency) {
+void write_text(SDL_Renderer* renderer, char text[100], float x, float y, Colors color, int transparency) {
 	textColor.r = colors[color][0];
 	textColor.g = colors[color][1];
 	textColor.b = colors[color][2];
