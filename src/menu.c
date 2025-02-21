@@ -44,7 +44,17 @@ void render_menu(bool active) {
         // draw_rect(renderer, floatarr(4, 1000, 100, 250, 100), COLOR_WHITE, 255, true);
     }
 
-    if (appstate == APP_STATISTICS) {;}
+    if (appstate == APP_STATISTICS) {
+        int offsetx = 200;
+        int offsety = 25;
+        write_text(renderer, "STATISTICS", win.sw-offsetx, 20+offsety, COLOR_WHITE, 255, true);
+        
+        write_text(renderer, stringf("Total player blocks broken: %d", statistics.blocks_broken), win.sw-offsetx, 50+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Total player blocks placed: %d", statistics.blocks_placed), win.sw-offsetx, 80+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Total distance travelled: %.1f blocks", statistics.distance_travelled), win.sw-offsetx, 110+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Total player items collected: %d", statistics.items_collected), win.sw-offsetx, 140+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Total time played: %.0f hrs %.0f min %.0f sec", floor(statistics.seconds_played/60/60), floor(statistics.seconds_played/60), floor(statistics.seconds_played)), win.sw-offsetx, 170+offsety, COLOR_WHITE, 255, true);
+    }
 
     if (appstate == APP_SETTINGS) {;}
 
