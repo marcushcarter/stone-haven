@@ -129,17 +129,20 @@ void AppInit() {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
     	printf("Error initializing SDL: %s", SDL_GetError());
     	running = false;
+		return;
   	}
 
 	  if (TTF_Init() == -1) {
         // printf("SDL_ttf could not initialize! TTF_Error: %s\n", TTF_GetError());
         running = false;
+		return;
     }
 
   	window = SDL_CreateWindow("Stone Haven", win.sw, win.sh, SDL_WINDOW_RESIZABLE);
   	if (!window) {
     	printf("Error creating window: %s", SDL_GetError());
     	running = false;
+		return;
   	}
 
   	renderer = SDL_CreateRenderer(window, NULL);
@@ -148,14 +151,20 @@ void AppInit() {
   	if (!renderer) {
     	printf("Error creating renderer: %s", SDL_GetError());
     	running = false;
+		return;
   	}
 
 	if (!load_textures(renderer)) {
 	    printf("Error loading textures: %s", SDL_GetError());
 	    running = false;
+		return;
 	}
 
-	make_blocks();
+	if (!make_blocks()) {
+		printf("Error making blocks");
+		running = false;
+		return;
+	}
 
 	camera.x += (miner.x - win.sw2);
 	camera.y += (miner.y - win.sh2);
