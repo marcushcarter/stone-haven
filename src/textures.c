@@ -73,7 +73,7 @@ void draw_line(SDL_Renderer* renderer, float x1, float y1, float x2, float y2, C
 	SDL_RenderLine(renderer, x1, y1, x2, y2);
 }
 
-void write_text(SDL_Renderer* renderer, char text[100], float x, float y, Colors color, int transparency) {
+void write_text(SDL_Renderer* renderer, char text[100], float x, float y, Colors color, int transparency, bool center) {
 	textColor.r = colors[color][0];
 	textColor.g = colors[color][1];
 	textColor.b = colors[color][2];
@@ -82,9 +82,11 @@ void write_text(SDL_Renderer* renderer, char text[100], float x, float y, Colors
 	textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
     int textWidth = textSurface->w;
     int textHeight = textSurface->h;
+	if (center) {
+		x = x-textWidth/2;
+		y = y-textHeight/2;
+	}
 	SDL_FRect renderQuad = { x, y, textWidth, textHeight };
     SDL_RenderTexture(renderer, textTexture, NULL, &renderQuad);
     SDL_DestroySurface(textSurface);
 }
-
-

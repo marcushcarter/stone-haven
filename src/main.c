@@ -95,7 +95,7 @@ void render() {
 		render_menu(true);
 	}
 
-	write_text(renderer, "Hello, World!", 100, 100, COLOR_WHITE, 255);
+	write_text(renderer, "Hello, World!", 100, 100, COLOR_WHITE, 255, true);
 
   	SDL_RenderPresent(renderer);
 }
