@@ -114,7 +114,11 @@ void AppQuit() {
 
 void AppIterate() {
 	SDL_GetWindowSize(window, &win.sw, &win.sh);
+	if (win.sw < 414) SDL_SetWindowSize(window, 414, win.sh);
+	SDL_GetWindowSize(window, &win.sw, &win.sh);
+	if (win.sh < 253) SDL_SetWindowSize(window, win.sw, 253);
 	win.sw2 = win.sw/2; win.sh2 = win.sh/2;
+
   	dt = get_delta_time();
 	update();
   	render();
