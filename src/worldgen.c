@@ -25,6 +25,8 @@ bool generate_world() {
         grid2[i] = (int *)malloc(WORLD_WIDTH * sizeof(int));
     }
 
+    // swtich the WORLD_HEIGHT, WORLD_WIDTH, and world[][] with TAPESTRY_WIDTH, TAPESTRY_HEIGHT and menu_tapestry[][]
+
     /* World Generation Process: 
         
         1.) sets all blocks to AIR to initialize all blocks from NULL
@@ -182,4 +184,128 @@ bool make_menu_tapestry(TapestryType type) {
         }
     }
 
+    if (type == TAPESTRY_WORLD_GENERATION) {
+
+        int **grid = (int **)malloc(TAPESTRY_HEIGHT * sizeof(int *));
+        for (int i = 0; i < TAPESTRY_HEIGHT; i++) {
+            grid[i] = (int *)malloc(TAPESTRY_WIDTH * sizeof(int));
+        }
+
+        int **grid2 = (int **)malloc(TAPESTRY_HEIGHT * sizeof(int *));
+        for (int i = 0; i < TAPESTRY_HEIGHT; i++) {
+            grid2[i] = (int *)malloc(TAPESTRY_WIDTH * sizeof(int));
+        }
+
+        /* World Generation Process: 
+            
+            1.) sets all blocks to AIR to initialize all blocks from NULL
+            
+            2.) sets all the AIR blocks to STONE
+            3.) generates biome locations based on a large automaton grid
+            4.) generates pockets of other stones based on the biomes they are in
+            5.) generates the ores in the world (from common to rarest) (also based on biomes)
+            6.) generates the cave systems from another autamaton grid
+            7.) generates the finishing touches in the world (non solid objects)
+
+            8.) generates all the structures in the world
+
+            9.) spawn the players spawn box and makes the world borders
+        
+        */
+
+        // STONE BLOCKS
+
+        generate_cave(grid, TAPESTRY_WIDTH, TAPESTRY_HEIGHT, 0.5, 3);
+        for (int x = 0; x < TAPESTRY_WIDTH; x++){
+            for (int y = 0; y < TAPESTRY_HEIGHT; y++){
+                menu_tapestry[x][y] = block[BLOCK_STONE];
+                if (grid[y][x] == 1) {
+                    menu_tapestry[x][y] = block[BLOCK_SMOOTH_STONE];
+                }
+            }
+        }
+
+        generate_cave(grid, TAPESTRY_WIDTH, TAPESTRY_HEIGHT, 0.35, 3);
+        generate_cave(grid2, TAPESTRY_WIDTH, TAPESTRY_HEIGHT, 0.45, 3);
+        for (int x = 0; x < TAPESTRY_WIDTH; x++){
+            for (int y = 0; y < TAPESTRY_HEIGHT; y++){
+                if (grid2[y][x] == 1) {
+                    menu_tapestry[x][y] = block[BLOCK_DARK_STONE];
+                    if (grid[y][x] == 1) {
+                        menu_tapestry[x][y] = block[BLOCK_SMOOTH_DARK_STONE];
+                    }
+                }
+            }
+        }
+
+        generate_cave(grid, TAPESTRY_WIDTH, TAPESTRY_HEIGHT, 0.4, 3);
+        for (int x = 0; x < TAPESTRY_WIDTH; x++){
+            for (int y = 0; y < TAPESTRY_HEIGHT; y++){
+                if (grid[y][x] == 1) {
+                    menu_tapestry[x][y] = block[BLOCK_BLACK_STONE];
+                }
+            }
+        }
+
+        // DIRT PATCHES
+
+        generate_cave(grid, TAPESTRY_WIDTH, TAPESTRY_HEIGHT, 0.35, 15);
+        for (int x = 0; x < TAPESTRY_WIDTH; x++){
+            for (int y = 0; y < TAPESTRY_HEIGHT; y++){
+                if (grid[y][x] == 1) {
+                    menu_tapestry[x][y] = block[BLOCK_DIRT];
+                }
+            }
+        }
+
+        // ORES
+
+        generate_cave(grid, TAPESTRY_WIDTH, TAPESTRY_HEIGHT, 0.016, 0);
+        for (int x = 0; x < TAPESTRY_WIDTH; x++){
+            for (int y = 0; y < TAPESTRY_HEIGHT; y++){
+                if (grid[y][x] == 1 && menu_tapestry[x][y] == block[BLOCK_STONE]) {
+                    menu_tapestry[x][y] = block[BLOCK_EMERALD_ORE];
+                }
+            }
+        }
+
+        generate_cave(grid, TAPESTRY_WIDTH, TAPESTRY_HEIGHT, 0.016, 0);
+        for (int x = 0; x < TAPESTRY_WIDTH; x++){
+            for (int y = 0; y < TAPESTRY_HEIGHT; y++){
+                if (grid[y][x] == 1 && menu_tapestry[x][y] == block[BLOCK_STONE]) {
+                    menu_tapestry[x][y] = block[BLOCK_SILVER_ORE];
+                }
+            }
+        }
+
+        generate_cave(grid, TAPESTRY_WIDTH, TAPESTRY_HEIGHT, 0.04, 0);
+        for (int x = 0; x < TAPESTRY_WIDTH; x++){
+            for (int y = 0; y < TAPESTRY_HEIGHT; y++){
+                if (grid[y][x] == 1 && menu_tapestry[x][y] == block[BLOCK_BLACK_STONE]) {
+                    menu_tapestry[x][y] = block[BLOCK_GOLD_ORE];
+                }
+            }
+        }
+
+        generate_cave(grid, TAPESTRY_WIDTH, TAPESTRY_HEIGHT, 0.008, 0);
+        for (int x = 0; x < TAPESTRY_WIDTH; x++){
+            for (int y = 0; y < TAPESTRY_HEIGHT; y++){
+                if (grid[y][x] == 1 && menu_tapestry[x][y] == block[BLOCK_DARK_STONE]) {
+                    menu_tapestry[x][y] = block[BLOCK_DIAMOND_ORE];
+                }
+            }
+        }
+
+        generate_cave(grid, TAPESTRY_WIDTH, TAPESTRY_HEIGHT, 0.43, 6);
+        for (int x = 0; x < TAPESTRY_WIDTH; x++){
+            for (int y = 0; y < TAPESTRY_HEIGHT; y++){
+                if (grid[y][x] == 1) {
+                    menu_tapestry[x][y] = block[BLOCK_AIR];
+                }
+            }
+        }
+
+    }
+
+    return true;
 }

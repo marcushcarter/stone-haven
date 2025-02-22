@@ -166,7 +166,7 @@ void AppInit() {
 		return;
 	}
 
-	make_menu_tapestry(TAPESTRY_RANDOM_BLOCKS);
+	make_menu_tapestry(TAPESTRY_WORLD_GENERATION);
 
 	camera.x += (miner.x - win.sw2);
 	camera.y += (miner.y - win.sh2);
