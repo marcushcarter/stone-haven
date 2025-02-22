@@ -36,11 +36,17 @@ void render_ui (bool active) {
 
 void render_update_menu(bool active) {
 
-    text_rect(renderer, floatarr(4, 10.0f, 10.0f, 50.0f, 50.0f), NULL, logo, false);
+    for (int x = 0; x < 100; x++) {
+        for (int y = 0; y < 100; y++) {
+            text_rect(renderer, floatarr(4, (float)(x*64), (float)(y*64), 64.0f, 64.0f), floatarr(4, (float)(menu_tapestry[x][y]->type)*64.0f, 0.0f, 64.0f, 64.0f), block_textures64, true); // render block 64px
+        }
+    }
 
     int offsety = 25;
     float x, y, size;
     float width, height;
+
+    draw_rect(renderer, floatarr(4, (float)win.sw2-200, 0.0f, 400.0f, (float)win.sh), COLOR_BLACK, 255, true);
 
     if (appstate == APP_MENU) {
 
