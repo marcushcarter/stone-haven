@@ -185,6 +185,12 @@ void place_block(int worldx, int worldy) {
 	}
 }
 
+void check_acheivements() {
+	if (statistics.blocks_broken >= 10) {
+		achievements.break_10_blocks = true;
+	}
+}
+
 void update_player(bool active) {
 
     if (active) {

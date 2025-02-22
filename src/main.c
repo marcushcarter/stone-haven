@@ -72,6 +72,7 @@ void update() {
 			update_blocks(true);
 			update_player(true);
 			update_particles(true);
+			check_acheivements();
 		}
 	}
 

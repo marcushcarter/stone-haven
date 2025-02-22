@@ -76,6 +76,8 @@ bool save_statistics(const char *filename) {
     
     fwrite(&set, sizeof(GameSettings), 1, file);
 
+    fwrite(&achievements, sizeof(GameSettings), 1, file);
+
     fclose(file);
     printf("Data saved successfully!\n");
     return true;
@@ -91,6 +93,8 @@ bool load_statistics(const char *filename) {
     fread(&statistics, sizeof(Statistics), 1, file);
     
     fread(&set, sizeof(GameSettings), 1, file);
+    
+    fread(&achievements, sizeof(GameSettings), 1, file);
 
     fclose(file);
     printf("Data loaded successfully!\n");

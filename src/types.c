@@ -67,6 +67,7 @@ typedef enum {
     APP_MENU,
     APP_SETTINGS,
     APP_STATISTICS,
+    APP_ACHIEVEMENTS,
     APP_PLAY,
 } AppState;
 
@@ -127,6 +128,14 @@ typedef struct {
 
 Statistics statistics = {
     0, 0, 0.0f, 0.0f, 0, 0, 0.0f, 0.0f,
+};
+
+typedef struct {
+    bool break_10_blocks;
+} Acheivements;
+
+Acheivements achievements = {
+    false,
 };
 
 // ------------------------------------------------------------------------------------------------------------

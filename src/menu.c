@@ -168,9 +168,21 @@ void render_update_menu(bool active) {
             }
         }
 
-        y = (float)(325 + offsety - 20);
+        y = (float)(300 + offsety - 20);
 
-        write_text(renderer, "QUIT", win.sw2, 325 + offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, "ACHIEVEMENTS", win.sw2, 300 + offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
+        if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
+            draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                appstate = APP_ACHIEVEMENTS;
+                mouse.lp = 0;
+            }
+        }
+
+        y = (float)(375 + offsety - 20);
+
+        write_text(renderer, "QUIT", win.sw2, 375 + offsety, COLOR_WHITE, 255, true);
         draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
         if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
             draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);
@@ -342,6 +354,29 @@ void render_update_menu(bool active) {
         }
 
 
+    }
+
+    if (appstate == APP_ACHIEVEMENTS) {
+
+        write_text(renderer, "ACHIEVEMENTS", win.sw2, 25+offsety, COLOR_WHITE, 255, true);
+        draw_line(renderer, win.sw2-175, 25+offsety+25, win.sw2+175, 25+offsety+25, COLOR_WHITE, 255);
+
+        write_text(renderer, stringf("break 10 blocks"), win.sw2, 75+offsety, (achievements.break_10_blocks)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+
+        x = (float)(win.sw2 - 80);
+        y = (float)(315 + offsety - 20);
+        width = 160;
+        height = 40;
+
+        write_text(renderer, "EXIT", win.sw2, 315 + offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
+        if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
+            draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                appstate = APP_MENU;
+                mouse.lp = 0;
+            }
+        }
     }
 
 }
