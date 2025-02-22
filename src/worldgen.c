@@ -174,7 +174,7 @@ typedef enum {
     TAPESTRY_STRUCTURE,
 } TapestryType;
 
-bool make_menu_tapestry(TapestryType type) {
+bool make_menu_tapestry(TapestryType type, Block* tileblock) {
 
     if (type == TAPESTRY_RANDOM_BLOCKS) {
         for (int x = 0; x < TAPESTRY_WIDTH; x++){
@@ -305,6 +305,14 @@ bool make_menu_tapestry(TapestryType type) {
             }
         }
 
+    }
+
+    if (type == TAPESTRY_SOLID_BLOCKS) {
+        for (int x = 0; x < TAPESTRY_WIDTH; x++){
+            for (int y = 0; y < TAPESTRY_HEIGHT; y++){
+                menu_tapestry[x][y] = block[tileblock->type];
+            }
+        }
     }
 
     return true;
