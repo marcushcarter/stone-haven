@@ -190,13 +190,16 @@ void render_update_menu(bool active) {
         write_text(renderer, stringf("Total player blocks placed: %d", statistics.blocks_placed), win.sw2, 105+offsety, COLOR_WHITE, 255, true);
         write_text(renderer, stringf("Total distance travelled: %.1f blocks", statistics.distance_travelled), win.sw2, 135+offsety, COLOR_WHITE, 255, true);
         write_text(renderer, stringf("Total time played: %.0f hrs %.0f min %.0f sec", floor(statistics.seconds_played/60/60), floor(statistics.seconds_played/60), floor(statistics.seconds_played)), win.sw2, 165+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Player deaths: %d", statistics.number_deaths), win.sw2, 195+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Total damage taken: %.1f hp", statistics.damage_taken), win.sw2, 225+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Total damage healed: %.1f hp", statistics.damage_healed), win.sw2, 255+offsety, COLOR_WHITE, 255, true);
 
         x = (float)(win.sw2 - 80);
-        y = (float)(225 + offsety - 20);
+        y = (float)(315 + offsety - 20);
         width = 160;
         height = 40;
 
-        write_text(renderer, "EXIT", win.sw2, 225 + offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, "EXIT", win.sw2, 315 + offsety, COLOR_WHITE, 255, true);
         draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
         if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
             draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);

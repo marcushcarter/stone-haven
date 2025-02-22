@@ -120,10 +120,13 @@ typedef struct {
     float distance_travelled;
     float seconds_played;
     int items_collected;
+    int number_deaths;
+    float damage_taken;
+    float damage_healed;
 } Statistics;
 
 Statistics statistics = {
-    0, 0, 0.0f, 0.0f, 0,
+    0, 0, 0.0f, 0.0f, 0, 0, 0.0f, 0.0f,
 };
 
 // ------------------------------------------------------------------------------------------------------------

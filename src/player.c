@@ -35,7 +35,8 @@ void resolve_player_collision(CollisionType type, IntersectionResult result, int
 			}
 			
 			if (miner.vy/64 > 20 && world[x][y] != block[BLOCK_SNOW]) {  //add blocks that break your fall to this condition
-				miner.health -= (miner.vy-20)/32; 
+				miner.health -= (miner.vy-20)/32;
+				statistics.damage_taken += (miner.vy-20)/32;
 				miner.healtimer=3;
 			}
 			
@@ -237,7 +238,7 @@ void update_player(bool active) {
 		}
 
 		if ( miner.y/64 > WORLD_HEIGHT + 15) { miner.health -= 50*dt; miner.healtimer=3; }
-		if (miner.healtimer <= 0) { miner.health+=20*dt; }
+		if (miner.healtimer <= 0) { miner.health+=20*dt; statistics.damage_healed += 20*dt;}
 		if (miner.health > 100) miner.health = 100;
 
 		if ( miner.health <= 0) {
@@ -247,6 +248,7 @@ void update_player(bool active) {
 			miner.y = WORLD_HEIGHT*32;
 			miner.vx = 0;
 			miner.vy = 0;
+			statistics.number_deaths++;
 		}
 
 		// inventory slot management
