@@ -136,14 +136,6 @@ bool generate_world() {
         }
     }
 
-
-    // for (int x = 0; x < WORLD_WIDTH; x++){
-    //     for (int y = 0; y < WORLD_HEIGHT; y++){
-    //         //
-    //     }
-    // }
-
-
     // spawn box and worldborder
     for (int x = 0; x < 3; x++){ for (int y = 0; y < 3; y++){ world[(int)(x+WORLD_WIDTH/2-5/2)][(int) (y+WORLD_HEIGHT/2-3/2)] = block[BLOCK_ROSE]; } }
     for (int x = 0; x < WORLD_WIDTH; x++) { world[x][1] = block[BLOCK_WORLD_BORDER]; world[x][WORLD_HEIGHT - 2] = block[BLOCK_WORLD_BORDER]; }
@@ -165,7 +157,6 @@ typedef enum {
     TAPESTRY_RANDOM_BLOCKS,
     TAPESTRY_WORLD_GENERATION,
     TAPESTRY_SOLID_BLOCKS,
-    TAPESTRY_STRUCTURE,
 } TapestryType;
 
 bool make_menu_tapestry(TapestryType type, Block* tileblock) {

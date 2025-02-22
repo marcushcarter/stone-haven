@@ -10,9 +10,9 @@ typedef enum {
 Uint8 colors[100][3] = {
   	{0,0,0},        //0-Black
   	{255,255,255},  //1-White
-  	{255,0,0},      //2-Red
-  	{100,100,100},  //3-grey
-	{255, 85,  0},	//4-orange
+  	{100,100,100},  //2-grey
+  	{255,0,0},      //3-Red
+	{255, 85,  0},	//4-fireorange
 };
 
 SDL_Texture* splashscreen;
@@ -25,7 +25,6 @@ TTF_Font* font;
 SDL_Color textColor;
 SDL_Surface *textSurface;
 SDL_Texture *textTexture;
-// SDL_Surface* textSurface;
 
 bool load_textures(SDL_Renderer* renderer) {
 

@@ -1,5 +1,4 @@
 
-// void create_particle(ParticleType type, float x, float y, float vx, float vy, float life, int color);
 
 typedef enum {
     BLOCK_AIR,
@@ -108,9 +107,7 @@ typedef struct Block {
     float brightness;     // brightness of the block based on distance from the camera
 } Block;
 
-// void break_block(int worldx, int worldy);
 void add_to_inventory(Block* block);
-// void remove_from_inventory(Block* block);
 void clear_inventory();
 
 Block* make_block(BlockType type, bool solid, bool breakable) {

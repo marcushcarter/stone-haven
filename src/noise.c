@@ -89,6 +89,7 @@ void generate_cave(int **grid, int width, int height, float fill_prob, int itera
     }
 }
 
+// Function to print the grid in the console
 void print_grid(int **grid, int width, int height) {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
@@ -97,47 +98,3 @@ void print_grid(int **grid, int width, int height) {
         printf("\n");
     }
 }
-
-// int main() {
-//     srand(time(NULL));
-
-//     int width, height, iterations;
-//     float fill_prob;
-
-//     printf("Enter the width of the cave (usual 50): ");
-//     scanf("%d", &width);
-//     if (width == 0) { width = 50; }
-
-//     printf("Enter the height of the cave (usual 30): ");
-//     scanf("%d", &height);
-//     if (height == 0) { height = 30; }
-
-//     printf("Enter the fill probability (0 to 1) (usual 0.45): ");
-//     scanf("%f", &fill_prob);
-//     if (fill_prob < 0) { fill_prob = 0; }
-//     if (fill_prob > 1) { fill_prob = 1; }
-
-//     printf("Enter the number of iterations (usual 5): ");
-//     scanf("%d", &iterations);
-//     if (iterations > 1) { iterations = 1; }
-
-//     int **grid = (int **)malloc(height * sizeof(int *));
-//     for (int i = 0; i < height; i++) {
-//         grid[i] = (int *)malloc(width * sizeof(int));
-//     }
-
-//     generate_cave(grid, width, height, fill_prob, iterations);
-//     print_grid(grid, width, height);
-
-//     printf("Press any key to continue...");
-//     while (!_kbhit()) {
-//     }
-//     _getch();
-
-//     for (int i = 0; i < height; i++) {
-//         free(grid[i]);
-//     }
-//     free(grid);
-
-//     return 0;
-// }
