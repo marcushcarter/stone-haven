@@ -30,7 +30,7 @@ SDL_Texture *textTexture;
 bool load_textures(SDL_Renderer* renderer) {
 
 	block_textures64 = IMG_LoadTexture(renderer, "./assets/blocktextures64.png");
-	logo = IMG_LoadTexture(renderer, "./assets/splashscreen.png");
+	logo = IMG_LoadTexture(renderer, "./assets/icon.png");
 	splashscreen = IMG_LoadTexture(renderer, "./assets/splashscreen.png");
 	backsplash = IMG_LoadTexture(renderer, "./assets/splashscreen.png");
 	SDL_SetTextureScaleMode(block_textures64, SDL_SCALEMODE_NEAREST);

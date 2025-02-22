@@ -186,7 +186,12 @@ void render_update_menu(bool active) {
         draw_line(renderer, win.sw2-175, 25+offsety+25, win.sw2+175, 25+offsety+25, COLOR_WHITE, 255);
 
         write_text(renderer, "Creative Mode       ", win.sw2, 75+offsety, COLOR_WHITE, 255, true);
-        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35, (float)75+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, set.gamemode);
+        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35, (float)75+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, false);
+        if (set.gamemode) {
+            draw_line(renderer, (float)win.sw2+100-35, (float)75+offsety-15, (float)win.sw2+100-35+30, (float)75+offsety-15+30, COLOR_WHITE, 255);
+            draw_line(renderer, (float)win.sw2+100-35, (float)75+offsety-15+30, (float)win.sw2+100-35+30, (float)75+offsety-15, COLOR_WHITE, 255);
+            draw_rect(renderer, floatarr(4, (float)win.sw2+100-35, (float)75+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
+        }
         if (mouse.x >= (float)(win.sw2 + 100 - 35) && mouse.x <= ((float)(win.sw2 + 100 - 35) + 30) && mouse.y >= (float)(75 + offsety - 15) && mouse.y <= ((float)(75 + offsety - 15) + 30)) {
             draw_rect(renderer, floatarr(4, (float)win.sw2+100-35, (float)75+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
             if (mouse.lp) {
@@ -196,7 +201,12 @@ void render_update_menu(bool active) {
         }
 
         write_text(renderer, "Particles   ", win.sw2, 115+offsety, COLOR_WHITE, 255, true);
-        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)115+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, set.particles);
+        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)115+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, false);
+        if (set.particles) {
+            draw_line(renderer, (float)win.sw2+100-35-15, (float)115+offsety-15, (float)win.sw2+100-35+30-15, (float)115+offsety-15+30, COLOR_WHITE, 255);
+            draw_line(renderer, (float)win.sw2+100-35-15, (float)115+offsety-15+30, (float)win.sw2+100-35+30-15, (float)115+offsety-15, COLOR_WHITE, 255);
+            draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)115+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
+        }
         if (mouse.x >= (float)(win.sw2 + 100 - 35 - 15) && mouse.x <= ((float)(win.sw2 + 100 - 35 - 15) + 30) && mouse.y >= (float)(115 + offsety - 15) && mouse.y <= ((float)(115 + offsety - 15) + 30)) {
             draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)115+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
             if (mouse.lp) {
@@ -205,10 +215,15 @@ void render_update_menu(bool active) {
             }
         }
 
-        write_text(renderer, "Hide HUD   ", win.sw2, 155+offsety, COLOR_WHITE, 255, true);
-        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)155+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, set.hide_hud);
-        if (mouse.x >= (float)(win.sw2 + 100 - 35 - 15) && mouse.x <= ((float)(win.sw2 + 100 - 35 - 15) + 30) && mouse.y >= (float)(155 + offsety - 15) && mouse.y <= ((float)(155 + offsety - 15) + 30)) {
-            draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)155+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
+        write_text(renderer, "Hide HUD  ", win.sw2, 155+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-5, (float)155+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, false);
+        if (set.hide_hud) {
+            draw_line(renderer, (float)win.sw2+100-35-5, (float)155+offsety-15, (float)win.sw2+100-35+30-5, (float)155+offsety-15+30, COLOR_WHITE, 255);
+            draw_line(renderer, (float)win.sw2+100-35-5, (float)155+offsety-15+30, (float)win.sw2+100-35+30-5, (float)155+offsety-15, COLOR_WHITE, 255);
+            draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-5, (float)155+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
+        }
+        if (mouse.x >= (float)(win.sw2 + 100 - 35 - 5) && mouse.x <= ((float)(win.sw2 + 100 - 35 - 5) + 30) && mouse.y >= (float)(155 + offsety - 15) && mouse.y <= ((float)(155 + offsety - 15) + 30)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-5, (float)155+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
             if (mouse.lp) {
                 set.hide_hud = !set.hide_hud;
                 mouse.lp = 0;
@@ -216,7 +231,12 @@ void render_update_menu(bool active) {
         }
 
         write_text(renderer, "Auto Save   ", win.sw2, 195+offsety, COLOR_WHITE, 255, true);
-        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)195+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, set.auto_save);
+        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)195+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, false);
+        if (set.auto_save) {
+            draw_line(renderer, (float)win.sw2+100-35-15, (float)195+offsety-15, (float)win.sw2+100-35+30-15, (float)195+offsety-15+30, COLOR_WHITE, 255);
+            draw_line(renderer, (float)win.sw2+100-35-15, (float)195+offsety-15+30, (float)win.sw2+100-35+30-15, (float)195+offsety-15, COLOR_WHITE, 255);
+            draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)195+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
+        }
         if (mouse.x >= (float)(win.sw2 + 100 - 35 - 15) && mouse.x <= ((float)(win.sw2 + 100 - 35 - 15) + 30) && mouse.y >= (float)(195 + offsety - 15) && mouse.y <= ((float)(195 + offsety - 15) + 30)) {
             draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)195+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
             if (mouse.lp) {
@@ -225,20 +245,20 @@ void render_update_menu(bool active) {
             }
         }
 
-        write_text(renderer, "Set settings to highest quality", win.sw2, 245+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, "Set settings to best gameplay", win.sw2, 245+offsety, COLOR_WHITE, 255, true);
         draw_rect(renderer, floatarr(4, (float)win.sw2-160, (float)245+offsety-20, (float)320, (float)40), COLOR_WHITE, 255, false);
         if (mouse.x >= (float)(win.sw2 - 160) && mouse.x <= ((float)(win.sw2 - 160) + 320) && mouse.y >= (float)(245 + offsety - 20) && mouse.y <= ((float)(245 + offsety - 20) + 40)) {
             draw_rect(renderer, floatarr(4, (float)win.sw2-160, (float)245+offsety-20, (float)320, (float)40), COLOR_WHITE, 50, true);
             if (mouse.l) draw_rect(renderer, floatarr(4, (float)win.sw2-160, (float)245+offsety-20, (float)320, (float)40), COLOR_WHITE, 100, true);
             if (mouse.lp) {
-                set.max_fps = 120.0f;
+                set.max_fps = 60.0f;
                 set.update_distance = 100;
                 set.particles = true;
                 mouse.lp = 0;
             }
         }
 
-        write_text(renderer, "Set settings to smoothest framerate", win.sw2, 295+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, "Set settings to fastest fps", win.sw2, 295+offsety, COLOR_WHITE, 255, true);
         draw_rect(renderer, floatarr(4, (float)win.sw2-160, (float)295+offsety-20, (float)320, (float)40), COLOR_WHITE, 255, false);
         if (mouse.x >= (float)(win.sw2 - 160) && mouse.x <= ((float)(win.sw2 - 160) + 320) && mouse.y >= (float)(295 + offsety - 20) && mouse.y <= ((float)(295 + offsety - 20) + 40)) {
             draw_rect(renderer, floatarr(4, (float)win.sw2-160, (float)295+offsety-20, (float)320, (float)40), COLOR_WHITE, 50, true);
@@ -252,7 +272,7 @@ void render_update_menu(bool active) {
         }
 
         write_text(renderer, stringf("Maximum FPS: %d", set.max_fps), win.sw2, 345+offsety, COLOR_WHITE, 255, true);
-        write_text(renderer, stringf("Update Distance (blocks): %.0f", set.update_distance), win.sw2, 385+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Update Distance: %.0f blocks", set.update_distance), win.sw2, 385+offsety, COLOR_WHITE, 255, true);
 
         write_text(renderer, "EXIT", win.sw2, 450+offsety, COLOR_WHITE, 255, true);
         draw_rect(renderer, floatarr(4, (float)win.sw2-80, (float)450+offsety-20, (float)160, (float)40), COLOR_WHITE, 255, false);
