@@ -200,7 +200,7 @@ void render_update_menu(bool active) {
 
         write_text(renderer, stringf("Total player blocks broken: %d", statistics.blocks_broken), win.sw2, 75+offsety, COLOR_WHITE, 255, true);
         write_text(renderer, stringf("Total player blocks placed: %d", statistics.blocks_placed), win.sw2, 105+offsety, COLOR_WHITE, 255, true);
-        write_text(renderer, stringf("Total distance travelled: %.1f blocks", statistics.distance_travelled), win.sw2, 135+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Total distance travelled: %.1f m", statistics.distance_travelled), win.sw2, 135+offsety, COLOR_WHITE, 255, true);
         write_text(renderer, stringf("Total time played: %.0f hrs %.0f min %.0f sec", floor(statistics.seconds_played/60/60), floor(statistics.seconds_played/60), floor(statistics.seconds_played)), win.sw2, 165+offsety, COLOR_WHITE, 255, true);
         write_text(renderer, stringf("Player deaths: %d", statistics.number_deaths), win.sw2, 195+offsety, COLOR_WHITE, 255, true);
         write_text(renderer, stringf("Total damage taken: %.1f hp", statistics.damage_taken), win.sw2, 225+offsety, COLOR_WHITE, 255, true);
@@ -361,14 +361,36 @@ void render_update_menu(bool active) {
         write_text(renderer, "ACHIEVEMENTS", win.sw2, 25+offsety, COLOR_WHITE, 255, true);
         draw_line(renderer, win.sw2-175, 25+offsety+25, win.sw2+175, 25+offsety+25, COLOR_WHITE, 255);
 
-        write_text(renderer, stringf("break 10 blocks"), win.sw2, 75+offsety, (achievements.break_10_blocks)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+        write_text(renderer, stringf("play for 1 hr"), win.sw2, 75+offsety, (achievements.play_1h)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+        write_text(renderer, stringf("play 5 hrs"), win.sw2, 105+offsety, (achievements.play_5h)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("play 10 hrs"), win.sw2, 135+offsety, (achievements.play_10h)? COLOR_WHITE : COLOR_GREY, 255, true);
+
+        write_text(renderer, stringf("break your first block"), win.sw2, 175+offsety, (achievements.break_1b)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+        write_text(renderer, stringf("break 1000 blocks"), win.sw2, 205+offsety, (achievements.break_1000b)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("break 5000 blocks"), win.sw2, 235+offsety, (achievements.break_5000b)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("500000b"), win.sw2, 265+offsety, (achievements.break_50000b)? COLOR_WHITE : COLOR_GREY, 255, true);
+
+        write_text(renderer, stringf("place 1 block"), win.sw2, 305+offsety, (achievements.place_1b)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+        write_text(renderer, stringf("place 100"), win.sw2, 335+offsety, (achievements.place_100b)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("place 1000"), win.sw2, 365+offsety, (achievements.place_1000b)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("place 5000"), win.sw2, 395+offsety, (achievements.place_5000b)? COLOR_WHITE : COLOR_GREY, 255, true);
+        
+        write_text(renderer, stringf("first steps"), win.sw2, 435+offsety, (achievements.walk_1m)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+        write_text(renderer, stringf("travel 100m"), win.sw2, 465+offsety, (achievements.walk_100m)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("travel 1609"), win.sw2, 495+offsety, (achievements.walk_1609m)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("travel 42195"), win.sw2, 525+offsety, (achievements.walk_42195m)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("travel 100000"), win.sw2, 555+offsety, (achievements.walk_100000m)? COLOR_WHITE : COLOR_GREY, 255, true);
+
+        write_text(renderer, stringf("first death"), win.sw2, 595+offsety, (achievements.die_1t)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+        write_text(renderer, stringf("nine lives"), win.sw2, 625+offsety, (achievements.die_9t)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("century death"), win.sw2, 655+offsety, (achievements.die_100t)? COLOR_WHITE : COLOR_GREY, 255, true);
 
         x = (float)(win.sw2 - 80);
-        y = (float)(315 + offsety - 20);
+        y = (float)(705 + offsety - 20);
         width = 160;
         height = 40;
 
-        write_text(renderer, "EXIT", win.sw2, 315 + offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, "EXIT", win.sw2, 705 + offsety, COLOR_WHITE, 255, true);
         draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
         if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
             draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);

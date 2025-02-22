@@ -186,9 +186,31 @@ void place_block(int worldx, int worldy) {
 }
 
 void check_acheivements() {
-	if (statistics.blocks_broken >= 10) {
-		achievements.break_10_blocks = true;
-	}
+
+	if (statistics.seconds_played >= 360*1) achievements.play_1h = true;
+	if (statistics.seconds_played >= 360*5) achievements.play_5h = true;
+	if (statistics.seconds_played >= 360*10) achievements.play_10h = true;
+
+	if (statistics.blocks_broken >= 1) achievements.break_1b = true;
+	if (statistics.blocks_broken >= 1000) achievements.break_1000b = true;
+	if (statistics.blocks_broken >= 5000) achievements.break_5000b = true;
+	if (statistics.blocks_broken >= 50000) achievements.break_50000b = true;
+
+	if (statistics.blocks_placed >= 1) achievements.place_1b = true;
+	if (statistics.blocks_placed >= 100) achievements.place_100b = true;
+	if (statistics.blocks_placed >= 1000) achievements.place_1000b = true;
+	if (statistics.blocks_placed >= 5000) achievements.place_5000b = true;
+	
+	if (statistics.distance_travelled >= 1) achievements.walk_1m = true;
+	if (statistics.distance_travelled >= 100) achievements.walk_100m = true;
+	if (statistics.distance_travelled >= 1609) achievements.walk_1609m = true;
+	if (statistics.distance_travelled >= 42195) achievements.walk_42195m = true;
+	if (statistics.distance_travelled >= 100000) achievements.walk_100000m = true;
+	
+	if (statistics.number_deaths >= 1) achievements.die_1t = true;
+	if (statistics.number_deaths >= 9) achievements.die_9t = true;
+	if (statistics.number_deaths >= 100) achievements.die_100t = true;
+
 }
 
 void update_player(bool active) {

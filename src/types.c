@@ -131,11 +131,39 @@ Statistics statistics = {
 };
 
 typedef struct {
-    bool break_10_blocks;
+
+    bool walk_1m;
+    bool walk_100m;
+    bool walk_1609m;
+    bool walk_42195m;
+    bool walk_100000m;
+
+    bool break_1b;
+    bool break_1000b;
+    bool break_5000b;
+    bool break_50000b;
+
+    bool place_1b;
+    bool place_100b;
+    bool place_1000b;
+    bool place_5000b;
+
+    bool play_1h;
+    bool play_5h;
+    bool play_10h;
+
+    bool die_1t;
+    bool die_9t;
+    bool die_100t;
+
 } Acheivements;
 
 Acheivements achievements = {
-    false,
+    false, false, false, false, false,
+    false, false, false, false,
+    false, false, false, false,
+    false, false, false,
+    false, false, false,
 };
 
 // ------------------------------------------------------------------------------------------------------------
