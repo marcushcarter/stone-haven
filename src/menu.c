@@ -34,47 +34,31 @@ void render_ui (bool active) {
     }
 }
 
-void render_menu(bool active) {
-
-    if (appstate == APP_MENU) {
-        text_rect(renderer, floatarr(4, 0.0f, 0.0f, (float)win.sw*2, (float)win.sw*2), NULL, backsplash, false);
-        // draw_rect(renderer, floatarr(4, 25+(mouse.x-win.sw2)/25, 75+(mouse.y-win.sh2)/25, (float)win.sh2*1.5, (float)win.sh2*1.5), COLOR_WHITE, 255, false);
-        text_rect(renderer, floatarr(4, 25+(mouse.x-win.sw2)/25, 75+(mouse.y-win.sh2)/25, (float)win.sh2*1.5, (float)win.sh2*1.5), NULL, splashscreen, false);
-
-        // draw_rect(renderer, floatarr(4, 1000, 100, 250, 100), COLOR_WHITE, 255, true);
-    }
-
-    if (appstate == APP_STATISTICS) {
-        int offsetx = 200;
-        int offsety = 25;
-        write_text(renderer, "STATISTICS", win.sw-offsetx, 20+offsety, COLOR_WHITE, 255, true);
-        
-        write_text(renderer, stringf("Total player blocks broken: %d", statistics.blocks_broken), win.sw-offsetx, 50+offsety, COLOR_WHITE, 255, true);
-        write_text(renderer, stringf("Total player blocks placed: %d", statistics.blocks_placed), win.sw-offsetx, 80+offsety, COLOR_WHITE, 255, true);
-        write_text(renderer, stringf("Total distance travelled: %.1f blocks", statistics.distance_travelled), win.sw-offsetx, 110+offsety, COLOR_WHITE, 255, true);
-        write_text(renderer, stringf("Total player items collected: %d", statistics.items_collected), win.sw-offsetx, 140+offsety, COLOR_WHITE, 255, true);
-        write_text(renderer, stringf("Total time played: %.0f hrs %.0f min %.0f sec", floor(statistics.seconds_played/60/60), floor(statistics.seconds_played/60), floor(statistics.seconds_played)), win.sw-offsetx, 170+offsety, COLOR_WHITE, 255, true);
-    }
-
-    if (appstate == APP_SETTINGS) {;}
+void render_update_menu(bool active) {
 
     text_rect(renderer, floatarr(4, 10.0f, 10.0f, 50.0f, 50.0f), NULL, logo, false);
-}
 
-void update_menu(bool active) {
-    if (active) {
+    int offsetx = 200;
+    int offsety = 25;
 
-        if (appstate == APP_MENU) {
+    if (appstate == APP_MENU) {
 
-            if (key.n1) { // new world
+        write_text(renderer, "STONE HAVEN", win.sw2, 25+offsety, COLOR_WHITE, 255, true);
+        draw_line(renderer, win.sw2-125, 25+offsety+30, win.sw2+125, 25+offsety+30, COLOR_WHITE, 255);
 
+        write_text(renderer, "NEW GAME", win.sw2, 100+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2-100, (float)100+offsety-20, (float)200, (float)40), COLOR_WHITE, 255, false);
+        if (mouse.x >= (float)(win.sw2 - 100) && mouse.x <= ((float)(win.sw2 - 100) + 200) && mouse.y >= (float)(100 + offsety - 20) && mouse.y <= ((float)(100 + offsety - 20) + 40)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2-100, (float)100+offsety-20, (float)200, (float)40), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                mouse.lp = 0;
                 bool file_exists;
                 FILE *file = fopen("gamesaves/world.save", "r");
                 if (file) {
-                    fclose(file);  // Close the file if it exists
-                    file_exists = true;      // File exists
+                    fclose(file);
+                    file_exists = true;
                 } else {
-                    file_exists = false;      // File does not exist
+                    file_exists = false;
                 }
 
                 if (file_exists) {
@@ -109,18 +93,22 @@ void update_menu(bool active) {
                     running = false;
                 }
                 appstate = APP_PLAY;
-
             }
+        }
 
-            if (key.n2) { //load game
-
+        write_text(renderer, "LOAD GAME", win.sw2, 150+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2-100, (float)150+offsety-20, (float)200, (float)40), COLOR_WHITE, 255, false);
+        if (mouse.x >= (float)(win.sw2 - 100) && mouse.x <= ((float)(win.sw2 - 100) + 200) && mouse.y >= (float)(150 + offsety - 20) && mouse.y <= ((float)(150 + offsety - 20) + 40)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2-100, (float)150+offsety-20, (float)200, (float)40), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                mouse.lp = 0;
                 bool file_exists;
                 FILE *file = fopen("gamesaves/world.save", "r");
                 if (file) {
-                    fclose(file);  // Close the file if it exists
-                    file_exists = true;      // File exists
+                    fclose(file);
+                    file_exists = true;
                 } else {
-                    file_exists = false;      // File does not exist
+                    file_exists = false;
                 }
 
                 if (!file_exists) {
@@ -133,34 +121,149 @@ void update_menu(bool active) {
                     miner.y = WORLD_HEIGHT*32;
                     miner.vx = 0;
                     miner.vy = 0;
-                    // if (!generate_world()) {
-                    //     printf("Error generating world: %s", SDL_GetError());
-                    //     running = false;
-                    // }
+                    if (!generate_world()) {
+                        printf("Error generating world: %s", SDL_GetError());
+                        running = false;
+                    }
                 }
                 appstate = APP_PLAY;
             }
-
-            if (key.n3) appstate = APP_SETTINGS; // settings
-            if (key.n4) appstate = APP_STATISTICS; // statistics
-            if (key.n5) AppQuit(); // quit
-
         }
 
-        if (appstate == APP_STATISTICS) {
-            if (key.n6) appstate = APP_MENU;
+        write_text(renderer, "SETTINGS", win.sw2, 200+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2-100, (float)200+offsety-20, (float)200, (float)40), COLOR_WHITE, 255, false);
+        if (mouse.x >= (float)(win.sw2 - 100) && mouse.x <= ((float)(win.sw2 - 100) + 200) && mouse.y >= (float)(200 + offsety - 20) && mouse.y <= ((float)(200 + offsety - 20) + 40)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2-100, (float)200+offsety-20, (float)200, (float)40), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                appstate = APP_SETTINGS;
+                mouse.lp = 0;
+            };
         }
-    
-        
-        if (appstate == APP_SETTINGS) {
-            if (key.n6) appstate = APP_MENU;
+
+        write_text(renderer, "STATISTICS", win.sw2, 250+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2-100, (float)250+offsety-20, (float)200, (float)40), COLOR_WHITE, 255, false);
+        if (mouse.x >= (float)(win.sw2 - 100) && mouse.x <= ((float)(win.sw2 - 100) + 200) && mouse.y >= (float)(250 + offsety - 20) && mouse.y <= ((float)(250 + offsety - 20) + 40)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2-100, (float)250+offsety-20, (float)200, (float)40), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                appstate = APP_STATISTICS;
+                mouse.lp = 0;
+            }
         }
-    
-    
-    
-    
-    
-    
+
+        write_text(renderer, "QUIT", win.sw2, 325+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2-100, (float)325+offsety-20, (float)200, (float)40), COLOR_WHITE, 255, false);
+        if (mouse.x >= (float)(win.sw2 - 100) && mouse.x <= ((float)(win.sw2 - 100) + 200) && mouse.y >= (float)(325 + offsety - 20) && mouse.y <= ((float)(325 + offsety - 20) + 40)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2-100, (float)325+offsety-20, (float)200, (float)40), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                running = false;
+                mouse.lp = 0;
+            }
+        }
+    }
+
+    if (appstate == APP_STATISTICS) {
+        write_text(renderer, "STATISTICS", win.sw2, 25+offsety, COLOR_WHITE, 255, true);
+        draw_line(renderer, win.sw2-175, 25+offsety+25, win.sw2+175, 25+offsety+25, COLOR_WHITE, 255);
+
+        write_text(renderer, stringf("Total player blocks broken: %d", statistics.blocks_broken), win.sw2, 75+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Total player blocks placed: %d", statistics.blocks_placed), win.sw2, 105+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Total distance travelled: %.1f blocks", statistics.distance_travelled), win.sw2, 135+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Total time played: %.0f hrs %.0f min %.0f sec", floor(statistics.seconds_played/60/60), floor(statistics.seconds_played/60), floor(statistics.seconds_played)), win.sw2, 165+offsety, COLOR_WHITE, 255, true);
+
+        write_text(renderer, "EXIT", win.sw2, 225+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2-80, (float)225+offsety-20, (float)160, (float)40), COLOR_WHITE, 255, false);
+        if (mouse.x >= (float)(win.sw2 - 80) && mouse.x <= ((float)(win.sw2 - 80) + 160) && mouse.y >= (float)(225 + offsety - 20) && mouse.y <= ((float)(225 + offsety - 20) + 40)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2-80, (float)225+offsety-20, (float)160, (float)40), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                appstate = APP_MENU;
+                mouse.lp = 0;
+            }
+        }
+    }
+
+    if (appstate == APP_SETTINGS) {
+        write_text(renderer, "SETTINGS", win.sw2, 25+offsety, COLOR_WHITE, 255, true);
+        draw_line(renderer, win.sw2-175, 25+offsety+25, win.sw2+175, 25+offsety+25, COLOR_WHITE, 255);
+
+        write_text(renderer, "Creative Mode       ", win.sw2, 75+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35, (float)75+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, set.gamemode);
+        if (mouse.x >= (float)(win.sw2 + 100 - 35) && mouse.x <= ((float)(win.sw2 + 100 - 35) + 30) && mouse.y >= (float)(75 + offsety - 15) && mouse.y <= ((float)(75 + offsety - 15) + 30)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2+100-35, (float)75+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                set.gamemode = !set.gamemode;
+                mouse.lp = 0;
+            }
+        }
+
+        write_text(renderer, "Particles   ", win.sw2, 115+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)115+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, set.particles);
+        if (mouse.x >= (float)(win.sw2 + 100 - 35 - 15) && mouse.x <= ((float)(win.sw2 + 100 - 35 - 15) + 30) && mouse.y >= (float)(115 + offsety - 15) && mouse.y <= ((float)(115 + offsety - 15) + 30)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)115+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                set.particles = !set.particles;
+                mouse.lp = 0;
+            }
+        }
+
+        write_text(renderer, "Hide HUD   ", win.sw2, 155+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)155+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, set.hide_hud);
+        if (mouse.x >= (float)(win.sw2 + 100 - 35 - 15) && mouse.x <= ((float)(win.sw2 + 100 - 35 - 15) + 30) && mouse.y >= (float)(155 + offsety - 15) && mouse.y <= ((float)(155 + offsety - 15) + 30)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)155+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                set.hide_hud = !set.hide_hud;
+                mouse.lp = 0;
+            }
+        }
+
+        write_text(renderer, "Auto Save   ", win.sw2, 195+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)195+offsety-15, (float)30, (float)30), COLOR_WHITE, 255, set.auto_save);
+        if (mouse.x >= (float)(win.sw2 + 100 - 35 - 15) && mouse.x <= ((float)(win.sw2 + 100 - 35 - 15) + 30) && mouse.y >= (float)(195 + offsety - 15) && mouse.y <= ((float)(195 + offsety - 15) + 30)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2+100-35-15, (float)195+offsety-15, (float)30, (float)30), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                set.auto_save = !set.auto_save;
+                mouse.lp = 0;
+            }
+        }
+
+        write_text(renderer, "Set settings to highest quality", win.sw2, 245+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2-160, (float)245+offsety-20, (float)320, (float)40), COLOR_WHITE, 255, false);
+        if (mouse.x >= (float)(win.sw2 - 160) && mouse.x <= ((float)(win.sw2 - 160) + 320) && mouse.y >= (float)(245 + offsety - 20) && mouse.y <= ((float)(245 + offsety - 20) + 40)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2-160, (float)245+offsety-20, (float)320, (float)40), COLOR_WHITE, 50, true);
+            if (mouse.l) draw_rect(renderer, floatarr(4, (float)win.sw2-160, (float)245+offsety-20, (float)320, (float)40), COLOR_WHITE, 100, true);
+            if (mouse.lp) {
+                set.max_fps = 120.0f;
+                set.update_distance = 100;
+                set.particles = true;
+                mouse.lp = 0;
+            }
+        }
+
+        write_text(renderer, "Set settings to smoothest framerate", win.sw2, 295+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2-160, (float)295+offsety-20, (float)320, (float)40), COLOR_WHITE, 255, false);
+        if (mouse.x >= (float)(win.sw2 - 160) && mouse.x <= ((float)(win.sw2 - 160) + 320) && mouse.y >= (float)(295 + offsety - 20) && mouse.y <= ((float)(295 + offsety - 20) + 40)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2-160, (float)295+offsety-20, (float)320, (float)40), COLOR_WHITE, 50, true);
+            if (mouse.l) draw_rect(renderer, floatarr(4, (float)win.sw2-160, (float)295+offsety-20, (float)320, (float)40), COLOR_WHITE, 100, true);
+            if (mouse.lp) {
+                set.max_fps = 30.0f;
+                set.update_distance = 20;
+                set.particles = false;
+                mouse.lp = 0;
+            }
+        }
+
+        write_text(renderer, stringf("Maximum FPS: %d", set.max_fps), win.sw2, 345+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Update Distance (blocks): %.0f", set.update_distance), win.sw2, 385+offsety, COLOR_WHITE, 255, true);
+
+        write_text(renderer, "EXIT", win.sw2, 450+offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, (float)win.sw2-80, (float)450+offsety-20, (float)160, (float)40), COLOR_WHITE, 255, false);
+        if (mouse.x >= (float)(win.sw2 - 80) && mouse.x <= ((float)(win.sw2 - 80) + 160) && mouse.y >= (float)(450 + offsety - 20) && mouse.y <= ((float)(450 + offsety - 20) + 40)) {
+            draw_rect(renderer, floatarr(4, (float)win.sw2-80, (float)450+offsety-20, (float)160, (float)40), COLOR_WHITE, 50, true);
+            if (mouse.lp) {
+                appstate = APP_MENU;
+                mouse.lp = 0;
+            }
+        }
+
     }
 
 }

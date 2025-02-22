@@ -30,7 +30,8 @@ void editor_controls(bool active) {
 		if (key.n2) set.gamemode = GM_CREATIVE;
 		if (key.n3) set.gamemode = GM_FREECAM;
 
-		if (key.p_) pause = !pause;
+		// if (key.p_) pause = !pause;
+		if (key.p_) appstate = APP_MENU;
 
 		if (key.space) {
 			for (int i = 0; i < 10; i++) {
@@ -71,10 +72,7 @@ void update() {
 			update_blocks(true);
 			update_player(true);
 			update_particles(true);
-			// printf("%d\n", statistics.items_collected);
 		}
-	} else {
-		update_menu(true);
 	}
 
 	camera.x += (camera.targetx - camera.x - win.sw2) * 10.0f * dt;
@@ -92,10 +90,8 @@ void render() {
 		render_particles(true);
 		render_ui(true);
 	} else {
-		render_menu(true);
+		render_update_menu(true);
 	}
-
-	write_text(renderer, "Hello, World!", 100, 100, COLOR_WHITE, 255, true);
 
   	SDL_RenderPresent(renderer);
 }

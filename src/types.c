@@ -70,7 +70,7 @@ typedef enum {
     APP_PLAY,
 } AppState;
 
-AppState appstate = APP_MENU;
+AppState appstate = APP_SETTINGS;
 
 bool pause = false;
 
