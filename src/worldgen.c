@@ -158,12 +158,6 @@ bool generate_world() {
     destroy_particles();
     clear_inventory();
 
-    statistics.blocks_broken = 0;
-    statistics.blocks_placed = 0;
-    statistics.distance_travelled = 0;
-    statistics.seconds_played = 0;
-    statistics.items_collected = 0;
-
     return true;
 }
 
