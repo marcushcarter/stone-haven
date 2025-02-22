@@ -100,6 +100,7 @@ void render() {
 
 void AppQuit() {
 	// save_world("gamesaves/world.save");
+	save_statistics("gamesaves/stats.save");
 	destroy_particles();
     SDL_DestroyRenderer(renderer);
 	renderer = NULL;
@@ -167,6 +168,7 @@ void AppInit() {
 	}
 
 	make_menu_tapestry(TAPESTRY_SOLID_BLOCKS, block[BLOCK_STONE]);
+	load_statistics("gamesaves/stats.save");
 
 	camera.x += (miner.x - win.sw2);
 	camera.y += (miner.y - win.sh2);

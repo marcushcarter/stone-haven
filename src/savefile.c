@@ -64,3 +64,36 @@ bool load_world(const char *filename) {
     printf("World and player loaded successfully from %s.\n", filename);
     return true;
 }
+
+bool save_statistics(const char *filename) {
+    FILE *file = fopen(filename, "wb");
+    if (file == NULL) {
+        printf("Error opening file for writing.\n");
+        return false;
+    }
+
+    fwrite(&statistics, sizeof(Statistics), 1, file);
+    
+    fwrite(&set, sizeof(GameSettings), 1, file);
+
+    fclose(file);
+    printf("Data saved successfully!\n");
+    return true;
+}
+
+bool load_statistics(const char *filename) {
+    FILE *file = fopen(filename, "rb");
+    if (file == NULL) {
+        printf("Error opening file for reading.\n");
+        return false;
+    }
+
+    fread(&statistics, sizeof(Statistics), 1, file);
+    
+    fread(&set, sizeof(GameSettings), 1, file);
+
+    fclose(file);
+    printf("Data loaded successfully!\n");
+    return true;
+}
+
