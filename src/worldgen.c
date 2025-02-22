@@ -164,3 +164,22 @@ bool generate_world() {
 
     return true;
 }
+
+typedef enum {
+    TAPESTRY_RANDOM_BLOCKS,
+    TAPESTRY_WORLD_GENERATION,
+    TAPESTRY_SOLID_BLOCKS,
+    TAPESTRY_STRUCTURE,
+} TapestryType;
+
+bool make_menu_tapestry(TapestryType type) {
+
+    if (type == TAPESTRY_RANDOM_BLOCKS) {
+        for (int x = 0; x < TAPESTRY_WIDTH; x++){
+            for (int y = 0; y < TAPESTRY_HEIGHT; y++){
+                menu_tapestry[x][y] = block[randint(1, BLOCK_COUNT)];
+            }
+        }
+    }
+
+}

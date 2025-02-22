@@ -36,9 +36,9 @@ void render_ui (bool active) {
 
 void render_update_menu(bool active) {
 
-    for (int x = 0; x < 100; x++) {
-        for (int y = 0; y < 100; y++) {
-            text_rect(renderer, floatarr(4, (float)(x*64), (float)(y*64), 64.0f, 64.0f), floatarr(4, (float)(menu_tapestry[x][y]->type)*64.0f, 0.0f, 64.0f, 64.0f), block_textures64, true); // render block 64px
+    for (int x = 0; x < TAPESTRY_WIDTH; x++) {
+        for (int y = 0; y < TAPESTRY_HEIGHT; y++) {
+            text_rect(renderer, floatarr(4, (float)(x*TAPESTRY_TILE_SIZE), (float)(y*TAPESTRY_TILE_SIZE), (float)TAPESTRY_TILE_SIZE, (float)TAPESTRY_TILE_SIZE), floatarr(4, (float)(menu_tapestry[x][y]->type)*64.0f, 0.0f, 64.0f, 64.0f), block_textures64, true); // render block 64px
         }
     }
 

@@ -177,3 +177,7 @@ typedef struct {
 
 #define MAX_PARTICLES 10000
 #define MAX_INVENTORY_SIZE 15
+
+#define TAPESTRY_WIDTH 120 //240
+#define TAPESTRY_HEIGHT 75 //150
+#define TAPESTRY_TILE_SIZE 32 //16

@@ -130,17 +130,7 @@ Block* make_block(BlockType type, bool solid, bool breakable) {
 Block* block[1000];
 SDL_Texture* block_texture[1000];
 Block* world[WORLD_WIDTH][WORLD_HEIGHT];
-Block* menu_tapestry[100][100];
-
-bool make_menu_tapestry() {
-    for (int x = 0; x < 100; x++) {
-        for (int y = 0; y < 100; y++) {
-            menu_tapestry[x][y] = block[BLOCK_STONE];
-        }
-    }
-
-    return 0;
-}
+Block* menu_tapestry[TAPESTRY_WIDTH][TAPESTRY_HEIGHT];
 
 bool make_blocks() {
 
