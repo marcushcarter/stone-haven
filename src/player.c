@@ -237,7 +237,7 @@ void update_player(bool active) {
 			statistics.distance_travelled += distance2d(ox, oy, miner.x, miner.y)/64;
 		}
 
-		if ( miner.y/64 > WORLD_HEIGHT + 15) { miner.health -= 50*dt; miner.healtimer=3; }
+		if ( miner.y/64 > WORLD_HEIGHT + 15) { miner.health -= 50*dt; statistics.damage_taken += 50*dt; miner.healtimer=3; }
 		if (miner.healtimer <= 0) { miner.health+=20*dt; statistics.damage_healed += 20*dt;}
 		if (miner.health > 100) miner.health = 100;
 
