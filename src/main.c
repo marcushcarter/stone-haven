@@ -167,7 +167,8 @@ void AppInit() {
 		return;
 	}
 
-	make_menu_tapestry(TAPESTRY_SOLID_BLOCKS, block[BLOCK_STONE]);
+	make_menu_tapestry(TAPESTRY_WORLD_GENERATION, NULL);
+	
 	load_statistics("gamesaves/stats.save");
 
 	camera.x += (miner.x - win.sw2);

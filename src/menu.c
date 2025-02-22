@@ -46,7 +46,7 @@ void render_update_menu(bool active) {
     float x, y, size;
     float width, height;
 
-    draw_rect(renderer, floatarr(4, (float)win.sw2-200, 0.0f, 400.0f, (float)win.sh), COLOR_BLACK, 255, true);
+    draw_rect(renderer, floatarr(4, (float)win.sw2-200, 0.0f, 400.0f, (float)win.sh), COLOR_BLACK, 190, true);
 
     if (appstate == APP_MENU) {
 
