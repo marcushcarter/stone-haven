@@ -302,41 +302,59 @@ void render_update_menu(bool active) {
             }
         }
 
-        x = (float)(win.sw2 - 160);
-        y = (float)(245 + offsety - 20);
-        width = 320;
-        height = 40;
+        x = (float)(win.sw2 + 70);
+        y = (float)(235 + offsety - 15);
 
-        write_text(renderer, "Set settings to best gameplay", win.sw2, 245 + offsety, COLOR_WHITE, 255, true);
-        draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
-        if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
-            draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);
-            if (mouse.l) draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 100, true);
+        write_text(renderer, "Block Updates     ", win.sw2, 235 + offsety, COLOR_WHITE, 255, true);
+        draw_rect(renderer, floatarr(4, x, y, size, size), COLOR_WHITE, 255, false);
+        if (set.block_updates) {
+            draw_line(renderer, x, y, x + size, y + size, COLOR_WHITE, 255);
+            draw_line(renderer, x, y + size, x + size, y, COLOR_WHITE, 255);
+            draw_rect(renderer, floatarr(4, x, y, size, size), COLOR_WHITE, 50, true);
+        }
+        if (mouse.x >= x && mouse.x <= x + size && mouse.y >= y && mouse.y <= y + size) {
+            draw_rect(renderer, floatarr(4, x, y, size, size), COLOR_WHITE, 50, true);
             if (mouse.lp) {
-                set.max_fps = 60.0f;
-                set.update_distance = 100;
-                set.particles = true;
+                set.block_updates= !set.block_updates;
                 mouse.lp = 0;
             }
         }
 
-        y = (float)(295 + offsety - 20);
+        x = (float)(win.sw2 - 160);
+        y = (float)(285 + offsety - 20);
+        width = 320;
+        height = 40;
 
-        write_text(renderer, "Set settings to fastest fps", win.sw2, 295 + offsety, COLOR_WHITE, 255, true);
+        // write_text(renderer, "Set settings to best gameplay", win.sw2, 285 + offsety, COLOR_WHITE, 255, true);
+        // draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
+        // if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
+        //     draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);
+        //     if (mouse.l) draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 100, true);
+        //     if (mouse.lp) {
+        //         set.max_fps = 60.0f;
+        //         set.update_distance = 100;
+        //         set.particles = true;
+        //         mouse.lp = 0;
+        //     }
+        // }
+
+        y = (float)(285 + offsety - 20);
+
+        write_text(renderer, "Set settings to fastest fps", win.sw2, 285 + offsety, COLOR_WHITE, 255, true);
         draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
         if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
             draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);
             if (mouse.l) draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 100, true);
             if (mouse.lp) {
                 set.max_fps = 120.0f;
-                set.update_distance = 20;
+                set.block_updates = false;
                 set.particles = false;
                 mouse.lp = 0;
             }
         }
 
         write_text(renderer, stringf("Maximum FPS: %d", set.max_fps), win.sw2, 345+offsety, COLOR_WHITE, 255, true);
-        write_text(renderer, stringf("Update Distance: %.0f blocks", set.update_distance), win.sw2, 385+offsety, COLOR_WHITE, 255, true);
+        // write_text(renderer, stringf("Update Distance: %.0f blocks", set.update_distance), win.sw2, 385+offsety, COLOR_WHITE, 255, true);
 
         x = (float)(win.sw2 - 80);
         y = (float)(450 + offsety - 20);

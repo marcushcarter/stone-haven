@@ -93,6 +93,7 @@ typedef struct {
   	bool auto_save; // true
 	float update_distance;
     float break_speed;
+    bool block_updates;
 
   	int master_vol; //100
   	int music_vol; //100
@@ -105,7 +106,7 @@ typedef struct {
 GameSettings set = {
 	120,
 	false, true, 5,
-    GM_SURVIVAL, false, true, 100, 0.5,
+    GM_SURVIVAL, false, true, 20, 0.5, false,
 	100, 100, 100, 100,
 	1000,
 };
@@ -212,8 +213,8 @@ typedef struct {
     int color;
 } Particle;
 
-#define WORLD_WIDTH 50 //2000
-#define WORLD_HEIGHT 50 //2000
+#define WORLD_WIDTH 1500 //2000
+#define WORLD_HEIGHT 1000 //2000
 
 #define MAX_PARTICLES 10000
 #define MAX_INVENTORY_SIZE 15

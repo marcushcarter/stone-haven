@@ -168,7 +168,7 @@ void AppInit() {
 	}
 
 	make_menu_tapestry(TAPESTRY_WORLD_GENERATION, NULL);
-	
+
 	load_statistics("gamesaves/stats.save");
 
 	camera.x += (miner.x - win.sw2);

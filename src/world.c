@@ -228,7 +228,7 @@ void render_world(bool active) {
 }
 
 void update_blocks(bool active) {
-	if (active && set.gamemode != GM_FREECAM) {
+	if (active && set.gamemode != GM_FREECAM && set.block_updates) {
 	for (int x = 0; x < WORLD_WIDTH; x++) {
 	for (int y = 0; y < WORLD_HEIGHT; y++) {
 		if (world[x][y] == NULL) continue;
