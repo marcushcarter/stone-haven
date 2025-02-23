@@ -16,15 +16,17 @@ void render_ui (bool active) {
 
         if (pause) {
 
+            text_rect(renderer, floatarr(4, (float)win.sw-474-10, (float)10, (float)474, (float)375), NULL, controls, false);
+
             draw_rect(renderer, floatarr(4, 0.0f, 0.0f, (float)win.sw, (float)win.sh), COLOR_BLACK, 100, true);
 
-            int offsety = 25;
+            int offsety = win.sh;
             float width = 220;
             float height = 40;
             float x = (float)(win.sw - width - 30);
-            float y = (float)(650 + offsety - height/2);
+            float y = (float)(offsety - height - height/2);
     
-            write_text(renderer, "QUIT", x + width/2, 650 + offsety, COLOR_WHITE, 255, true);
+            write_text(renderer, "QUIT", x + width/2, offsety - height, COLOR_WHITE, 255, true);
             draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
             if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
                 draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);
@@ -34,9 +36,9 @@ void render_ui (bool active) {
                 }
             }
 
-            y = (float)(700 + offsety - 20);
+            y = (float)(offsety - height - 70);
     
-            write_text(renderer, "SAVE AND QUIT", x + width/2, 700 + offsety, COLOR_WHITE, 255, true);
+            write_text(renderer, "SAVE AND QUIT", x + width/2, offsety - 50 - height, COLOR_WHITE, 255, true);
             draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
             if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
                 draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);
@@ -59,8 +61,6 @@ void render_ui (bool active) {
             write_text(renderer, stringf("Player deaths: %d", statistics.number_deaths), 30, 195+offsety, COLOR_WHITE, 255, false);
             write_text(renderer, stringf("Total damage taken: %.1f hp", statistics.damage_taken), 30, 225+offsety, COLOR_WHITE, 255, false);
             write_text(renderer, stringf("Total damage healed: %.1f hp", statistics.damage_healed), 30, 255+offsety, COLOR_WHITE, 255, false);
-
-            text_rect(renderer, floatarr(4, (float)win.sw-474-10, (float)10, (float)474, (float)375), NULL, controls, false);
 
         } else {
 
