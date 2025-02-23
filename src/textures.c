@@ -15,9 +15,8 @@ Uint8 colors[100][3] = {
 	{255, 85,  0},	//4-fireorange
 };
 
-SDL_Texture* splashscreen;
 SDL_Texture* logo;
-SDL_Texture* backsplash;
+SDL_Texture* controls;
 
 SDL_Texture* block_textures64;
 
@@ -30,8 +29,7 @@ bool load_textures(SDL_Renderer* renderer) {
 
 	block_textures64 = IMG_LoadTexture(renderer, "./assets/blocktextures64.png");
 	logo = IMG_LoadTexture(renderer, "./assets/icon.png");
-	splashscreen = IMG_LoadTexture(renderer, "./assets/splashscreen.png");
-	backsplash = IMG_LoadTexture(renderer, "./assets/splashscreen.png");
+	controls = IMG_LoadTexture(renderer, "./assets/controls.jpg");
 	SDL_SetTextureScaleMode(block_textures64, SDL_SCALEMODE_NEAREST);
 
 	font = TTF_OpenFont("assets/Times New Roman.ttf", 24);

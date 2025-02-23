@@ -55,10 +55,12 @@ void render_ui (bool active) {
             write_text(renderer, stringf("Total player blocks broken: %d", statistics.blocks_broken), 30, 75+offsety, COLOR_WHITE, 255, false);
             write_text(renderer, stringf("Total player blocks placed: %d", statistics.blocks_placed), 30, 105+offsety, COLOR_WHITE, 255, false);
             write_text(renderer, stringf("Total distance travelled: %.1f m", statistics.distance_travelled), 30, 135+offsety, COLOR_WHITE, 255, false);
-            write_text(renderer, stringf("Total time played: %.0f hrs %.0f min %.0f sec", floor(statistics.seconds_played/60/60), floor(statistics.seconds_played/60), floor(statistics.seconds_played)), 30, 165+offsety, COLOR_WHITE, 255, false);
+            write_text(renderer, stringf("Total time played: %.0f hrs %.0f min %.0f sec", floor(statistics.seconds_played/60/60), (float)((int)(statistics.seconds_played/60) % 60), (float)((int)(statistics.seconds_played) % 60)), 30, 165+offsety, COLOR_WHITE, 255, false);
             write_text(renderer, stringf("Player deaths: %d", statistics.number_deaths), 30, 195+offsety, COLOR_WHITE, 255, false);
             write_text(renderer, stringf("Total damage taken: %.1f hp", statistics.damage_taken), 30, 225+offsety, COLOR_WHITE, 255, false);
             write_text(renderer, stringf("Total damage healed: %.1f hp", statistics.damage_healed), 30, 255+offsety, COLOR_WHITE, 255, false);
+
+            text_rect(renderer, floatarr(4, (float)win.sw-474-10, (float)10, (float)474, (float)375), NULL, controls, false);
 
         } else {
 
@@ -244,7 +246,7 @@ void render_update_menu(bool active) {
         write_text(renderer, stringf("Total player blocks broken: %d", statistics.blocks_broken), win.sw2, 75+offsety, COLOR_WHITE, 255, true);
         write_text(renderer, stringf("Total player blocks placed: %d", statistics.blocks_placed), win.sw2, 105+offsety, COLOR_WHITE, 255, true);
         write_text(renderer, stringf("Total distance travelled: %.1f m", statistics.distance_travelled), win.sw2, 135+offsety, COLOR_WHITE, 255, true);
-        write_text(renderer, stringf("Total time played: %.0f hrs %.0f min %.0f sec", floor(statistics.seconds_played/60/60), floor(statistics.seconds_played/60), floor(statistics.seconds_played)), win.sw2, 165+offsety, COLOR_WHITE, 255, true);
+        write_text(renderer, stringf("Total time played: %.0f hrs %.0f min %.0f sec", floor(statistics.seconds_played/60/60), (float)((int)(statistics.seconds_played/60) % 60), (float)((int)(statistics.seconds_played) % 60)), win.sw2, 165+offsety, COLOR_WHITE, 255, true);
         write_text(renderer, stringf("Player deaths: %d", statistics.number_deaths), win.sw2, 195+offsety, COLOR_WHITE, 255, true);
         write_text(renderer, stringf("Total damage taken: %.1f hp", statistics.damage_taken), win.sw2, 225+offsety, COLOR_WHITE, 255, true);
         write_text(renderer, stringf("Total damage healed: %.1f hp", statistics.damage_healed), win.sw2, 255+offsety, COLOR_WHITE, 255, true);
