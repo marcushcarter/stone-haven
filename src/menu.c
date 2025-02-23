@@ -47,6 +47,19 @@ void render_ui (bool active) {
                 }
             }
 
+            offsety = 10;
+
+            write_text(renderer, "STATISTICS", 30, 25+offsety, COLOR_WHITE, 255, false);
+            draw_line(renderer, 30, offsety+60, 380, offsety+60, COLOR_WHITE, 255);
+
+            write_text(renderer, stringf("Total player blocks broken: %d", statistics.blocks_broken), 30, 75+offsety, COLOR_WHITE, 255, false);
+            write_text(renderer, stringf("Total player blocks placed: %d", statistics.blocks_placed), 30, 105+offsety, COLOR_WHITE, 255, false);
+            write_text(renderer, stringf("Total distance travelled: %.1f m", statistics.distance_travelled), 30, 135+offsety, COLOR_WHITE, 255, false);
+            write_text(renderer, stringf("Total time played: %.0f hrs %.0f min %.0f sec", floor(statistics.seconds_played/60/60), floor(statistics.seconds_played/60), floor(statistics.seconds_played)), 30, 165+offsety, COLOR_WHITE, 255, false);
+            write_text(renderer, stringf("Player deaths: %d", statistics.number_deaths), 30, 195+offsety, COLOR_WHITE, 255, false);
+            write_text(renderer, stringf("Total damage taken: %.1f hp", statistics.damage_taken), 30, 225+offsety, COLOR_WHITE, 255, false);
+            write_text(renderer, stringf("Total damage healed: %.1f hp", statistics.damage_healed), 30, 255+offsety, COLOR_WHITE, 255, false);
+
         } else {
 
             write_text(renderer, "Press \"P\" to pause game.", 10, win.sh-30, COLOR_WHITE, 160, false);
