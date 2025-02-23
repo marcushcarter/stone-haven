@@ -4,32 +4,62 @@ void AppQuit();
 void render_ui (bool active) {
     if (active) {
 
-        int color; if (world[mouse.worldx][mouse.worldy] != NULL && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 ) { color = COLOR_WHITE; } else { color = COLOR_GREY; }
-
-        if (!(mouse.worldx < 1 || mouse.worldx > WORLD_WIDTH-2 || mouse.worldy < 1 || mouse.worldy > WORLD_HEIGHT-2)) {
-            if (miner.breaktimer > 0) draw_rect(renderer, floatarr(4, mouse.worldx*64 - camera.x - 32, mouse.worldy*64 - camera.y - 32, 64.0f, 64.0f), color, miner.breaktimer/set.break_speed*100, true);
-            draw_rect(renderer, floatarr(4, mouse.worldx*64 - camera.x - 32, mouse.worldy*64 - camera.y - 32, 64.0f, 64.0f), color, 255, false);
+        Colors color; 
+        if (world[mouse.worldx][mouse.worldy] != NULL && distance2d(miner.x/64, miner.y/64, mouse.worldx, mouse.worldy) <= 4 ) { 
+            color = COLOR_WHITE; 
+        } else { 
+            color = COLOR_GREY; 
         }
-        draw_line(renderer, mouse.x+5, mouse.y, mouse.x-5, mouse.y, color, 255); draw_line(renderer, mouse.x, mouse.y-5, mouse.x, mouse.y+5, color, 255);
 
         draw_line(renderer, miner.x - camera.x - 32, miner.y - camera.y - 64, miner.x - camera.x - 32+ miner.health/100*64, miner.y - camera.y - 64, COLOR_RED, 255); //health line
+        draw_line(renderer, mouse.x+5, mouse.y, mouse.x-5, mouse.y, color, 255); draw_line(renderer, mouse.x, mouse.y-5, mouse.x, mouse.y+5, color, 255);
 
-        // if (!set.hide_hud && inventory[miner.inventory_slot].block != NULL) text_rect(renderer, floatarr(4, 0.0f, 0.0f, (float)(win.sh2+win.sw2)/2*0.25, (float)(win.sh2+win.sw2)/2*0.25), floatarr(4, (inventory[miner.inventory_slot].block->type)*64.0f, 0.0f, 64.0f, 64.0f), block_textures64, true);
+        if (pause) {
+
+            draw_rect(renderer, floatarr(4, 0.0f, 0.0f, (float)win.sw, (float)win.sh), COLOR_BLACK, 100, true);
+
+            int offsety = 25;
+            float width = 220;
+            float height = 40;
+            float x = (float)(win.sw - width - 30);
+            float y = (float)(650 + offsety - height/2);
     
-        for (int i = 0; i < MAX_INVENTORY_SIZE; i++) if (!set.hide_hud && inventory[i].block != NULL) text_rect(renderer, floatarr(4, 64.0f*i, 0.0f, 64.0f, 64.0f), floatarr(4, (inventory[i].block->type)*64.0f, 0.0f, 64.0f, 64.0f), block_textures64, true);
-        draw_rect(renderer, floatarr(4, 64.0f*miner.inventory_slot, 0.0f, 64.0f, 64.0f), 1, 255, false);
+            write_text(renderer, "QUIT", x + width/2, 650 + offsety, COLOR_WHITE, 255, true);
+            draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
+            if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
+                draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);
+                if (mouse.lp) {
+                    appstate = APP_MENU;
+                    mouse.lp = 0;
+                }
+            }
 
+            y = (float)(700 + offsety - 20);
+    
+            write_text(renderer, "SAVE AND QUIT", x + width/2, 700 + offsety, COLOR_WHITE, 255, true);
+            draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
+            if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
+                draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);
+                if (mouse.lp) {
+                    save_world("gamesaves/world.save");
+                    appstate = APP_MENU;
+                    mouse.lp = 0;
+                }
+            }
 
-        // float a = 10.0;
-        // float b = 0.1;
-        // float c = miner.x/10 + SDL_GetTicks()/100;
-        // float d = 0;
-        // for (int x = 0; x < win.sw; x++) {
-        //     float y = a*sin(b*x+c)+d;
-        //     draw_line(renderer, x, y+win.sh2, x, win.sh, COLOR_WHITE, 20);
-        //     SDL_RenderPoint(renderer, x, y+win.sh2);
-            
-        // }
+        } else {
+
+            write_text(renderer, "Press \"P\" to pause game.", 10, win.sh-30, COLOR_WHITE, 160, false);
+
+            if (!(mouse.worldx < 1 || mouse.worldx > WORLD_WIDTH-2 || mouse.worldy < 1 || mouse.worldy > WORLD_HEIGHT-2)) {
+                if (miner.breaktimer > 0) draw_rect(renderer, floatarr(4, mouse.worldx*64 - camera.x - 32, mouse.worldy*64 - camera.y - 32, 64.0f, 64.0f), color, miner.breaktimer/set.break_speed*100, true);
+                draw_rect(renderer, floatarr(4, mouse.worldx*64 - camera.x - 32, mouse.worldy*64 - camera.y - 32, 64.0f, 64.0f), color, 255, false);
+            }
+
+            for (int i = 0; i < MAX_INVENTORY_SIZE; i++) if (!set.hide_hud && inventory[i].block != NULL) text_rect(renderer, floatarr(4, 64.0f*i, 0.0f, 64.0f, 64.0f), floatarr(4, (inventory[i].block->type)*64.0f, 0.0f, 64.0f, 64.0f), block_textures64, true);
+            draw_rect(renderer, floatarr(4, 64.0f*miner.inventory_slot, 0.0f, 64.0f, 64.0f), 1, 255, false);
+    
+        }
 
     }
 }
@@ -324,21 +354,6 @@ void render_update_menu(bool active) {
         y = (float)(285 + offsety - 20);
         width = 320;
         height = 40;
-
-        // write_text(renderer, "Set settings to best gameplay", win.sw2, 285 + offsety, COLOR_WHITE, 255, true);
-        // draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);
-        // if (mouse.x >= x && mouse.x <= x + width && mouse.y >= y && mouse.y <= y + height) {
-        //     draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 50, true);
-        //     if (mouse.l) draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 100, true);
-        //     if (mouse.lp) {
-        //         set.max_fps = 60.0f;
-        //         set.update_distance = 100;
-        //         set.particles = true;
-        //         mouse.lp = 0;
-        //     }
-        // }
-
-        y = (float)(285 + offsety - 20);
 
         write_text(renderer, "Set settings to fastest fps", win.sw2, 285 + offsety, COLOR_WHITE, 255, true);
         draw_rect(renderer, floatarr(4, x, y, width, height), COLOR_WHITE, 255, false);

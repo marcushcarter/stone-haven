@@ -30,8 +30,8 @@ void editor_controls(bool active) {
 		if (key.n2) set.gamemode = GM_CREATIVE;
 		if (key.n3) set.gamemode = GM_FREECAM;
 
-		// if (key.p_) pause = !pause;
-		if (key.p_) appstate = APP_MENU;
+		if (!key.p_ && key.p) pause = !pause;
+		// if (key.p_) appstate = APP_MENU;
 
 		if (key.space) {
 			for (int i = 0; i < 10; i++) {
@@ -100,7 +100,6 @@ void render() {
 // ----------------------------------------------------------------------------------------------------
 
 void AppQuit() {
-	// save_world("gamesaves/world.save");
 	save_statistics("gamesaves/stats.save");
 	destroy_particles();
     SDL_DestroyRenderer(renderer);
