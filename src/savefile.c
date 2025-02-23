@@ -1,4 +1,3 @@
-
 bool save_world(const char *filename) {
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
@@ -25,8 +24,16 @@ bool save_world(const char *filename) {
         fprintf(file, "\n");
     }
 
+    // Save inventory data
+    for (int i = 0; i < MAX_INVENTORY_SIZE; i++) {
+        if (inventory[i].block != NULL) {
+            fprintf(file, "%d %d ", inventory[i].block->type, inventory[i].quantity);
+        }
+    }
+    fprintf(file, "\n");
+
     fclose(file);
-    printf("World and player saved successfully to %s.\n", filename);
+    printf("World, player, and inventory saved successfully to %s.\n", filename);
     return true;
 }
 
@@ -36,6 +43,8 @@ bool load_world(const char *filename) {
         printf("Failed to open file for reading.\n");
         return false;
     }
+
+    clear_inventory();
 
     // Load player data
     fscanf(file, "%s", miner.name);  // Read player's name
@@ -60,10 +69,25 @@ bool load_world(const char *filename) {
         }
     }
 
+    // Load inventory data
+    for (int i = 0; i < MAX_INVENTORY_SIZE; i++) {
+        int blockTypeInt, quantity;
+        if (fscanf(file, "%d %d", &blockTypeInt, &quantity) == 2) {
+            // Assuming blockTypeInt is a valid index for your block types
+            if (blockTypeInt >= 0 && blockTypeInt < sizeof(block) / sizeof(block[0])) {
+                inventory[i].block = block[blockTypeInt];
+                inventory[i].quantity = quantity;
+            }
+        } else {
+            break;  // No more inventory items to load
+        }
+    }
+
     fclose(file);
-    printf("World and player loaded successfully from %s.\n", filename);
+    printf("World, player, and inventory loaded successfully from %s.\n", filename);
     return true;
 }
+
 
 bool save_statistics(const char *filename) {
     FILE *file = fopen(filename, "wb");
