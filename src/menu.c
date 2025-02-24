@@ -409,29 +409,29 @@ void render_update_menu(bool active) {
         write_text(renderer, "ACHIEVEMENTS", win.sw2, 25+offsety, COLOR_WHITE, 255, true);
         draw_line(renderer, win.sw2-175, 25+offsety+25, win.sw2+175, 25+offsety+25, COLOR_WHITE, 255);
 
-        write_text(renderer, stringf("play for 1 hr"), win.sw2, 75+offsety, (achievements.play_1h)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
-        write_text(renderer, stringf("play 5 hrs"), win.sw2, 105+offsety, (achievements.play_5h)? COLOR_WHITE : COLOR_GREY, 255, true);
-        write_text(renderer, stringf("play 10 hrs"), win.sw2, 135+offsety, (achievements.play_10h)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("The Begginner (play for 1 hr)"), win.sw2, 75+offsety, (achievements.play_1h)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+        write_text(renderer, stringf("The Amateur (play for 5 hrs)"), win.sw2, 105+offsety, (achievements.play_5h)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("The Master (play for 10 hrs)"), win.sw2, 135+offsety, (achievements.play_10h)? COLOR_WHITE : COLOR_GREY, 255, true);
 
-        write_text(renderer, stringf("break your first block"), win.sw2, 175+offsety, (achievements.break_1b)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
-        write_text(renderer, stringf("break 1000 blocks"), win.sw2, 205+offsety, (achievements.break_1000b)? COLOR_WHITE : COLOR_GREY, 255, true);
-        write_text(renderer, stringf("break 5000 blocks"), win.sw2, 235+offsety, (achievements.break_5000b)? COLOR_WHITE : COLOR_GREY, 255, true);
-        write_text(renderer, stringf("500000b"), win.sw2, 265+offsety, (achievements.break_50000b)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("Break your first block"), win.sw2, 175+offsety, (achievements.break_1b)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+        write_text(renderer, stringf("Dig Dug (break 1,000 blocks)"), win.sw2, 205+offsety, (achievements.break_1000b)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("Demolition Squad (break 5,000 blocks)"), win.sw2, 235+offsety, (achievements.break_5000b)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("World Eater (break 50,000 blocks)"), win.sw2, 265+offsety, (achievements.break_50000b)? COLOR_WHITE : COLOR_GREY, 255, true);
 
-        write_text(renderer, stringf("place 1 block"), win.sw2, 305+offsety, (achievements.place_1b)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
-        write_text(renderer, stringf("place 100"), win.sw2, 335+offsety, (achievements.place_100b)? COLOR_WHITE : COLOR_GREY, 255, true);
-        write_text(renderer, stringf("place 1000"), win.sw2, 365+offsety, (achievements.place_1000b)? COLOR_WHITE : COLOR_GREY, 255, true);
-        write_text(renderer, stringf("place 5000"), win.sw2, 395+offsety, (achievements.place_5000b)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("Place your first block"), win.sw2, 305+offsety, (achievements.place_1b)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+        write_text(renderer, stringf("(place 1,000 blocks)"), win.sw2, 335+offsety, (achievements.place_1000b)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("Bob the Builder (place 5,000 blocks)"), win.sw2, 365+offsety, (achievements.place_5000b)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("Architect Degree (place 50,000 blocks)"), win.sw2, 395+offsety, (achievements.place_50000b)? COLOR_WHITE : COLOR_GREY, 255, true);
         
-        write_text(renderer, stringf("first steps"), win.sw2, 435+offsety, (achievements.walk_1m)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
-        write_text(renderer, stringf("travel 100m"), win.sw2, 465+offsety, (achievements.walk_100m)? COLOR_WHITE : COLOR_GREY, 255, true);
-        write_text(renderer, stringf("travel 1609"), win.sw2, 495+offsety, (achievements.walk_1609m)? COLOR_WHITE : COLOR_GREY, 255, true);
-        write_text(renderer, stringf("travel 42195"), win.sw2, 525+offsety, (achievements.walk_42195m)? COLOR_WHITE : COLOR_GREY, 255, true);
-        write_text(renderer, stringf("travel 100000"), win.sw2, 555+offsety, (achievements.walk_100000m)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("Take your first steps"), win.sw2, 435+offsety, (achievements.walk_1m)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+        write_text(renderer, stringf("Faster than Usain (travel 100m)"), win.sw2, 465+offsety, (achievements.walk_100m)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("What even is a mile? (travel 1,609m)"), win.sw2, 495+offsety, (achievements.walk_1609m)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("My first marathon (travel 42,195m)"), win.sw2, 525+offsety, (achievements.walk_42195m)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("Ultramarathon (travel 100,000m)"), win.sw2, 555+offsety, (achievements.walk_100000m)? COLOR_WHITE : COLOR_GREY, 255, true);
 
-        write_text(renderer, stringf("first death"), win.sw2, 595+offsety, (achievements.die_1t)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
-        write_text(renderer, stringf("nine lives"), win.sw2, 625+offsety, (achievements.die_9t)? COLOR_WHITE : COLOR_GREY, 255, true);
-        write_text(renderer, stringf("century death"), win.sw2, 655+offsety, (achievements.die_100t)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("Aweeeee...Your first death ;P"), win.sw2, 595+offsety, (achievements.die_1t)? COLOR_WHITE : COLOR_GREY, 255, true); //add 30 to y
+        write_text(renderer, stringf("Cats have 9 lives (die 9 times)"), win.sw2, 625+offsety, (achievements.die_9t)? COLOR_WHITE : COLOR_GREY, 255, true);
+        write_text(renderer, stringf("Century Death (die 100 times)"), win.sw2, 655+offsety, (achievements.die_100t)? COLOR_WHITE : COLOR_GREY, 255, true);
 
         x = (float)(win.sw2 - 80);
         y = (float)(705 + offsety - 20);

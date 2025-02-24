@@ -145,9 +145,9 @@ typedef struct {
     bool break_50000b;
 
     bool place_1b;
-    bool place_100b;
     bool place_1000b;
     bool place_5000b;
+    bool place_50000b;
 
     bool play_1h;
     bool play_5h;

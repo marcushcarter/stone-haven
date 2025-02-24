@@ -197,9 +197,9 @@ void check_acheivements() {
 	if (statistics.blocks_broken >= 50000) achievements.break_50000b = true;
 
 	if (statistics.blocks_placed >= 1) achievements.place_1b = true;
-	if (statistics.blocks_placed >= 100) achievements.place_100b = true;
 	if (statistics.blocks_placed >= 1000) achievements.place_1000b = true;
 	if (statistics.blocks_placed >= 5000) achievements.place_5000b = true;
+	if (statistics.blocks_placed >= 50000) achievements.place_50000b = true;
 	
 	if (statistics.distance_travelled >= 1) achievements.walk_1m = true;
 	if (statistics.distance_travelled >= 100) achievements.walk_100m = true;
