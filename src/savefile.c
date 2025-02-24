@@ -53,6 +53,10 @@ bool load_world(const char *filename) {
             &miner.health, &miner.width, &miner.height,
             &miner.falling, &miner.jumptimer, &miner.breaktimer);
 
+    camera.x = (miner.x - win.sw2);
+    camera.y = (miner.y - win.sh2);
+    pause = false;
+
     // Load world data (blocks)
     for (int y = 0; y < WORLD_HEIGHT; y++) {
         for (int x = 0; x < WORLD_WIDTH; x++) {
@@ -87,7 +91,6 @@ bool load_world(const char *filename) {
     printf("World, player, and inventory loaded successfully from %s.\n", filename);
     return true;
 }
-
 
 bool save_statistics(const char *filename) {
     FILE *file = fopen(filename, "wb");

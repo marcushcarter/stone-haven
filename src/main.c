@@ -30,9 +30,6 @@ void editor_controls(bool active) {
 		if (key.n2) set.gamemode = GM_CREATIVE;
 		if (key.n3) set.gamemode = GM_FREECAM;
 
-		if (!key.p_ && key.p) pause = !pause;
-		// if (key.p_) appstate = APP_MENU;
-
 		if (key.space) {
 			for (int i = 0; i < 10; i++) {
 				create_particle(P_GRAVITY, miner.x, miner.y, randfloat(-1000, 1000), randfloat(-1000, 1000), 1, COLOR_WHITE);
@@ -42,9 +39,6 @@ void editor_controls(bool active) {
 }
 
 void alternate_controls(bool active) {
-
-	if (key.tab) { SDL_SetWindowFullscreen(window, 1); }
-	if (key.escape) { SDL_SetWindowFullscreen(window, 0); }
 
 	static Uint32 last_save_time;
 	if (SDL_GetTicks() / 1000 - last_save_time >= 60*5 && set.auto_save) {
@@ -64,7 +58,8 @@ void update() {
 	update_keystates(true);
 	
 	if (appstate == APP_PLAY) {
-		editor_controls(true);
+		if (!key.e_ && key.e) pause = !pause;
+		editor_controls(false);
 		if (!pause) {
 			if (dt > 0.3) return;
 			statistics.seconds_played+=dt;
@@ -93,6 +88,8 @@ void render() {
 	} else {
 		render_update_menu(true);
 	}
+
+	draw_line(renderer, mouse.x+10, mouse.y, mouse.x-10, mouse.y, COLOR_WHITE, 255); draw_line(renderer, mouse.x, mouse.y-10, mouse.x, mouse.y+10, COLOR_WHITE, 255);
 
   	SDL_RenderPresent(renderer);
 }
@@ -138,7 +135,7 @@ void AppInit() {
 		return;
     }
 
-  	window = SDL_CreateWindow("Stone Haven", win.sw, win.sh, SDL_WINDOW_RESIZABLE);
+  	window = SDL_CreateWindow("Stone Haven - Demo", win.sw, win.sh, SDL_WINDOW_RESIZABLE);
   	if (!window) {
     	printf("Error creating window: %s", SDL_GetError());
     	running = false;
@@ -167,11 +164,8 @@ void AppInit() {
 	}
 
 	make_menu_tapestry(TAPESTRY_WORLD_GENERATION, NULL);
-
 	load_statistics("gamesaves/stats.save");
-
-	camera.x += (miner.x - win.sw2);
-	camera.y += (miner.y - win.sh2);
+	// SDL_HideCursor();
 
 }
 

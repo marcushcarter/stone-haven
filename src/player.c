@@ -280,9 +280,8 @@ void update_player(bool active) {
 		}
 
 		// inventory slot management
-		if (!key.upa_ && key.upa) miner.inventory_slot+=1;
-		if (!key.downa_ && key.downa) miner.inventory_slot-=1;
-		if (miner.inventory_slot > MAX_INVENTORY_SIZE-1) miner.inventory_slot = MAX_INVENTORY_SIZE-1;
+		if (!key.q_ && key.q) miner.inventory_slot+=1;
+		if (miner.inventory_slot > MAX_INVENTORY_SIZE-1) miner.inventory_slot = 0;
 		if (miner.inventory_slot < 0) miner.inventory_slot = 0;
 
 

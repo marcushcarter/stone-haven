@@ -213,14 +213,14 @@ typedef struct {
     int color;
 } Particle;
 
-#define WORLD_WIDTH 50 //2000
-#define WORLD_HEIGHT 50 //2000
+#define WORLD_WIDTH 500 //2000
+#define WORLD_HEIGHT 2000 //2000
 
 // #define WORLD_WIDTH 1500 //2000
 // #define WORLD_HEIGHT 1000 //2000
 
 #define MAX_PARTICLES 10000
-#define MAX_INVENTORY_SIZE 15
+#define MAX_INVENTORY_SIZE 10
 
 #define TAPESTRY_WIDTH 120 //240
 #define TAPESTRY_HEIGHT 75 //150

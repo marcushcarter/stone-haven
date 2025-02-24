@@ -15,9 +15,6 @@ Uint8 colors[100][3] = {
 	{255, 85,  0},	//4-fireorange
 };
 
-SDL_Texture* logo;
-SDL_Texture* controls;
-
 SDL_Texture* block_textures64;
 
 TTF_Font* font;
@@ -28,13 +25,10 @@ SDL_Texture *textTexture;
 bool load_textures(SDL_Renderer* renderer) {
 
 	block_textures64 = IMG_LoadTexture(renderer, "./assets/blocktextures64.png");
-	logo = IMG_LoadTexture(renderer, "./assets/icon.png");
-	controls = IMG_LoadTexture(renderer, "./assets/controls.jpg");
 	SDL_SetTextureScaleMode(block_textures64, SDL_SCALEMODE_NEAREST);
 
 	font = TTF_OpenFont("assets/Times New Roman.ttf", 24);
     if (font == NULL) {
-        // printf("Failed to load font! TTF_Error: %s\n", TTF_GetError());
         return false;
     }
 
